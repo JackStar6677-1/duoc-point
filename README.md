@@ -138,3 +138,15 @@ make test
 make down  # detener servicios
 ```
 
+## Importar horarios por PDF
+
+1. **Requisitos del PDF**: debe contener texto embebido; los PDF escaneados sin texto producirán un estado `failed`.  La extracción usa PyPDF2; para habilitar OCR en el futuro se puede integrar `pytesseract` y `pdf2image` dentro de `schedules.tasks.parse_schedule_pdf`.
+2. **Límites de subida**: se configuran en `config/security.yaml` (`max_upload_mb` y `allowed_import_exts`).
+3. **Claves VAPID**: coloca tus llaves en `config/push.yaml` (`vapid_public`, `vapid_private`, `subject`).  Puedes generarlas con `pywebpush`:
+
+   ```bash
+   python -c "from py_vapid import Vapid; v=Vapid(); v.generate_keys(); print(v.public_key, v.private_key)"
+   ```
+
+4. **Probar push**: desde `web/horarios/index.html` activa las notificaciones y usa el endpoint `/api/push/test` para recibir una notificación de prueba.
+

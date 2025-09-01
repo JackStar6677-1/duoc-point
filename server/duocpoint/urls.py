@@ -24,6 +24,8 @@ urlpatterns = [
     path('api/', include('duocpoint.apps.campuses.urls')),
     path('api/', include('duocpoint.apps.forum.urls')),
     path('api/', include('duocpoint.apps.polls.urls')),
+    path('api/', include('duocpoint.apps.schedules.urls')),
+    path('api/', include('duocpoint.apps.notifications.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
 ]

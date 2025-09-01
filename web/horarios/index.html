@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Horarios</title>
+</head>
+<body>
+  <h1>Importar horario PDF</h1>
+  <input type="file" id="pdf">
+  <button onclick="uploadPDF()">Subir</button>
+  <pre id="import-status"></pre>
+
+  <h2>Bloques actuales</h2>
+  <ul id="lista"></ul>
+
+  <button onclick="enablePush()">Activar notificaciones</button>
+
+  <script>
+  async function uploadPDF(){
+    const file=document.getElementById('pdf').files[0];
+    const fd=new FormData();
+    fd.append('file',file);
+    const r=await fetch('/api/horarios/import/pdf',{method:'POST',body:fd});
+    const data=await r.json();
+    document.getElementById('import-status').textContent=JSON.stringify(data);
+  }
+  async function loadHorarios(){
+    const r=await fetch('/api/horarios');
+    const data=await r.json();
+    const ul=document.getElementById('lista');
+    ul.innerHTML='';
+    data.forEach(h=>{
+      const li=document.createElement('li');
+      li.textContent=h.asignatura+' '+h.inicio+'-'+h.fin;
+      const del=document.createElement('button');
+      del.textContent='X';
+      del.onclick=()=>fetch('/api/horarios/'+h.id,{method:'DELETE'}).then(loadHorarios);
+      li.appendChild(del);
+      ul.appendChild(li);
+    });
+  }
+  async function enablePush(){
+    if(!('serviceWorker' in navigator)) return alert('No SW');
+    const reg=await navigator.serviceWorker.ready;
+    const sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:window.vapidPublicKey});
+    await fetch('/api/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:sub.endpoint, p256dh:sub.getKey('p256dh'), auth:sub.getKey('auth')})});
+    alert('Ok');
+  }
+  loadHorarios();
+  </script>
+</body>
+</html>
