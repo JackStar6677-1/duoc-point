@@ -25,6 +25,12 @@ set +o allexport
 # Enable demo mode for exploring APIs without auth
 export DEMO_MODE=1
 
-# Apply migrations and run server
+# Apply migrations and create default admin user
 python server/manage.py migrate --noinput
+export DJANGO_SUPERUSER_USERNAME=admin
+export DJANGO_SUPERUSER_PASSWORD=admin123
+export DJANGO_SUPERUSER_EMAIL=admin@example.com
+python server/manage.py createsuperuser --noinput >/dev/null 2>&1 || true
+
+# Run server
 python server/manage.py runserver 0.0.0.0:8000

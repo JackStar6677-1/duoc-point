@@ -28,5 +28,15 @@ if (Test-Path $envPath) {
 # Enable demo mode for exploring APIs without auth
 $env:DEMO_MODE = "1"
 
+# Apply migrations and create default admin user
 python server/manage.py migrate --noinput
+$env:DJANGO_SUPERUSER_USERNAME="admin"
+$env:DJANGO_SUPERUSER_PASSWORD="admin123"
+$env:DJANGO_SUPERUSER_EMAIL="admin@example.com"
+try {
+    python server/manage.py createsuperuser --noinput | Out-Null
+} catch {
+    # ignore if user already exists
+}
+
 python server/manage.py runserver 8000

@@ -163,6 +163,37 @@ Funcionalidades que dependen de servicios externos (OAuth, Web Push, mapas con c
 
 El script también carga las variables de `infra/.env.example` (se copia automáticamente a `infra/.env`) y se apoya en `config/push.yaml`, que ya incluye claves VAPID de desarrollo para las notificaciones Web Push. Para producción, reemplaza estas claves y ajustes por valores propios.
 
+### Pasos manuales
+
+Si prefieres ejecutar los comandos uno a uno (por ejemplo, para entender cada paso), puedes usar estas instrucciones básicas:
+
+```powershell
+# 1. Crear y activar entorno virtual
+python -m venv .venv
+. .\.venv\Scripts\Activate.ps1
+
+# 2. Instalar dependencias
+pip install -r server/requirements.txt
+
+# 3. Copiar variables de ejemplo
+Copy-Item "infra/.env.example" "infra/.env"
+
+# 4. Ejecutar migraciones y crear usuario admin
+python server/manage.py migrate --noinput
+$env:DJANGO_SUPERUSER_USERNAME="admin"
+$env:DJANGO_SUPERUSER_PASSWORD="admin123"
+$env:DJANGO_SUPERUSER_EMAIL="admin@example.com"
+try { python server/manage.py createsuperuser --noinput | Out-Null } catch {}
+
+# 5. Levantar el servidor
+python server/manage.py runserver 8000
+```
+
+Usuario por defecto para entrar al panel de administración (`/admin/`):
+
+* **Usuario**: `admin`
+* **Contraseña**: `admin123`
+
 URLs útiles tras el arranque:
 
 * `http://localhost:8000/` – página inicial estática.
