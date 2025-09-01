@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                         null=True,
                         on_delete=django.db.models.deletion.SET_NULL,
                         related_name="users",
-                        to="campuses.campus",
+                        to="campuses.sede",
                     ),
                 ),
                 (

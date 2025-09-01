@@ -100,7 +100,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField("email address", unique=True, validators=[validate_duoc_email])
     name = models.CharField(max_length=150)
     campus = models.ForeignKey(
-        "campuses.Campus", on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
+        "campuses.Sede", on_delete=models.SET_NULL, null=True, blank=True, related_name="users"
     )
     career = models.CharField(max_length=150)
     role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.STUDENT)
