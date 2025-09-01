@@ -8,7 +8,7 @@ if (-not (Test-Path ".venv")) {
 
 pip install -r server/requirements.txt
 
-if (Test-Path "infra/.env.example" -and -not (Test-Path "infra/.env")) {
+if ((Test-Path "infra/.env.example") -and -not (Test-Path "infra/.env")) {
     Copy-Item "infra/.env.example" "infra/.env"
 }
 
@@ -26,4 +26,4 @@ if (Test-Path $envPath) {
 }
 
 python server/manage.py migrate --noinput
-python server/manage.py runserver 0.0.0.0:8000
+python server/manage.py runserver 8000
