@@ -22,6 +22,7 @@ INSTALLED_APPS = [
 
     # 3rd party
     "rest_framework",
+    "drf_spectacular",
     "corsheaders",
 
     # Local apps (ajusta nombres si cambiaste rutas)
@@ -110,15 +111,17 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Duoc-Point API",
+    "DESCRIPTION": "Esquema de la API",
+    "VERSION": "1.0.0",
+}
+
 
 # ---- CORS ----
 CORS_ALLOW_CREDENTIALS = True
-# En dev puedes abrir todo:
-CORS_ALLOW_ALL_ORIGINS = True
-# o bien especificar orígenes:
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173",
-#     "http://127.0.0.1:5173",
-#     "http://localhost:3000",
-# ]
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+

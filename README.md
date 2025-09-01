@@ -123,3 +123,18 @@ La aplicación está diseñada para funcionar como:
    `http://localhost:8000`
 
 6. En móviles, instalar la aplicación como PWA desde el navegador.
+
+## Cómo correr en local
+
+Requisitos: Docker y Docker Compose.
+
+```bash
+cd infra
+cp .env.example .env  # ajustar variables si es necesario
+make up
+make migrate
+make createsuperuser  # opcional
+make test
+make down  # detener servicios
+```
+
