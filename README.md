@@ -1,8 +1,35 @@
 # Duoc-Point
 
-Plataforma académica **MVP** para la comunidad de **Duoc UC**.  
+Plataforma académica **MVP** para la comunidad de **Duoc UC**.
 Requiere correos `@duocuc.cl` y funciona como sitio web tradicional o como
 **PWA instalable** con soporte de notificaciones push.
+
+---
+
+## Stack y origen
+
+Este proyecto se levantó desde una plantilla mínima de **Django 5** y se fue
+extendiendo con las siguientes herramientas:
+
+- **Django REST Framework** para la API.
+- **SimpleJWT** para la autenticación por tokens.
+- **Celery + Redis** para tareas en segundo plano y notificaciones.
+- **PyPDF2** para leer horarios desde PDF.
+- **PyWebPush** para enviar notificaciones web.
+- **WeasyPrint** para generar el PDF de portafolio.
+- **PWA ligera** en JavaScript (manifest y service-worker).
+
+El código está pensado como base académica; se puede adaptar o escalar según
+los requerimientos del proyecto final.
+
+### Antes de presentarlo al profesor
+
+- Reemplazar las claves y URLs de ejemplo en `.env` y `config/*.yaml`.
+- Desactivar `DEBUG` y ajustar `ALLOWED_HOSTS`/`CORS_ALLOWED_ORIGINS` para el
+  entorno de despliegue.
+- Revisar branding e íconos en `web/` para que reflejen el proyecto final.
+- Configurar almacenamiento externo y logging si se publicará fuera del entorno
+  local.
 
 ---
 
