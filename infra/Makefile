@@ -1,4 +1,4 @@
-.PHONY: up down migrate createsuperuser test
+.PHONY: up down migrate createsuperuser test celery beat
 
 up:
 	docker compose up -d
@@ -13,4 +13,10 @@ createsuperuser:
 	docker compose run --rm django python manage.py createsuperuser
 
 test:
-	docker compose run --rm django pytest
+        docker compose run --rm django pytest
+
+celery:
+        docker compose up -d celery
+
+beat:
+        docker compose up -d celery-beat

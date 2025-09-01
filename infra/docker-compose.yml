@@ -47,6 +47,26 @@ services:
       - minio
       - mailhog
 
+  celery:
+    build: ../server
+    env_file: .env
+    command: celery -A duocpoint worker -l info
+    volumes:
+      - ../server:/app
+    depends_on:
+      - redis
+      - postgres
+
+  celery-beat:
+    build: ../server
+    env_file: .env
+    command: celery -A duocpoint beat -l info
+    volumes:
+      - ../server:/app
+    depends_on:
+      - redis
+      - postgres
+
   nginx:
     image: nginx:alpine
     volumes:

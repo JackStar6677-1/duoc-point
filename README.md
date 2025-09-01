@@ -36,6 +36,7 @@ git clone https://github.com/<owner>/duoc-point.git
 cd duoc-point/infra
 cp .env.example .env        # ajustar variables si es necesario
 make up                     # levanta postgres, redis, backend y frontend
+make celery beat            # arranca worker y scheduler de Celery
 make migrate                # aplica migraciones
 make createsuperuser        # opcional
 ```
