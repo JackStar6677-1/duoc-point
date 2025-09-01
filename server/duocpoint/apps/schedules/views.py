@@ -25,6 +25,8 @@ class ScheduleImportCreateView(generics.GenericAPIView):
     serializer_class = ScheduleImportSerializer
 
     def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return Response({"detail": "authentication required"}, status=401)
         uploaded = request.FILES.get("file")
         if not uploaded:
             return Response({"detail": "file required"}, status=400)

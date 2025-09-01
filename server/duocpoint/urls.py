@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/', include('duocpoint.apps.accounts.urls')),
     path('api/', include('duocpoint.apps.campuses.urls')),
     path('api/', include('duocpoint.apps.forum.urls')),
+    path('api/', include('duocpoint.apps.market.urls')),
     path('api/', include('duocpoint.apps.polls.urls')),
     path('api/', include('duocpoint.apps.schedules.urls')),
     path('api/', include('duocpoint.apps.notifications.urls')),
