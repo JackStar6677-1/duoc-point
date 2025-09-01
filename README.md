@@ -89,6 +89,35 @@ Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** 
 
 Plataforma académica **MVP** para la comunidad de **Duoc UC**. Requiere correos `@duocuc.cl` y funciona como sitio web tradicional o como **PWA instalable** con soporte de notificaciones push.
 
+## Ejecución con Docker
+
+### Requisitos
+
+- Docker y Docker Compose
+- GNU Make
+
+### Pasos
+
+```bash
+git clone https://github.com/<owner>/duoc-point.git
+cd duoc-point/infra
+cp .env.example .env        # ajustar variables si es necesario
+# generar una SECRET_KEY única para producción
+python -c 'import secrets, sys; sys.stdout.write(secrets.token_urlsafe(50))'
+make up                     # levanta postgres, redis, backend y frontend
+make migrate                # aplica migraciones
+make createsuperuser        # opcional, crea un usuario administrador
+make celery beat            # arranca worker y scheduler de Celery
+```
+
+La aplicación queda disponible en `http://localhost:8000`.
+
+Para detener los servicios:
+
+```bash
+make down
+```
+
 ---
 
 ## Inicio rápido (sin Docker)
@@ -119,7 +148,15 @@ Este proyecto se levantó desde una plantilla mínima de **Django 5** y se fue e
 
 El código está pensado como base académica; se puede adaptar o escalar según los requerimientos del proyecto final.
 
-### Antes de presentarlo al profesor
+## Servicios externos y costos
+
+No es necesario contratar APIs de pago para ejecutar el proyecto en el entorno de desarrollo. Las integraciones utilizadas son de código abierto o cuentan con planes gratuitos:
+
+- **Google OAuth**: autenticación restringida al dominio `@duocuc.cl`. Requiere crear credenciales en Google Cloud, pero el uso es gratuito dentro de los límites estándar.
+- **Web Push / FCM**: envío de notificaciones a navegadores y móviles; ambos tienen niveles gratuitos.
+- **Almacenamiento**: en desarrollo se usa el sistema de archivos local; en producción puede configurarse MinIO (open source) o servicios tipo S3.
+
+### Checklist antes de desplegar
 
 - Reemplazar las claves y URLs de ejemplo en `.env` y `config/*.yaml`.
 - Desactivar `DEBUG` y ajustar `ALLOWED_HOSTS`/`CORS_ALLOWED_ORIGINS` para el entorno de despliegue.
@@ -140,37 +177,6 @@ El código está pensado como base académica; se puede adaptar o escalar según
 - **Wellbeing** – recursos de bienestar por carrera con contenido Markdown.
 - **Portfolio** – generador de PDF con datos del usuario.
 - **PWA** – `manifest.webmanifest` y `service-worker.js` con caché y push.
-
----
-
-## Requisitos
-
-- Docker y Docker Compose
-- GNU Make
-
----
-
-## Configuración inicial
-
-```bash
-git clone https://github.com/<owner>/duoc-point.git
-cd duoc-point/infra
-cp .env.example .env        # ajustar variables si es necesario
-# generar una SECRET_KEY única para producción
-python -c 'import secrets, sys; sys.stdout.write(secrets.token_urlsafe(50))'
-make up                     # levanta postgres, redis, backend y frontend
-make celery beat            # arranca worker y scheduler de Celery
-make migrate                # aplica migraciones
-make createsuperuser        # opcional
-```
-
-La aplicación queda disponible en `http://localhost:8000`.
-
-Para detener los servicios:
-
-```bash
-make down
-```
 
 ---
 
