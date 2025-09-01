@@ -35,6 +35,8 @@ Requiere correos `@duocuc.cl` y funciona como sitio web tradicional o como
 git clone https://github.com/<owner>/duoc-point.git
 cd duoc-point/infra
 cp .env.example .env        # ajustar variables si es necesario
+# generar una SECRET_KEY única para producción
+python -c 'import secrets, sys; sys.stdout.write(secrets.token_urlsafe(50))'
 make up                     # levanta postgres, redis, backend y frontend
 make celery beat            # arranca worker y scheduler de Celery
 make migrate                # aplica migraciones
