@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ForumConfig(AppConfig):
+class OtecConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'duocpoint.apps.forum'
+    name = 'duocpoint.apps.otec'
