@@ -1,4 +1,3 @@
-````markdown
 # Duoc-Point
 
 **Plataforma Duoc-Point (MVP estudiantil, curso Ingeniería en Informática Duoc UC)**  
@@ -105,38 +104,23 @@ La aplicación está diseñada para funcionar tanto como:
 ## Instalación y Uso (resumen)
 
 1. Clonar el repositorio:
-   ```bash
+
    git clone https://github.com/<owner>/duoc-point.git
    cd duoc-point
-````
 
 2. Crear archivo `.env` a partir de `.env.example`.
 
 3. Levantar servicios básicos con Docker:
 
-   ```bash
    docker-compose up
-   ```
 
 4. Ejecutar migraciones de Django:
 
-   ```bash
    docker-compose exec backend python manage.py migrate
-   ```
 
 5. Acceder a la aplicación web en:
 
-   ```
    http://localhost:8000
-   ```
 
 6. Instalar la aplicación como PWA desde el navegador en móvil.
 
----
-
-## Licencia
-
-Este proyecto se distribuye bajo la **MIT License**.
-
-```
-```
