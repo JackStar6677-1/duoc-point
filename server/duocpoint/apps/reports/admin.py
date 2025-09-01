@@ -1,3 +1,8 @@
+"""Admin para reportes."""
+
 from django.contrib import admin
 
-# Register your models here.
+from .models import Reporte, ReporteMedia
+
+admin.site.register(Reporte)
+admin.site.register(ReporteMedia)

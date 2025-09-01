@@ -1,3 +1,7 @@
+"""Admin de contenidos de bienestar."""
+
 from django.contrib import admin
 
-# Register your models here.
+from .models import BienestarItem
+
+admin.site.register(BienestarItem)
