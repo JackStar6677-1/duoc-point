@@ -145,11 +145,19 @@ Plataforma académica **MVP** para la comunidad de **Duoc UC**. Requiere correos
 
 Para probar el proyecto sin contenedores, asegúrate de tener **Python 3** y **pip**. Luego ejecuta:
 
-```bash
-bash run_local.sh
+### Windows (PowerShell)
+
+```powershell
+./run_local.ps1
 ```
 
-El script crea un entorno virtual `.venv`, instala las dependencias, aplica migraciones sobre SQLite y levanta el servidor en `http://localhost:8000`.
+### Linux/macOS
+
+```bash
+./run_local.sh
+```
+
+Los scripts crean un entorno virtual `.venv`, instalan las dependencias, aplican migraciones sobre SQLite y levantan el servidor en `http://localhost:8000`.
 
 Funcionalidades que dependen de servicios externos (OAuth, Web Push, mapas con claves privadas, etc.) están deshabilitadas o usan valores de ejemplo para que el arranque local no requiera configuraciones adicionales. **No necesitas APIs ni servicios de pago** para ejecutar el proyecto en tu máquina.
 

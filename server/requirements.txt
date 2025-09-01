@@ -19,6 +19,5 @@ pytz>=2024.1
 # Opcionales:
 # django-channels>=4.1
 # channels-redis>=4.2
-weasyprint>=62.0
 markdown>=3.4
 # beautifulsoup4>=4.12
