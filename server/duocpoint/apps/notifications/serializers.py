@@ -21,3 +21,9 @@ class PushSubSerializer(serializers.ModelSerializer):
             },
         )
         return sub
+
+
+class SimpleStatusSerializer(serializers.Serializer):
+    """Serializer for simple status responses."""
+
+    status = serializers.CharField()

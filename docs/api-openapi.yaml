@@ -16,11 +16,27 @@ paths:
         por un proceso completo de autenticación.
       tags:
       - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
       security:
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPair'
+          description: ''
   /api/bienestar:
     get:
       operationId: bienestar_list
@@ -411,7 +427,11 @@ paths:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
   /api/polls:
     post:
       operationId: polls_create
@@ -472,11 +492,27 @@ paths:
         required: true
       tags:
       - polls
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PollVote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PollVote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PollVote'
+        required: true
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollDetail'
+          description: ''
   /api/portfolio:
     get:
       operationId: portfolio_retrieve
@@ -486,7 +522,12 @@ paths:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+          description: ''
   /api/posts:
     get:
       operationId: posts_list
@@ -568,6 +609,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Comentario'
           description: ''
+  /api/posts/{id}/ocultar:
+    post:
+      operationId: posts_ocultar_create
+      description: Permite a moderadores ocultar posts.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForumDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ForumDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ForumDetail'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForumDetail'
+          description: ''
   /api/posts/{id}/votar:
     post:
       operationId: posts_votar_create
@@ -580,11 +654,27 @@ paths:
         required: true
       tags:
       - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vote'
+        required: true
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+          description: ''
   /api/push/subscribe:
     post:
       operationId: push_subscribe_create
@@ -617,11 +707,27 @@ paths:
       description: Send a dummy notification to check the service worker.
       tags:
       - push
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimpleStatus'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SimpleStatus'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SimpleStatus'
+        required: true
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimpleStatus'
+          description: ''
   /api/recorridos:
     get:
       operationId: recorridos_list
@@ -1129,6 +1235,14 @@ components:
       - sede
       - slug
       - titulo
+    ForumDetail:
+      type: object
+      description: Mensaje simple para respuestas sin contenido estructurado.
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
     Horario:
       type: object
       properties:
@@ -1163,6 +1277,31 @@ components:
       - fin
       - id
       - inicio
+    Login:
+      type: object
+      description: Datos requeridos para autenticarse.
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+      - email
+      - password
+    OptionResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        texto:
+          type: string
+        votos:
+          type: integer
+      required:
+      - id
+      - texto
+      - votos
     PaginatedBienestarItemList:
       type: object
       required:
@@ -1451,7 +1590,9 @@ components:
           format: date-time
           nullable: true
         opciones:
-          type: string
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionResult'
           readOnly: true
       required:
       - id
@@ -1482,6 +1623,24 @@ components:
       - id
       - opciones
       - post
+    PollDetail:
+      type: object
+      description: Respuesta simple con un mensaje.
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+    PollVote:
+      type: object
+      description: Valida y registra votos para una encuesta.
+      properties:
+        opciones:
+          type: array
+          items:
+            type: integer
+      required:
+      - opciones
     Post:
       type: object
       description: Serializa posts para listado y creación.
@@ -1635,6 +1794,18 @@ components:
           maxLength: 200
       required:
       - url
+    RoleEnum:
+      enum:
+      - student
+      - moderator
+      - director_carrera
+      - admin_global
+      type: string
+      description: |-
+        * `student` - Student
+        * `moderator` - Moderator
+        * `director_carrera` - Director de Carrera
+        * `admin_global` - Administrador Global
     ScheduleImport:
       type: object
       properties:
@@ -1653,6 +1824,14 @@ components:
       - id
       - parse_log
       - status
+    Score:
+      type: object
+      description: Respuesta que devuelve el score actualizado.
+      properties:
+        score:
+          type: integer
+      required:
+      - score
     Sede:
       type: object
       description: Serializa información de :class:`Sede`.
@@ -1679,6 +1858,14 @@ components:
       - lng
       - nombre
       - slug
+    SimpleStatus:
+      type: object
+      description: Serializer for simple status responses.
+      properties:
+        status:
+          type: string
+      required:
+      - status
     StatusEnum:
       enum:
       - queued
@@ -1699,6 +1886,53 @@ components:
       description: |-
         * `kine` - Kinesiología
         * `psico` - Psicología
+    TokenPair:
+      type: object
+      description: Tokens JWT de acceso y refresco.
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    User:
+      type: object
+      description: Representación básica del usuario para respuestas API.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        name:
+          type: string
+          maxLength: 150
+        campus:
+          type: integer
+          nullable: true
+        career:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+      required:
+      - career
+      - email
+      - id
+      - name
+    Vote:
+      type: object
+      description: Payload esperado para registrar un voto.
+      properties:
+        valor:
+          type: integer
+      required:
+      - valor
   securitySchemes:
     jwtAuth:
       type: http

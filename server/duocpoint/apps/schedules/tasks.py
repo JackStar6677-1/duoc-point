@@ -1,6 +1,7 @@
 """Celery tasks for parsing schedule PDFs."""
 
 import re
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from celery import shared_task
@@ -63,14 +64,24 @@ def parse_schedule_pdf(import_id: str):
     # Normalise spaces but keep line breaks for block detection
     text = re.sub(r"[ \t]+", " ", text)
     blocks = []
+    warnings = []
     for line in text.split("\n"):
+        line = line.strip()
         match = re.search(
-            r"(Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo) (\d{2}:\d{2})-(\d{2}:\d{2}) (.+?) (?:Sala|Lab|Aula)? ?([A-Za-z0-9-]+)?$",
-            line.strip(),
+            r"(Lunes|Martes|Miércoles|Jueves|Viernes|Sábado|Domingo) (\d{2}:\d{2})(?:-(\d{2}:\d{2}))? (.+?) (?:Sala|Lab|Aula)? ?([A-Za-z0-9-]+)?$",
+            line,
         )
         if match:
             day, start, end, subject, sala = match.groups()
-            blocks.append((DAY_MAP[day], start, end, subject.strip(), sala or ""))
+            if not end:
+                start_dt = datetime.strptime(start, "%H:%M")
+                end_dt = (start_dt + timedelta(minutes=90)).strftime("%H:%M")
+                warnings.append(f"{subject.strip()}: duración inferida 90m")
+            else:
+                end_dt = end
+            blocks.append((DAY_MAP[day], start, end_dt, subject.strip(), sala or ""))
+        elif line:
+            warnings.append(f"Línea ignorada: {line}")
 
     created = 0
     for dia, inicio, fin, asignatura, sala in blocks:
@@ -86,8 +97,9 @@ def parse_schedule_pdf(import_id: str):
         )
         created += 1
 
+    log_lines = [f"{created} bloques creados"] + warnings
     imp.status = "done"
-    imp.parse_log = f"{created} bloques creados"
+    imp.parse_log = "\n".join(log_lines)
     imp.save(update_fields=["status", "parse_log"])
 
     schedule_class_alerts.delay(str(imp.usuario_id))

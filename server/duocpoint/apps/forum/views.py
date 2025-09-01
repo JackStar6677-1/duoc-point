@@ -5,11 +5,19 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
 
 from duocpoint.apps.accounts.permissions import IsModerator
 
 from .models import BANNED_WORDS, Comentario, Foro, Post, VotoPost
-from .serializers import ComentarioSerializer, ForoSerializer, PostSerializer
+from .serializers import (
+    ComentarioSerializer,
+    ForumDetailSerializer,
+    ForoSerializer,
+    PostSerializer,
+    ScoreSerializer,
+    VoteSerializer,
+)
 
 
 class ForoListView(generics.ListAPIView):
@@ -71,7 +79,7 @@ class CommentCreateView(generics.CreateAPIView):
 
 class PostVoteView(APIView):
     """Registra el voto del usuario para un post."""
-
+    @extend_schema(request=VoteSerializer, responses=ScoreSerializer)
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
         try:
@@ -88,11 +96,13 @@ class PostVoteView(APIView):
         return Response({"score": post.score})
 
 
-class PostHideView(APIView):
+class PostHideView(generics.GenericAPIView):
     """Permite a moderadores ocultar posts."""
 
     permission_classes = [IsModerator]
+    serializer_class = ForumDetailSerializer
 
+    @extend_schema(responses=ForumDetailSerializer)
     def post(self, request, pk):  # pragma: no cover - acción administrativa
         post = get_object_or_404(Post, pk=pk)
         post.estado = Post.Estado.OCULTO

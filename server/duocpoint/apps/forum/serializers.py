@@ -39,3 +39,21 @@ class ComentarioSerializer(serializers.ModelSerializer):
         model = Comentario
         fields = ["id", "post", "usuario", "anonimo", "cuerpo", "score", "created_at"]
         read_only_fields = ["post", "usuario", "score", "created_at"]
+
+
+class VoteSerializer(serializers.Serializer):
+    """Payload esperado para registrar un voto."""
+
+    valor = serializers.IntegerField()
+
+
+class ScoreSerializer(serializers.Serializer):
+    """Respuesta que devuelve el score actualizado."""
+
+    score = serializers.IntegerField()
+
+
+class ForumDetailSerializer(serializers.Serializer):
+    """Mensaje simple para respuestas sin contenido estructurado."""
+
+    detail = serializers.CharField()

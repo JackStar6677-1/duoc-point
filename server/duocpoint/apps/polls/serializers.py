@@ -2,6 +2,7 @@
 
 from rest_framework import serializers
 
+from drf_spectacular.utils import extend_schema_field
 from .models import Poll, PollOpcion, PollVoto
 
 
@@ -24,6 +25,12 @@ class PollSerializer(serializers.ModelSerializer):
         model = Poll
         fields = ["id", "post", "multi", "cierra_at", "opciones"]
 
+    class OptionResultSerializer(serializers.Serializer):
+        id = serializers.IntegerField()
+        texto = serializers.CharField()
+        votos = serializers.IntegerField()
+
+    @extend_schema_field(OptionResultSerializer(many=True))
     def get_opciones(self, obj):
         return [
             {"id": o.id, "texto": o.texto, "votos": o.votos.count()}
@@ -78,3 +85,9 @@ class PollVoteSerializer(serializers.Serializer):
         for opcion in validated_data["_opciones_objs"]:
             PollVoto.objects.create(poll=poll, opcion=opcion, usuario=user)
         return poll
+
+
+class PollDetailSerializer(serializers.Serializer):
+    """Respuesta simple con un mensaje."""
+
+    detail = serializers.CharField()

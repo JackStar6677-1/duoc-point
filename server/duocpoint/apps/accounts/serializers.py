@@ -11,3 +11,17 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ["id", "email", "name", "campus", "career", "role"]
 
+
+class LoginSerializer(serializers.Serializer):
+    """Datos requeridos para autenticarse."""
+
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+
+class TokenPairSerializer(serializers.Serializer):
+    """Tokens JWT de acceso y refresco."""
+
+    access = serializers.CharField()
+    refresh = serializers.CharField()
+

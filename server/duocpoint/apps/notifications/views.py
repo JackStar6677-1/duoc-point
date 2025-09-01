@@ -3,9 +3,10 @@
 from django.conf import settings
 from rest_framework import generics, status
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema
 
 from .models import PushSub
-from .serializers import PushSubSerializer
+from .serializers import PushSubSerializer, SimpleStatusSerializer
 from .tasks import send_class_push
 
 
@@ -22,6 +23,9 @@ class PushSubscribeView(generics.CreateAPIView):
 class PushTestView(generics.GenericAPIView):
     """Send a dummy notification to check the service worker."""
 
+    serializer_class = SimpleStatusSerializer
+
+    @extend_schema(responses=SimpleStatusSerializer)
     def post(self, request, *args, **kwargs):
         send_class_push.delay(request.user.id, None, None, None, test_only=True)
         return Response({"status": "sent"})

@@ -31,7 +31,7 @@ class ScheduleImportTests(TestCase):
         imp = ScheduleImport.objects.create(usuario=self.user, file="dummy.pdf")
         sample_text = (
             "Lunes 08:00-09:30 Matematica Sala B-101\n"
-            "Martes 10:00-11:30 Programacion Sala C-202"
+            "Martes 10:00 Programacion Sala C-202"
         )
 
         class DummyPage:
@@ -44,6 +44,10 @@ class ScheduleImportTests(TestCase):
             parse_schedule_pdf(str(imp.id))
 
         self.assertEqual(Horario.objects.filter(usuario=self.user).count(), 2)
+        prog = Horario.objects.get(asignatura="Programacion")
+        self.assertEqual(prog.fin, time(11, 30))
+        imp.refresh_from_db()
+        self.assertIn("duración inferida", imp.parse_log)
 
     @patch("duocpoint.apps.notifications.tasks.send_class_push.apply_async")
     def test_schedule_class_alerts(self, mock_apply):

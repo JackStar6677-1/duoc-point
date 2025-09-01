@@ -9,11 +9,17 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema
 
 from duocpoint.apps.accounts.permissions import IsModeratorOrDirector
 
 from .models import Poll
-from .serializers import PollCreateSerializer, PollSerializer, PollVoteSerializer
+from .serializers import (
+    PollDetailSerializer,
+    PollCreateSerializer,
+    PollSerializer,
+    PollVoteSerializer,
+)
 
 
 class PollCreateView(generics.CreateAPIView):
@@ -45,6 +51,7 @@ class PollVoteView(APIView):
 
     permission_classes = [permissions.IsAuthenticated]
 
+    @extend_schema(request=PollVoteSerializer, responses=PollDetailSerializer)
     def post(self, request, pk):
         poll = get_object_or_404(Poll, pk=pk)
         serializer = PollVoteSerializer(

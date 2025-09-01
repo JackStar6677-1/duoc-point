@@ -6,8 +6,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from drf_spectacular.utils import extend_schema
 
-from .serializers import UserSerializer
+from .serializers import LoginSerializer, TokenPairSerializer, UserSerializer
 
 
 class LoginView(APIView):
@@ -22,6 +23,7 @@ class LoginView(APIView):
     authentication_classes: list = []
     permission_classes = [AllowAny]
 
+    @extend_schema(request=LoginSerializer, responses=TokenPairSerializer)
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
@@ -39,7 +41,7 @@ class LoginView(APIView):
 
 class MeView(APIView):
     """Retorna los datos del usuario autenticado."""
-
+    @extend_schema(responses=UserSerializer)
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
