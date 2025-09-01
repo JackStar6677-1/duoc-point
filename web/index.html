@@ -5,14 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <link rel="stylesheet" href="/styles.css" />
-<meta name="theme-color" content="#6a1b9a" />
+<meta name="theme-color" content="#2e004f" />
 <title>Duoc Point</title>
 </head>
 <body>
 <header>
   <h1>Duoc Point</h1>
 </header>
-<div style="padding:1rem;">
+<nav>
+  <ul>
+    <li><a href="/admin/">Administración</a></li>
+    <li><a href="/api/">API</a></li>
+    <li><a href="/horarios/">Horarios</a></li>
+  </ul>
+</nav>
+<div class="content">
   <button id="installBtn" hidden>Instalar app</button>
 </div>
 <script src="/main.js"></script>

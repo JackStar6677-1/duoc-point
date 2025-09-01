@@ -15,10 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.generic import RedirectView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.conf import settings
+from django.views.static import serve
+from pathlib import Path
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/index.html', permanent=False)),
     path('admin/', admin.site.urls),
     path('api/', include('duocpoint.apps.accounts.urls')),
     path('api/', include('duocpoint.apps.campuses.urls')),
@@ -32,4 +37,7 @@ urlpatterns = [
     path('api/', include('duocpoint.apps.portfolio.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
+    re_path(r'^(?P<path>.*)$', serve, {
+        'document_root': Path(settings.BASE_DIR).parent / 'web'
+    }),
 ]
