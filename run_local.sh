@@ -27,9 +27,9 @@ export DEMO_MODE=1
 
 # Apply migrations and create default admin user
 python server/manage.py migrate --noinput
-export DJANGO_SUPERUSER_USERNAME=admin
+export DJANGO_SUPERUSER_USERNAME=pa.avendano@duocuc.cl
 export DJANGO_SUPERUSER_PASSWORD=admin123
-export DJANGO_SUPERUSER_EMAIL=admin@example.com
+export DJANGO_SUPERUSER_EMAIL=pa.avendano@duocuc.cl
 python server/manage.py createsuperuser --noinput >/dev/null 2>&1 || true
 
 # Run server

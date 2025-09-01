@@ -180,9 +180,9 @@ Copy-Item "infra/.env.example" "infra/.env"
 
 # 4. Ejecutar migraciones y crear usuario admin
 python server/manage.py migrate --noinput
-$env:DJANGO_SUPERUSER_USERNAME="admin"
+$env:DJANGO_SUPERUSER_USERNAME="pa.avendano@duocuc.cl"
 $env:DJANGO_SUPERUSER_PASSWORD="admin123"
-$env:DJANGO_SUPERUSER_EMAIL="admin@example.com"
+$env:DJANGO_SUPERUSER_EMAIL="pa.avendano@duocuc.cl"
 try { python server/manage.py createsuperuser --noinput | Out-Null } catch {}
 
 # 5. Levantar el servidor
@@ -191,7 +191,7 @@ python server/manage.py runserver 8000
 
 Usuario por defecto para entrar al panel de administración (`/admin/`):
 
-* **Usuario**: `admin`
+* **Usuario**: `pa.avendano@duocuc.cl`
 * **Contraseña**: `admin123`
 
 URLs útiles tras el arranque:

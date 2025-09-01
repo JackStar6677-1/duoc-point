@@ -30,9 +30,9 @@ $env:DEMO_MODE = "1"
 
 # Apply migrations and create default admin user
 python server/manage.py migrate --noinput
-$env:DJANGO_SUPERUSER_USERNAME="admin"
+$env:DJANGO_SUPERUSER_USERNAME="pa.avendano@duocuc.cl"
 $env:DJANGO_SUPERUSER_PASSWORD="admin123"
-$env:DJANGO_SUPERUSER_EMAIL="admin@example.com"
+$env:DJANGO_SUPERUSER_EMAIL="pa.avendano@duocuc.cl"
 try {
     python server/manage.py createsuperuser --noinput | Out-Null
 } catch {

@@ -7,9 +7,36 @@
 </head>
 <body>
   <header>
-    <h1>Importar horario PDF</h1>
+    <h1>Duoc Point</h1>
   </header>
+  <nav>
+    <ul>
+      <li><a href="/admin/">Administración</a></li>
+      <li><a href="/api/">API</a></li>
+      <li><a href="/horarios/">Horarios</a></li>
+      <li>
+        <details>
+          <summary>Apps</summary>
+          <ul>
+            <li><a href="/api/accounts/">Accounts</a></li>
+            <li><a href="/api/campuses/">Campuses</a></li>
+            <li><a href="/api/forum/">Forum</a></li>
+            <li><a href="/api/market/">Market</a></li>
+            <li><a href="/api/notifications/">Notifications</a></li>
+            <li><a href="/api/otec/">Otec</a></li>
+            <li><a href="/api/polls/">Polls</a></li>
+            <li><a href="/api/portfolio/">Portfolio</a></li>
+            <li><a href="/api/reports/">Reports</a></li>
+            <li><a href="/api/schedules/">Schedules</a></li>
+            <li><a href="/api/sessions/">Sessions</a></li>
+            <li><a href="/api/wellbeing/">Wellbeing</a></li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </nav>
   <div style="padding:1rem;">
+    <h2>Importar horario PDF</h2>
     <input type="file" id="pdf">
     <button onclick="uploadPDF()">Subir</button>
     <pre id="import-status"></pre>
