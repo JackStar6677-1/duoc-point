@@ -1,0 +1,7 @@
+# email.yaml - Email senders and template references.
+# Adjust addresses and paths according to deployment.
+default_sender: "no-reply@example.com"  # Global sender email.
+support_sender: "soporte@example.com"  # Support contact address.
+templates:
+  welcome: "emails/welcome.html"        # Path to welcome email template.
+  reset_password: "emails/reset_password.html"  # Path to password reset template.

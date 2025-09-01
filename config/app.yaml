@@ -1,0 +1,10 @@
+# app.yaml - Global feature flags and domain settings.
+# Each key defines adjustable behavior for the project.
+features:
+  forum: true            # Enable or disable forum module.
+  schedules: true        # Enable schedules/horarios module.
+  reports: true          # Enable reports module.
+  wellbeing: true        # Enable wellbeing content.
+domains:
+  web: "https://app.example.com"   # Public URL where the web/PWA is served.
+  api: "https://api.example.com"   # Base URL for backend API requests.

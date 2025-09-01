@@ -1,0 +1,8 @@
+# push.yaml - Web Push and Firebase Cloud Messaging placeholders.
+# Replace dummy values with real keys for production.
+webpush:
+  vapid_public: "PUBLIC_KEY_PLACEHOLDER"   # VAPID public key for Web Push.
+  vapid_private: "PRIVATE_KEY_PLACEHOLDER" # VAPID private key (keep secret).
+  subject: "mailto:soporte@duocpoint.cl"   # Contact email for the push service.
+fcm:
+  server_key: "FCM_SERVER_KEY_PLACEHOLDER" # Firebase server key (optional).

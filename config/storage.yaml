@@ -1,0 +1,7 @@
+# storage.yaml - Storage backend and paths configuration.
+# Adjust to choose where media and static files are stored.
+backend: "local"                 # Storage backend: local, s3, etc.
+local_media_root: "media/"       # Path for user uploads when using local storage.
+s3:
+  bucket_name: "BUCKET_PLACEHOLDER"  # S3 bucket for media files.
+  region: "us-east-1"                # AWS region of the bucket.

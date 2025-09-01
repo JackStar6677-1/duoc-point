@@ -1,0 +1,9 @@
+# security.yaml - Rate limits and content policies.
+# Tune these values according to moderation requirements.
+rate_limits:
+  post_create_per_min: 5      # Max posts a user can create per minute.
+  comment_create_per_min: 15  # Max comments a user can create per minute.
+uploads:
+  max_image_size_mb: 5        # Maximum image upload size in megabytes.
+policies:
+  banned_words: ["spam", "scam"]  # Words triggering moderation.

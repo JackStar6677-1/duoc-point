@@ -1,6 +1,10 @@
 from pathlib import Path
 import os
 
+# Load YAML configuration using the shared loader. This allows tweaking
+# non-sensitive settings without touching Python code.
+from duocpoint.utils.config_loader import load_config
+
 # base.py está en: server/duocpoint/settings/base.py
 # Queremos que BASE_DIR sea: server/
 BASE_DIR = Path(__file__).resolve().parents[2]
@@ -9,6 +13,13 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-insecure")
 DEBUG = os.getenv("DEBUG", "1") == "1"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+
+# Extra project-level settings loaded from ``config/app.yaml``.  The file
+# contains flags and domain information that might be needed across
+# applications.  When the file or a key is missing, ``load_config`` simply
+# returns an empty dict so the defaults above still apply.
+APP_CONFIG = load_config("app.yaml")
+FEATURE_FLAGS = APP_CONFIG.get("features", {})
 
 # ---- Apps ----
 INSTALLED_APPS = [

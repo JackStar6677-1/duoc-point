@@ -1,0 +1,14 @@
+# logging.yaml - Logging levels and format configuration.
+# This can be loaded to customize Django logging.
+version: 1  # Standard logging configuration version.
+formatters:
+  simple:
+    format: "[%(levelname)s] %(name)s: %(message)s"  # Basic log line format.
+handlers:
+  console:
+    class: logging.StreamHandler  # Output logs to console.
+    formatter: simple             # Use simple formatter above.
+    level: INFO                   # Minimum level to display.
+root:
+  handlers: [console]             # Apply console handler to root logger.
+  level: INFO                     # Root logger level.

@@ -109,17 +109,22 @@ La aplicación está diseñada para funcionar como:
    cd duoc-point`
 
 2. Crear archivo `.env` a partir de `.env.example`.
+   Ajusta las variables según tu entorno local (clave secreta, base de datos, etc.).
 
-3. Levantar servicios básicos con Docker:
+3. Revisar los archivos de configuración YAML en `config/` y reemplazar los
+   valores *dummy* según corresponda (dominios, remitentes de correo,
+   parámetros de seguridad, claves de push).
+
+4. Levantar servicios básicos con Docker:
 
    `docker-compose up`
 
-4. Ejecutar migraciones de Django:
+5. Ejecutar migraciones de Django:
 
    `docker-compose exec backend python manage.py migrate`
 
-5. Acceder a la aplicación web en:
+6. Acceder a la aplicación web en:
 
    `http://localhost:8000`
 
-6. En móviles, instalar la aplicación como PWA desde el navegador.
+7. En móviles, instalar la aplicación como PWA desde el navegador.
