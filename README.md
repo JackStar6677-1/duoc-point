@@ -157,7 +157,7 @@ Para probar el proyecto sin contenedores, asegúrate de tener **Python 3** y **p
 ./run_local.sh
 ```
 
-Los scripts crean un entorno virtual `.venv`, instalan las dependencias, aplican migraciones sobre SQLite y levantan el servidor en `http://localhost:8000`.
+Los scripts crean un entorno virtual `.venv`, instalan las dependencias, aplican migraciones sobre SQLite y levantan el servidor en `http://localhost:8000`. Se habilita automáticamente un **modo demo** (`DEMO_MODE=1`) que desactiva la autenticación de la API para poder explorarla sin credenciales.
 
 Funcionalidades que dependen de servicios externos (OAuth, Web Push, mapas con claves privadas, etc.) están deshabilitadas o usan valores de ejemplo para que el arranque local no requiera configuraciones adicionales. **No necesitas APIs ni servicios de pago** para ejecutar el proyecto en tu máquina.
 
@@ -166,6 +166,7 @@ El script también carga las variables de `infra/.env.example` (se copia automá
 URLs útiles tras el arranque:
 
 * `http://localhost:8000/` – página inicial estática.
+* `http://localhost:8000/horarios/` – ejemplo de vista estática adicional.
 * `http://localhost:8000/admin/` – administración de Django.
 * `http://localhost:8000/api/` – raíz de la API.
 * `http://localhost:8000/api/docs/` – documentación interactiva.

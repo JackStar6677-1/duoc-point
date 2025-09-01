@@ -25,5 +25,8 @@ if (Test-Path $envPath) {
     }
 }
 
+# Enable demo mode for exploring APIs without auth
+$env:DEMO_MODE = "1"
+
 python server/manage.py migrate --noinput
 python server/manage.py runserver 8000

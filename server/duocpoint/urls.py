@@ -22,6 +22,14 @@ from django.conf import settings
 from django.views.static import serve
 from pathlib import Path
 
+
+def spa_serve(request, path=""):
+    base = Path(settings.BASE_DIR).parent / "web"
+    target = base / path
+    if target.is_dir():
+        path = f"{path.rstrip('/')}/index.html"
+    return serve(request, path, document_root=base)
+
 urlpatterns = [
     path('', RedirectView.as_view(url='/index.html', permanent=False)),
     path('admin/', admin.site.urls),
@@ -37,7 +45,5 @@ urlpatterns = [
     path('api/', include('duocpoint.apps.portfolio.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
-    re_path(r'^(?P<path>.*)$', serve, {
-        'document_root': Path(settings.BASE_DIR).parent / 'web'
-    }),
+    re_path(r'^(?P<path>.*)$', spa_serve),
 ]

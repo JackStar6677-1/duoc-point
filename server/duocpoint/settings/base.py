@@ -120,6 +120,12 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {"user": "1000/day", "anon": "100/day"},
 }
 
+if os.getenv("DEMO_MODE") == "1":
+    REST_FRAMEWORK["DEFAULT_AUTHENTICATION_CLASSES"] = []
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = [
+        "rest_framework.permissions.AllowAny"
+    ]
+
 SPECTACULAR_SETTINGS = {
     "TITLE": "Duoc-Point API",
     "DESCRIPTION": "Esquema de la API",

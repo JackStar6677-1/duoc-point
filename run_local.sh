@@ -22,6 +22,9 @@ if [ -f infra/.env ]; then
 fi
 set +o allexport
 
+# Enable demo mode for exploring APIs without auth
+export DEMO_MODE=1
+
 # Apply migrations and run server
 python server/manage.py migrate --noinput
 python server/manage.py runserver 0.0.0.0:8000
