@@ -1,0 +1,31 @@
+:root{
+  --main-purple:#6a1b9a;
+  --gold:#ffd700;
+  --bg:#f3e5f5;
+}
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:#1a1a1a;
+}
+header{
+  background:var(--main-purple);
+  color:var(--gold);
+  padding:1rem;
+  text-align:center;
+}
+button{
+  background:var(--main-purple);
+  color:var(--gold);
+  border:none;
+  padding:.5rem 1rem;
+  cursor:pointer;
+  border-radius:4px;
+}
+button:hover{
+  opacity:0.9;
+}
+a{
+  color:var(--main-purple);
+}

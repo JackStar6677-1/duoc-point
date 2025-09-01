@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Horarios</title>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <h1>Importar horario PDF</h1>
-  <input type="file" id="pdf">
-  <button onclick="uploadPDF()">Subir</button>
-  <pre id="import-status"></pre>
+  <header>
+    <h1>Importar horario PDF</h1>
+  </header>
+  <div style="padding:1rem;">
+    <input type="file" id="pdf">
+    <button onclick="uploadPDF()">Subir</button>
+    <pre id="import-status"></pre>
 
-  <h2>Bloques actuales</h2>
-  <ul id="lista"></ul>
+    <h2>Bloques actuales</h2>
+    <ul id="lista"></ul>
 
-  <button onclick="enablePush()">Activar notificaciones</button>
+    <button onclick="enablePush()">Activar notificaciones</button>
+  </div>
 
   <script>
   async function uploadPDF(){
