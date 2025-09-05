@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuestas - Duoc Point</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="encuestas.css">
+    <meta name="theme-color" content="#2e004f">
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><i class="bi bi-pie-chart"></i> Encuestas DuocPoint</h1>
+            <nav class="header-nav">
+                <button id="btnCrearEncuesta" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Nueva Encuesta
+                </button>
+                <button id="btnMisEncuestas" class="btn btn-secondary">
+                    <i class="bi bi-person-check"></i> Mis Encuestas
+                </button>
+                <button id="btnDashboard" class="btn btn-secondary">
+                    <i class="bi bi-graph-up"></i> Dashboard
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Filtros -->
+        <section class="filtros-section">
+            <div class="filtros-container">
+                <div class="filtro-grupo">
+                    <label for="filtroEstado">Estado:</label>
+                    <select id="filtroEstado">
+                        <option value="">Todos</option>
+                        <option value="activa">Activas</option>
+                        <option value="cerrada">Cerradas</option>
+                        <option value="borrador">Borradores</option>
+                    </select>
+                </div>
+                
+                <div class="filtro-grupo">
+                    <label for="filtroFecha">Desde:</label>
+                    <input type="date" id="filtroFecha">
+                </div>
+                
+                <div class="filtro-grupo">
+                    <label for="busqueda">Buscar:</label>
+                    <input type="text" id="busqueda" placeholder="Título o descripción...">
+                </div>
+                
+                <button id="btnFiltrar" class="btn btn-outline">
+                    <i class="bi bi-funnel"></i> Filtrar
+                </button>
+                
+                <button id="btnLimpiarFiltros" class="btn btn-outline">
+                    <i class="bi bi-x-circle"></i> Limpiar
+                </button>
+            </div>
+        </section>
+
+        <!-- Lista de Encuestas -->
+        <section id="encuestasSection" class="encuestas-section">
+            <div id="encuestasList" class="encuestas-grid">
+                <!-- Las encuestas se cargarán dinámicamente -->
+            </div>
+            
+            <div id="loading" class="loading" style="display: none;">
+                <i class="bi bi-hourglass-split"></i> Cargando encuestas...
+            </div>
+            
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="bi bi-search"></i>
+                <p>No se encontraron encuestas con los criterios seleccionados.</p>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <section id="dashboardSection" class="dashboard-section" style="display: none;">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-list-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalEncuestas">-</h3>
+                        <p>Total Encuestas</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-play-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="encuestasActivas">-</h3>
+                        <p>Activas</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="misEncuestasCount">-</h3>
+                        <p>Mis Encuestas</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="bi bi-calendar-week"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="actividadReciente">-</h3>
+                        <p>Este Mes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3>Top Encuestas por Participación</h3>
+                    <canvas id="topEncuestasChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Ver Encuesta -->
+    <div id="modalVerEncuesta" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitulo"></h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div id="encuestaDetalle">
+                    <!-- Contenido dinámico -->
+                </div>
+                
+                <div id="opcionesVotacion" class="opciones-votacion">
+                    <!-- Opciones para votar -->
+                </div>
+                
+                <div id="resultadosGrafico" class="resultados-grafico">
+                    <canvas id="resultadosChart"></canvas>
+                </div>
+                
+                <div id="analyticsDetalle" class="analytics-detalle">
+                    <!-- Analytics detallados -->
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button id="btnVotar" class="btn btn-primary" style="display: none;">
+                    <i class="bi bi-check-circle"></i> Votar
+                </button>
+                <button id="btnExportar" class="btn btn-outline" style="display: none;">
+                    <i class="bi bi-download"></i> Exportar CSV
+                </button>
+                <button id="btnCerrarEncuesta" class="btn btn-danger" style="display: none;">
+                    <i class="bi bi-stop-circle"></i> Cerrar Encuesta
+                </button>
+                <button class="btn btn-secondary modal-close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Crear/Editar Encuesta -->
+    <div id="modalCrearEncuesta" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Nueva Encuesta</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <form id="formCrearEncuesta" class="modal-body">
+                <div class="form-group">
+                    <label for="inputTitulo">Título *</label>
+                    <input type="text" id="inputTitulo" required minlength="5" maxlength="200">
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputDescripcion">Descripción</label>
+                    <textarea id="inputDescripcion" rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inputInicia">Fecha de Inicio</label>
+                        <input type="datetime-local" id="inputInicia">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inputCierra">Fecha de Cierre</label>
+                        <input type="datetime-local" id="inputCierra">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="inputMulti">
+                            Permitir múltiples opciones
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="inputAnonima">
+                            Votos anónimos
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="inputRequiereJustificacion">
+                            Requiere justificación
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputMostrarResultados">Mostrar Resultados</label>
+                    <select id="inputMostrarResultados">
+                        <option value="tiempo_real">En Tiempo Real</option>
+                        <option value="al_cierre">Al Cierre</option>
+                        <option value="solo_moderador">Solo Moderadores</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputCarreras">Carreras (opcional)</label>
+                    <input type="text" id="inputCarreras" placeholder="Ej: Informática, Arquitectura (separadas por comas)">
+                    <small>Dejar vacío para permitir todas las carreras</small>
+                </div>
+                
+                <!-- Opciones -->
+                <div class="opciones-section">
+                    <h3>Opciones de Respuesta</h3>
+                    <div id="opcionesList" class="opciones-list">
+                        <!-- Se generarán dinámicamente -->
+                    </div>
+                    <button type="button" id="btnAgregarOpcion" class="btn btn-outline">
+                        <i class="bi bi-plus"></i> Agregar Opción
+                    </button>
+                </div>
+            </form>
+            
+            <div class="modal-footer">
+                <button type="submit" form="formCrearEncuesta" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Crear Encuesta
+                </button>
+                <button class="btn btn-secondary modal-close">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast para notificaciones -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <script src="encuestas.js"></script>
+</body>
+</html>
