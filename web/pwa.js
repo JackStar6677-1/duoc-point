@@ -31,7 +31,9 @@ class DuocPointPWA {
                               window.location.hostname === '127.0.0.1' || 
                               window.location.hostname.includes('192.168.') ||
                               window.location.hostname.includes('10.0.') ||
-                              window.location.hostname.includes('172.');
+                              window.location.hostname.includes('172.') ||
+                              window.location.hostname.includes('100.') || // Tailscale
+                              window.location.protocol === 'https:';
       
       console.log('PWA: Contexto seguro:', isSecureContext);
       console.log('PWA: Hostname:', window.location.hostname);

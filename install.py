@@ -277,7 +277,8 @@ def main():
         ("Verificando ngrok", install_ngrok),
         ("Configurando base de datos", setup_database),
         ("Creando usuarios de prueba", create_test_users),
-        ("Creando notificaciones de prueba", create_notifications)
+        ("Creando notificaciones de prueba", create_notifications),
+        ("Creando datos adicionales", create_additional_data)
     ]
     
     for description, function in steps:
@@ -300,6 +301,26 @@ def main():
     print("=" * 60)
     
     return True
+
+def create_additional_data():
+    """Crear datos adicionales (foros, mercado)"""
+    print("\n📊 Creando datos adicionales...")
+    
+    # Crear foros de base
+    print("\n🏗️ Creando foros de base...")
+    try:
+        run_command("python create_base_forums.py", cwd="server")
+        print("✅ Foros de base creados.")
+    except:
+        print("⚠️ Script de foros no encontrado, continuando...")
+
+    # Crear datos del mercado
+    print("\n🛒 Creando datos del mercado...")
+    try:
+        run_command("python create_market_data.py", cwd="server")
+        print("✅ Datos del mercado creados.")
+    except:
+        print("⚠️ Script del mercado no encontrado, continuando...")
 
 if __name__ == "__main__":
     success = main()
