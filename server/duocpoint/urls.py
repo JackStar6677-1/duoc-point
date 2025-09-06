@@ -49,3 +49,8 @@ urlpatterns = [
     path('', include('duocpoint.apps.health.urls')),
     re_path(r'^(?P<path>.*)$', spa_serve),
 ]
+
+# Servir archivos estáticos en desarrollo
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

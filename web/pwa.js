@@ -41,9 +41,11 @@ class DuocPointPWA {
         
       } catch (error) {
         console.error('PWA: Error registrando Service Worker:', error);
+        // En desarrollo local, no es crítico que falle
+        console.log('PWA: Continuando sin Service Worker (desarrollo local)');
       }
     } else {
-      console.warn('PWA: Service Worker no soportado');
+      console.warn('PWA: Service Worker no soportado - continuando sin PWA');
     }
   }
   
