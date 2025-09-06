@@ -1,5 +1,24 @@
-from django.urls import path
+"""URLs para el sistema de portafolio."""
 
-from .views import PortfolioPDFView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [path("portfolio", PortfolioPDFView.as_view(), name="portfolio")]
+from .views import (
+    LogroViewSet, ProyectoViewSet, ExperienciaLaboralViewSet,
+    HabilidadViewSet, PortafolioConfigViewSet, PortafolioSugerenciaViewSet,
+    PortafolioAnalyticsViewSet, PortafolioCompletoViewSet
+)
+
+router = DefaultRouter()
+router.register(r'logros', LogroViewSet)
+router.register(r'proyectos', ProyectoViewSet)
+router.register(r'experiencias', ExperienciaLaboralViewSet)
+router.register(r'habilidades', HabilidadViewSet)
+router.register(r'config', PortafolioConfigViewSet)
+router.register(r'sugerencias', PortafolioSugerenciaViewSet)
+router.register(r'analytics', PortafolioAnalyticsViewSet)
+router.register(r'completo', PortafolioCompletoViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+]

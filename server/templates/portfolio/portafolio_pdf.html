@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - {{ usuario.name }}</title>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ usuario.name }}</h1>
+        {% if config.titulo_profesional %}
+            <h2>{{ config.titulo_profesional }}</h2>
+        {% endif %}
+        {% if config.resumen_profesional %}
+            <p>{{ config.resumen_profesional }}</p>
+        {% endif %}
+        
+        <div class="contact-info">
+            <p><strong>Email:</strong> {{ usuario.email }}</p>
+            {% if config.telefono %}
+                <p><strong>Teléfono:</strong> {{ config.telefono }}</p>
+            {% endif %}
+            {% if usuario.campus %}
+                <p><strong>Campus:</strong> {{ usuario.campus.nombre }}</p>
+            {% endif %}
+            {% if usuario.career %}
+                <p><strong>Carrera:</strong> {{ usuario.career }}</p>
+            {% endif %}
+            {% if config.linkedin_url %}
+                <p><strong>LinkedIn:</strong> {{ config.linkedin_url }}</p>
+            {% endif %}
+            {% if config.github_url %}
+                <p><strong>GitHub:</strong> {{ config.github_url }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if experiencias and config.mostrar_experiencia %}
+    <div class="section">
+        <h2>Experiencia Laboral</h2>
+        {% for experiencia in experiencias %}
+        <div class="item">
+            <h3>{{ experiencia.cargo }} - {{ experiencia.empresa }}</h3>
+            <p><strong>Período:</strong> 
+                {{ experiencia.fecha_inicio|date:"M Y" }} - 
+                {% if experiencia.actual %}Presente{% else %}{{ experiencia.fecha_fin|date:"M Y" }}{% endif %}
+            </p>
+            <p><strong>Tipo:</strong> {{ experiencia.get_tipo_contrato_display }}</p>
+            {% if experiencia.ubicacion %}
+                <p><strong>Ubicación:</strong> {{ experiencia.ubicacion }}</p>
+            {% endif %}
+            <p>{{ experiencia.descripcion }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if proyectos and config.mostrar_proyectos %}
+    <div class="section">
+        <h2>Proyectos</h2>
+        {% for proyecto in proyectos %}
+        <div class="item">
+            <h3>{{ proyecto.titulo }}</h3>
+            <p><strong>Estado:</strong> {{ proyecto.get_estado_display }}</p>
+            <p><strong>Período:</strong> 
+                {{ proyecto.fecha_inicio|date:"M Y" }} - 
+                {% if proyecto.fecha_fin %}{{ proyecto.fecha_fin|date:"M Y" }}{% else %}En curso{% endif %}
+            </p>
+            {% if proyecto.tecnologias %}
+                <p><strong>Tecnologías:</strong> {{ proyecto.tecnologias|join:", " }}</p>
+            {% endif %}
+            <p>{{ proyecto.descripcion }}</p>
+            {% if proyecto.url_repositorio %}
+                <p><strong>Repositorio:</strong> {{ proyecto.url_repositorio }}</p>
+            {% endif %}
+            {% if proyecto.url_demo %}
+                <p><strong>Demo:</strong> {{ proyecto.url_demo }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if habilidades and config.mostrar_habilidades %}
+    <div class="section">
+        <h2>Habilidades</h2>
+        {% regroup habilidades by categoria as habilidades_por_categoria %}
+        {% for categoria in habilidades_por_categoria %}
+        <div class="item">
+            <h3>{{ categoria.grouper|title }}</h3>
+            <ul>
+                {% for habilidad in categoria.list %}
+                <li>
+                    <strong>{{ habilidad.nombre }}</strong> 
+                    ({{ habilidad.nivel }}/5)
+                    {% if habilidad.descripcion %}
+                        - {{ habilidad.descripcion }}
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if logros and config.mostrar_logros %}
+    <div class="section">
+        <h2>Logros y Certificaciones</h2>
+        {% for logro in logros %}
+        <div class="item">
+            <h3>{{ logro.titulo }}</h3>
+            <p><strong>Tipo:</strong> {{ logro.get_tipo_display }}</p>
+            <p><strong>Fecha:</strong> {{ logro.fecha_obtencion|date:"M Y" }}</p>
+            {% if logro.institucion %}
+                <p><strong>Institución:</strong> {{ logro.institucion }}</p>
+            {% endif %}
+            <p>{{ logro.descripcion }}</p>
+            {% if logro.certificado_url %}
+                <p><strong>Certificado:</strong> {{ logro.certificado_url }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        <p><em>Portafolio generado automáticamente por DuocPoint - {{ "now"|date:"d/m/Y" }}</em></p>
+    </div>
+</body>
+</html>

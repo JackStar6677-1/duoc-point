@@ -22,7 +22,7 @@ DUOC_DOMAIN = "@duocuc.cl"
 
 
 def validate_duoc_email(value: str) -> None:
-    """Ensure that the email belongs to the institutional domain.
+    """Ensure that the email belongs to the institutional domain or is a valid Gmail.
 
     Parameters
     ----------
@@ -32,11 +32,11 @@ def validate_duoc_email(value: str) -> None:
     Raises
     ------
     ValidationError
-        Si el correo no termina en ``@duocuc.cl``.
+        Si el correo no termina en ``@duocuc.cl`` o no es un Gmail válido.
     """
 
-    if not value.lower().endswith(DUOC_DOMAIN):
-        raise ValidationError("Solo se permiten correos @duocuc.cl")
+    if not (value.lower().endswith(DUOC_DOMAIN) or value.lower().endswith("@gmail.com")):
+        raise ValidationError("Solo se permiten correos @duocuc.cl o @gmail.com")
 
 
 class UserManager(BaseUserManager):
@@ -54,6 +54,11 @@ class UserManager(BaseUserManager):
             raise ValueError("El correo electrónico es obligatorio")
         validate_duoc_email(email)
         email = self.normalize_email(email)
+        
+        # Marcar si es estudiante Gmail
+        if email.lower().endswith("@gmail.com"):
+            extra_fields.setdefault("es_estudiante_gmail", True)
+        
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -104,6 +109,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     career = models.CharField(max_length=150)
     role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.STUDENT)
+    
+    # Campos adicionales para Gmail
+    es_estudiante_gmail = models.BooleanField(default=False, help_text="True si es estudiante con Gmail")
+    telefono = models.CharField(max_length=20, blank=True)
+    linkedin_url = models.URLField(blank=True)
+    github_url = models.URLField(blank=True)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -116,4 +127,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:  # pragma: no cover - representación simple
         return self.email
+    
+    @property
+    def es_duoc(self) -> bool:
+        """Verifica si el usuario tiene correo institucional."""
+        return self.email.lower().endswith(DUOC_DOMAIN)
+    
+    @property
+    def es_gmail(self) -> bool:
+        """Verifica si el usuario tiene correo Gmail."""
+        return self.email.lower().endswith("@gmail.com")
 

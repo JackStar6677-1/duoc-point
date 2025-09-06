@@ -53,9 +53,40 @@ class RecorridoPaso(models.Model):
     imagen_url = models.URLField()
     lat = models.FloatField(null=True, blank=True)
     lng = models.FloatField(null=True, blank=True)
+    
+    # Campos para Street View
+    usar_streetview = models.BooleanField(default=False, help_text="Usar Google Street View en lugar de imagen personalizada")
+    streetview_heading = models.FloatField(default=0, help_text="Dirección de la cámara en grados (0-360)")
+    streetview_pitch = models.FloatField(default=0, help_text="Inclinación de la cámara (-90 a 90)")
+    streetview_fov = models.FloatField(default=90, help_text="Campo de visión (10-120 grados)")
 
     class Meta:
         ordering = ["orden"]
 
     def __str__(self) -> str:  # pragma: no cover - representación simple
         return f"{self.orden}. {self.titulo}"
+    
+    @property
+    def streetview_url(self):
+        """Genera URL de Google Street View si está habilitado."""
+        if not self.usar_streetview or not self.lat or not self.lng:
+            return None
+        
+        from django.conf import settings
+        api_key = settings.GOOGLE_MAPS_API_KEY
+        
+        if not api_key:
+            return None
+        
+        base_url = "https://maps.googleapis.com/maps/api/streetview"
+        params = {
+            'size': '800x600',
+            'location': f"{self.lat},{self.lng}",
+            'heading': self.streetview_heading,
+            'pitch': self.streetview_pitch,
+            'fov': self.streetview_fov,
+            'key': api_key
+        }
+        
+        param_string = '&'.join([f"{k}={v}" for k, v in params.items()])
+        return f"{base_url}?{param_string}"

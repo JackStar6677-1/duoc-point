@@ -18,7 +18,13 @@ class SedeSerializer(serializers.ModelSerializer):
 
 class RecorridoPasoSerializer(serializers.ModelSerializer):
     """Serializa un paso de recorrido."""
+    
+    streetview_url = serializers.ReadOnlyField()
 
     class Meta:
         model = RecorridoPaso
-        fields = ["orden", "titulo", "descripcion", "imagen_url", "lat", "lng"]
+        fields = [
+            "orden", "titulo", "descripcion", "imagen_url", "lat", "lng",
+            "usar_streetview", "streetview_heading", "streetview_pitch", 
+            "streetview_fov", "streetview_url"
+        ]

@@ -2,11 +2,13 @@
 
 from django.urls import path
 
-from .views import LoginView, MeView
+from .views import GoogleAuthView, me, update_profile, check_email
 
 
 urlpatterns = [
-    path("auth/login", LoginView.as_view(), name="login"),
-    path("me", MeView.as_view(), name="me"),
+    path("auth/google", GoogleAuthView.as_view(), name="google_auth"),
+    path("me", me, name="me"),
+    path("me/update", update_profile, name="update_profile"),
+    path("check-email", check_email, name="check_email"),
 ]
 

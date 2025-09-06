@@ -1,8 +1,8 @@
-# Duoc-Point — resumen claro de qué es y qué tendrá
+# Duoc-Point — Plataforma Completa para la Comunidad Duoc UC
 
 ## Qué es
 
-Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** (se puede “instalar” en el celular) y web tradicional. El acceso es **exclusivo con correos `@duocuc.cl`**. La idea es centralizar lo que el estudiante necesita día a día: orientación en la sede, comunicación por carrera, recordatorios, bienestar, reportes y feedback.
+Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** (se puede "instalar" en el celular) y web tradicional. El acceso es **exclusivo con correos `@duocuc.cl` y `@gmail.com`** (para estudiantes sin correo institucional). La idea es centralizar lo que el estudiante necesita día a día: orientación en la sede, comunicación por carrera, recordatorios, bienestar, reportes, compra/venta segura y portafolio automático.
 
 ## Enfoque
 
@@ -52,31 +52,38 @@ Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** 
 * Categoría + descripción + **ubicación en mapa** + fotos.
 * Flujo de estados: **Abierto → En revisión → Resuelto** para transparencia.
 
-### 7) Compra/Venta segura
+### 7) Compra/Venta segura ✅ **COMPLETO**
 
 * Publicación de **links** (FB Marketplace, Yapo, MercadoLibre).
-* **Previsualización OpenGraph**.
-* Sin subir fotos propias → menos spam/fraude.
+* **Previsualización OpenGraph** automática.
+* Sistema de favoritos y reportes.
+* Analytics de productos y clicks.
+* Categorización y filtros avanzados.
 
-### 8) Votaciones y encuestas
+### 8) Votaciones y encuestas ✅ **COMPLETO**
 
 * Creación por **moderadores/directores** o roles con permiso.
 * Útiles para priorizar mejoras e **insights por sede/carrera**.
 * Opción de ver resultados al cierre o en vivo.
+* Sistema completo con gráficos y exportación CSV.
 
-### 9) Portafolio automático
+### 9) Portafolio automático ✅ **COMPLETO**
 
-* Genera **CV/portafolio PDF** con datos básicos del usuario.
-* Sugerencias para mejorar (proyectos, logros, participación).
+* Genera **CV/portafolio PDF** profesional con WeasyPrint.
+* Gestión completa de logros, proyectos, experiencia y habilidades.
+* Sugerencias automáticas para mejorar el portafolio.
+* Analytics de completitud y visualizaciones.
 
 ---
 
 ## Integraciones clave
 
-* Login Google OAuth restringido a `@duocuc.cl`.
-* PWA: manifest, service worker y soporte offline básico.
-* Notificaciones: Web Push (VAPID) + FCM.
-* OpenGraph para previsualizar enlaces en compra/venta.
+* **Google OAuth** restringido a `@duocuc.cl` y `@gmail.com`.
+* **PWA**: manifest, service worker y soporte offline básico.
+* **Notificaciones**: Web Push (VAPID) + FCM.
+* **OpenGraph** para previsualizar enlaces en compra/venta.
+* **Google Street View** para imágenes de recorridos.
+* **WeasyPrint** para generación de PDFs de portafolio.
 
 ---
 
@@ -92,10 +99,11 @@ Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** 
 
 ## Seguridad y moderación
 
-* Acceso solo `@duocuc.cl`.
-* Moderación automática.
+* Acceso solo `@duocuc.cl` y `@gmail.com` (estudiantes).
+* Moderación automática con filtros de contenido.
 * Descargo legal visible.
 * Roles: estudiante, moderador, director de carrera, staff sede, admin.
+* Autenticación JWT con Google OAuth.
 
 ---
 
@@ -302,6 +310,402 @@ El código está pensado como base académica; se puede adaptar o escalar según
   ```bash
   python server/manage.py spectacular --file docs/api-openapi.yaml
   ```
+
+---
+
+---
+
+## 🚀 Deployment y Configuración de Producción
+
+### Requisitos Previos
+
+- **Python 3.11+**
+- **Node.js 18+** (para utilidades de desarrollo)
+- **PostgreSQL 13+** (producción)
+- **Redis 6+** (para Celery)
+- **Docker y Docker Compose** (recomendado)
+
+### Variables de Entorno Requeridas
+
+Crear archivo `.env` en la raíz del proyecto:
+
+```bash
+# === CONFIGURACIÓN BÁSICA ===
+DEBUG=0
+SECRET_KEY=tu-clave-secreta-super-segura-aqui
+ALLOWED_HOSTS=tu-dominio.com,www.tu-dominio.com
+CORS_ALLOWED_ORIGINS=https://tu-dominio.com
+
+# === BASE DE DATOS ===
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=duocpoint_prod
+DB_USER=duocpoint_user
+DB_PASSWORD=tu-password-seguro
+DB_HOST=localhost
+DB_PORT=5432
+
+# === GOOGLE OAUTH ===
+GOOGLE_OAUTH_CLIENT_ID=tu-google-client-id.apps.googleusercontent.com
+
+# === GOOGLE MAPS/STREET VIEW ===
+GOOGLE_MAPS_API_KEY=tu-google-maps-api-key
+
+# === CELERY/REDIS ===
+CELERY_BROKER_URL=redis://localhost:6379/0
+CELERY_RESULT_BACKEND=redis://localhost:6379/0
+
+# === ALMACENAMIENTO (OPCIONAL) ===
+# Para usar S3 en lugar de almacenamiento local
+AWS_ACCESS_KEY_ID=tu-access-key
+AWS_SECRET_ACCESS_KEY=tu-secret-key
+AWS_STORAGE_BUCKET_NAME=tu-bucket
+AWS_S3_REGION_NAME=us-east-1
+```
+
+### Configuración de Google OAuth
+
+1. **Crear proyecto en Google Cloud Console**:
+   - Ir a [Google Cloud Console](https://console.cloud.google.com/)
+   - Crear nuevo proyecto o seleccionar existente
+   - Habilitar Google+ API
+
+2. **Configurar OAuth 2.0**:
+   - Ir a "Credenciales" → "Crear credenciales" → "ID de cliente OAuth 2.0"
+   - Tipo: Aplicación web
+   - Orígenes autorizados: `https://tu-dominio.com`
+   - URIs de redirección: `https://tu-dominio.com/api/auth/google/callback`
+
+3. **Configurar dominios permitidos**:
+   - En "Pantalla de consentimiento OAuth"
+   - Agregar `duocuc.cl` y `gmail.com` como dominios autorizados
+
+### Configuración de Google Maps API
+
+1. **Habilitar APIs necesarias**:
+   - Maps JavaScript API
+   - Street View Static API
+   - Geocoding API
+
+2. **Configurar restricciones**:
+   - Restringir por HTTP referrer: `https://tu-dominio.com/*`
+   - Configurar cuotas para evitar costos excesivos
+
+### Deployment con Docker (Recomendado)
+
+1. **Clonar y configurar**:
+```bash
+git clone https://github.com/tu-usuario/duoc-point.git
+cd duoc-point
+cp .env.example .env
+# Editar .env con tus valores
+```
+
+2. **Levantar servicios**:
+```bash
+cd infra
+make up
+```
+
+3. **Aplicar migraciones**:
+```bash
+make migrate
+```
+
+4. **Crear superusuario**:
+```bash
+make createsuperuser
+```
+
+5. **Configurar nginx** (opcional):
+```bash
+# Editar infra/nginx.conf para tu dominio
+make restart
+```
+
+### Deployment Manual
+
+1. **Instalar dependencias**:
+```bash
+# Crear entorno virtual
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# o
+venv\Scripts\activate     # Windows
+
+# Instalar dependencias
+pip install -r server/requirements.txt
+```
+
+2. **Configurar base de datos**:
+```bash
+# Crear base de datos PostgreSQL
+createdb duocpoint_prod
+
+# Aplicar migraciones
+cd server
+python manage.py migrate
+
+# Crear superusuario
+python manage.py createsuperuser
+```
+
+3. **Configurar archivos estáticos**:
+```bash
+python manage.py collectstatic --noinput
+```
+
+4. **Configurar servidor web** (Nginx + Gunicorn):
+```bash
+# Instalar Gunicorn
+pip install gunicorn
+
+# Ejecutar con Gunicorn
+gunicorn --bind 0.0.0.0:8000 duocpoint.wsgi:application
+```
+
+### Configuración de Nginx
+
+```nginx
+server {
+    listen 80;
+    server_name tu-dominio.com www.tu-dominio.com;
+    
+    # Redirigir HTTP a HTTPS
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name tu-dominio.com www.tu-dominio.com;
+    
+    # Certificados SSL (usar Let's Encrypt)
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/private.key;
+    
+    # Configuración SSL
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512;
+    
+    # Archivos estáticos
+    location /static/ {
+        alias /path/to/duoc-point/server/staticfiles/;
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+    
+    location /media/ {
+        alias /path/to/duoc-point/server/media/;
+        expires 1y;
+        add_header Cache-Control "public";
+    }
+    
+    # API y admin
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    location /admin/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    
+    # Frontend SPA
+    location / {
+        root /path/to/duoc-point/web;
+        try_files $uri $uri/ /index.html;
+        
+        # Headers para PWA
+        add_header Cache-Control "no-cache, no-store, must-revalidate";
+        add_header Pragma "no-cache";
+        add_header Expires "0";
+    }
+}
+```
+
+### Configuración de Celery (Tareas Asíncronas)
+
+1. **Crear archivo de configuración**:
+```bash
+# /etc/systemd/system/celery-duocpoint.service
+[Unit]
+Description=Celery Service for DuocPoint
+After=network.target
+
+[Service]
+Type=forking
+User=www-data
+Group=www-data
+EnvironmentFile=/path/to/duoc-point/.env
+WorkingDirectory=/path/to/duoc-point/server
+ExecStart=/path/to/duoc-point/venv/bin/celery -A duocpoint worker --loglevel=info --detach
+ExecStop=/path/to/duoc-point/venv/bin/celery -A duocpoint control shutdown
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. **Activar servicio**:
+```bash
+sudo systemctl enable celery-duocpoint
+sudo systemctl start celery-duocpoint
+```
+
+### Monitoreo y Logs
+
+1. **Configurar logs de Django**:
+```python
+# En settings/prod.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/duocpoint/error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
+```
+
+2. **Monitoreo con systemd**:
+```bash
+# Ver logs de la aplicación
+journalctl -u gunicorn-duocpoint -f
+
+# Ver logs de Celery
+journalctl -u celery-duocpoint -f
+```
+
+### Backup y Mantenimiento
+
+1. **Backup de base de datos**:
+```bash
+# Backup diario
+pg_dump duocpoint_prod > backup_$(date +%Y%m%d).sql
+
+# Restaurar backup
+psql duocpoint_prod < backup_20240101.sql
+```
+
+2. **Backup de archivos media**:
+```bash
+# Backup de archivos subidos
+tar -czf media_backup_$(date +%Y%m%d).tar.gz /path/to/media/
+```
+
+3. **Actualizaciones**:
+```bash
+# Actualizar código
+git pull origin main
+
+# Aplicar migraciones
+python manage.py migrate
+
+# Recargar servicios
+sudo systemctl reload gunicorn-duocpoint
+sudo systemctl restart celery-duocpoint
+```
+
+### Checklist de Deployment
+
+- [ ] Variables de entorno configuradas
+- [ ] Base de datos PostgreSQL creada
+- [ ] Google OAuth configurado
+- [ ] Google Maps API configurado
+- [ ] Certificados SSL instalados
+- [ ] Nginx configurado
+- [ ] Gunicorn ejecutándose
+- [ ] Celery ejecutándose
+- [ ] Archivos estáticos servidos
+- [ ] Logs configurados
+- [ ] Backup configurado
+- [ ] Monitoreo configurado
+
+### Troubleshooting
+
+**Error de migraciones**:
+```bash
+python manage.py showmigrations
+python manage.py migrate --fake-initial
+```
+
+**Error de permisos**:
+```bash
+sudo chown -R www-data:www-data /path/to/duoc-point/
+sudo chmod -R 755 /path/to/duoc-point/
+```
+
+**Error de Celery**:
+```bash
+celery -A duocpoint inspect active
+celery -A duocpoint purge
+```
+
+**Error de Google OAuth**:
+- Verificar que el dominio esté autorizado
+- Verificar que las URIs de redirección sean correctas
+- Verificar que la API esté habilitada
+
+---
+
+## 📋 Estado del Proyecto
+
+### ✅ Funcionalidades Completadas
+
+- [x] **Sistema de autenticación** con Google OAuth
+- [x] **Mapa interactivo** con Leaflet y Street View
+- [x] **Foros por carrera** con moderación automática
+- [x] **Sistema de encuestas** completo con analytics
+- [x] **Notificaciones** con Web Push
+- [x] **Reportes de infraestructura** con flujo de estados
+- [x] **Sistema de bienestar** por carrera
+- [x] **Cursos abiertos** (OTEC)
+- [x] **Sistema de compra/venta** con OpenGraph
+- [x] **Portafolio automático** con generación PDF
+- [x] **PWA** instalable con service worker
+- [x] **API REST** completa con documentación
+
+### 🔄 Funcionalidades en Desarrollo
+
+- [ ] **Sistema de gestión de proyectos/sprints** (no implementado)
+- [ ] **Integración con sistemas externos de Duoc UC**
+- [ ] **Notificaciones push avanzadas**
+- [ ] **Analytics avanzados**
+
+### 🚀 Próximas Mejoras
+
+- [ ] **Chat en tiempo real** con WebSockets
+- [ ] **Sistema de calificaciones** de profesores
+- [ ] **Integración con Moodle**
+- [ ] **App móvil nativa** (React Native/Flutter)
+- [ ] **Sistema de badges** y gamificación
+
+---
+
+## 📞 Soporte
+
+Para soporte técnico o reportar problemas:
+
+- **Issues**: [GitHub Issues](https://github.com/tu-usuario/duoc-point/issues)
+- **Documentación**: Ver este README y `/docs/`
+- **API Docs**: `/api/docs/` (Swagger)
+- **Admin**: `/admin/` (Django Admin)
 
 ---
 
