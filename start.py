@@ -73,6 +73,7 @@ class DuocPointLauncher:
                 self.ngrok_available = False
         except:
             print("⚠️ ngrok no disponible (opcional)")
+            print("💡 Para PWA en móvil, usa: python start.py tailscale")
             self.ngrok_available = False
             
         return True
@@ -153,6 +154,17 @@ class DuocPointLauncher:
         except:
             return "192.168.1.100"
             
+    def get_tailscale_ip(self):
+        """Obtener IP de Tailscale"""
+        try:
+            result = subprocess.run(['tailscale', 'ip', '-4'], 
+                                  capture_output=True, text=True, timeout=5)
+            if result.returncode == 0:
+                return result.stdout.strip()
+        except:
+            pass
+        return None
+            
     def run_tests(self):
         """Ejecutar tests"""
         print("🧪 Ejecutando tests...")
@@ -186,8 +198,14 @@ class DuocPointLauncher:
         print(f"\n📱 RED LOCAL (PWA limitado):")
         print(f"   http://{local_ip}:8000/")
         
+        tailscale_ip = self.get_tailscale_ip()
+        if tailscale_ip:
+            print(f"\n🔒 TAILSCALE (PWA completo - HTTPS):")
+            print(f"   https://{tailscale_ip}:8000/")
+            print("   ✅ PWA funcionará perfectamente en móvil")
+        
         if ngrok_url:
-            print(f"\n🌍 HTTPS (PWA completo en móvil):")
+            print(f"\n🌍 NGROK (PWA completo en móvil):")
             print(f"   {ngrok_url}")
             
         print(f"\n🧪 TESTS:")
@@ -201,9 +219,14 @@ class DuocPointLauncher:
         
         print("\n" + "=" * 60)
         print("📱 PARA PWA EN MÓVIL:")
-        print("   1. Usa la URL HTTPS de ngrok")
-        print("   2. O conecta tu móvil a la misma red WiFi")
-        print("   3. Ve a la URL de red local")
+        if tailscale_ip:
+            print("   🥇 MEJOR OPCIÓN: Usa la URL de Tailscale (HTTPS)")
+            print(f"   https://{tailscale_ip}:8000/")
+        if ngrok_url:
+            print("   🥈 ALTERNATIVA: Usa la URL de ngrok")
+            print(f"   {ngrok_url}")
+        print("   🥉 BÁSICO: Conecta tu móvil a la misma red WiFi")
+        print(f"   http://{local_ip}:8000/")
         print("=" * 60)
         
     def cleanup(self):
@@ -242,6 +265,15 @@ class DuocPointLauncher:
             if mode in ["all", "ngrok"]:
                 ngrok_url = self.start_ngrok()
                 
+            if mode == "tailscale":
+                tailscale_ip = self.get_tailscale_ip()
+                if tailscale_ip:
+                    print(f"🔒 Tailscale detectado: {tailscale_ip}")
+                    print("✅ PWA funcionará perfectamente en móvil con HTTPS")
+                else:
+                    print("⚠️ Tailscale no detectado")
+                    print("💡 Instala Tailscale: https://tailscale.com/download")
+                
             # Mostrar URLs
             self.show_urls(ngrok_url)
             
@@ -274,7 +306,7 @@ def main():
     
     parser = argparse.ArgumentParser(description='DuocPoint Launcher')
     parser.add_argument('mode', nargs='?', default='all',
-                       choices=['local', 'network', 'ngrok', 'all', 'test'],
+                       choices=['local', 'network', 'ngrok', 'tailscale', 'all', 'test'],
                        help='Modo de ejecución')
     
     args = parser.parse_args()

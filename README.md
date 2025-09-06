@@ -126,12 +126,24 @@ python start.py network
 # Con ngrok (HTTPS para móvil)
 python start.py ngrok
 
+# Con Tailscale (HTTPS para móvil - RECOMENDADO)
+python start.py tailscale
+# O directamente:
+python start_tailscale.py
+
 # Solo tests
 python start.py test
 ```
 
 ## 📱 PWA Installation
 
+### Con Tailscale (RECOMENDADO):
+1. **Ejecuta**: `python start_tailscale.py`
+2. **Ve a la URL HTTPS de Tailscale en tu móvil**
+3. **Deberías ver "Instalar App"**
+4. **La app se instalará como aplicación nativa**
+
+### Con localhost:
 1. **Ve a http://localhost:8000/ en Chrome móvil**
 2. **Deberías ver "Instalar App" en lugar de "Añadir acceso directo"**
 3. **La app se instalará como aplicación nativa**

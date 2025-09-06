@@ -20,6 +20,7 @@ User = get_user_model()
     summary="Obtener información del usuario actual",
     responses={200: {"description": "Información del usuario"}}
 )
+@csrf_exempt
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def me(request):
