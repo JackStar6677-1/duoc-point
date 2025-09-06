@@ -78,12 +78,12 @@ Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** 
 
 ## Integraciones clave
 
-* **Google OAuth** restringido a `@duocuc.cl` y `@gmail.com`.
+* **Autenticación JWT** con soporte para `@duocuc.cl` y `@gmail.com`.
 * **PWA**: manifest, service worker y soporte offline básico.
 * **Notificaciones**: Web Push (VAPID) + FCM.
 * **OpenGraph** para previsualizar enlaces en compra/venta.
-* **Google Street View** para imágenes de recorridos.
-* **WeasyPrint** para generación de PDFs de portafolio.
+* **Street View personalizado** con imágenes propias de la sede.
+* **WeasyPrint** para generación de PDFs de portafolio (temporalmente deshabilitado en Windows).
 
 ---
 
@@ -100,10 +100,10 @@ Plataforma web **cerrada** para la comunidad de **Duoc UC**, hecha como **PWA** 
 ## Seguridad y moderación
 
 * Acceso solo `@duocuc.cl` y `@gmail.com` (estudiantes).
-* Moderación automática con filtros de contenido.
+* Moderación automática con filtros de contenido y sistema de reportes.
 * Descargo legal visible.
 * Roles: estudiante, moderador, director de carrera, staff sede, admin.
-* Autenticación JWT con Google OAuth.
+* Autenticación JWT con validación de dominios.
 
 ---
 
@@ -197,15 +197,31 @@ try { python server/manage.py createsuperuser --noinput | Out-Null } catch {}
 python server/manage.py runserver 8000
 ```
 
-Usuario por defecto para entrar al panel de administración (`/admin/`):
+Usuarios de ejemplo creados automáticamente:
 
-* **Usuario**: `pa.avendano@duocuc.cl`
+**Administrador:**
+* **Email**: `admin@duocuc.cl`
 * **Contraseña**: `admin123`
+* **Rol**: Administrador Global
+
+**Moderador:**
+* **Email**: `moderador@duocuc.cl`
+* **Contraseña**: `estudiante123`
+* **Rol**: Moderador
+
+**Estudiantes:**
+* **Email**: `juan.perez@duocuc.cl` / **Contraseña**: `estudiante123`
+* **Email**: `maria.gonzalez@duocuc.cl` / **Contraseña**: `estudiante123`
+* **Email**: `ana.martinez@gmail.com` / **Contraseña**: `estudiante123`
 
 URLs útiles tras el arranque:
 
 * `http://localhost:8000/` – página inicial estática.
-* `http://localhost:8000/horarios/` – ejemplo de vista estática adicional.
+* `http://localhost:8000/forum/` – sistema de foros completo.
+* `http://localhost:8000/forum/moderation.html` – panel de moderación.
+* `http://localhost:8000/market/` – sistema de compra/venta.
+* `http://localhost:8000/portfolio/` – sistema de portafolio.
+* `http://localhost:8000/streetview/` – Street View personalizado.
 * `http://localhost:8000/admin/` – administración de Django.
 * `http://localhost:8000/api/` – raíz de la API.
 * `http://localhost:8000/api/docs/` – documentación interactiva.
@@ -362,7 +378,9 @@ AWS_STORAGE_BUCKET_NAME=tu-bucket
 AWS_S3_REGION_NAME=us-east-1
 ```
 
-### Configuración de Google OAuth
+### Configuración de Google OAuth (Opcional)
+
+> **Nota**: Google OAuth está actualmente comentado en el código. Para habilitarlo, descomenta las líneas correspondientes en `settings/base.py` y `accounts/views.py`.
 
 1. **Crear proyecto en Google Cloud Console**:
    - Ir a [Google Cloud Console](https://console.cloud.google.com/)
@@ -379,7 +397,9 @@ AWS_S3_REGION_NAME=us-east-1
    - En "Pantalla de consentimiento OAuth"
    - Agregar `duocuc.cl` y `gmail.com` como dominios autorizados
 
-### Configuración de Google Maps API
+### Configuración de Google Maps API (Opcional)
+
+> **Nota**: El proyecto usa actualmente un sistema de Street View personalizado con imágenes propias. Google Maps API está comentado en el código.
 
 1. **Habilitar APIs necesarias**:
    - Maps JavaScript API
@@ -668,18 +688,20 @@ celery -A duocpoint purge
 
 ### ✅ Funcionalidades Completadas
 
-- [x] **Sistema de autenticación** con Google OAuth
-- [x] **Mapa interactivo** con Leaflet y Street View
-- [x] **Foros por carrera** con moderación automática
+- [x] **Sistema de autenticación** con JWT y validación de dominios
+- [x] **Mapa interactivo** con Leaflet y Street View personalizado
+- [x] **Foros por carrera** con moderación automática y sistema de reportes
 - [x] **Sistema de encuestas** completo con analytics
 - [x] **Notificaciones** con Web Push
 - [x] **Reportes de infraestructura** con flujo de estados
 - [x] **Sistema de bienestar** por carrera
 - [x] **Cursos abiertos** (OTEC)
 - [x] **Sistema de compra/venta** con OpenGraph
-- [x] **Portafolio automático** con generación PDF
+- [x] **Portafolio automático** con generación PDF (WeasyPrint)
 - [x] **PWA** instalable con service worker
 - [x] **API REST** completa con documentación
+- [x] **Sistema de moderación** avanzado con panel de administración
+- [x] **Base de datos** poblada con datos de ejemplo
 
 ### 🔄 Funcionalidades en Desarrollo
 

@@ -9,11 +9,13 @@ from drf_spectacular.utils import extend_schema
 
 from duocpoint.apps.accounts.permissions import IsModerator
 
-from .models import BANNED_WORDS, Comentario, Foro, Post, VotoPost
+from .models import BANNED_WORDS, MODERATION_WORDS, Comentario, Foro, Post, PostReporte, VotoPost
 from .serializers import (
     ComentarioSerializer,
     ForumDetailSerializer,
     ForoSerializer,
+    ModeracionSerializer,
+    PostReporteSerializer,
     PostSerializer,
     ScoreSerializer,
     VoteSerializer,
@@ -58,13 +60,11 @@ class PostListCreateView(generics.ListCreateAPIView):
         return queryset
 
     def perform_create(self, serializer):
-        texto = (
-            f"{serializer.validated_data['titulo']} {serializer.validated_data['cuerpo']}".lower()
-        )
-        estado = Post.Estado.PUBLICADO
-        if any(bad in texto for bad in BANNED_WORDS):
-            estado = Post.Estado.REVISION
-        serializer.save(usuario=self.request.user, estado=estado)
+        post = serializer.save(usuario=self.request.user)
+        # Verificar contenido automáticamente
+        estado = post.verificar_contenido()
+        post.estado = estado
+        post.save(update_fields=["estado"])
 
 
 class CommentCreateView(generics.CreateAPIView):
@@ -96,6 +96,36 @@ class PostVoteView(APIView):
         return Response({"score": post.score})
 
 
+class PostReporteView(generics.CreateAPIView):
+    """Permite a usuarios reportar posts inapropiados."""
+    
+    serializer_class = PostReporteSerializer
+    
+    def perform_create(self, serializer):
+        post = get_object_or_404(Post, pk=self.kwargs["pk"])
+        serializer.save(post=post, usuario=self.request.user)
+
+
+class PostModeracionView(generics.GenericAPIView):
+    """Permite a moderadores moderar posts."""
+    
+    permission_classes = [IsModerator]
+    serializer_class = ModeracionSerializer
+    
+    @extend_schema(request=ModeracionSerializer, responses=ForumDetailSerializer)
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        accion = serializer.validated_data["accion"]
+        razon = serializer.validated_data.get("razon", "")
+        
+        post.moderar(request.user, accion, razon)
+        
+        return Response({"detail": f"Post {accion}do exitosamente"})
+
+
 class PostHideView(generics.GenericAPIView):
     """Permite a moderadores ocultar posts."""
 
@@ -108,3 +138,24 @@ class PostHideView(generics.GenericAPIView):
         post.estado = Post.Estado.OCULTO
         post.save(update_fields=["estado"])
         return Response({"detail": "post oculto"})
+
+
+class ModeracionListView(generics.ListAPIView):
+    """Lista posts que requieren moderación."""
+    
+    permission_classes = [IsModerator]
+    serializer_class = PostSerializer
+    
+    def get_queryset(self):
+        return Post.objects.filter(estado=Post.Estado.REVISION).order_by("-created_at")
+
+
+class PostReportesListView(generics.ListAPIView):
+    """Lista reportes de un post específico."""
+    
+    permission_classes = [IsModerator]
+    serializer_class = PostReporteSerializer
+    
+    def get_queryset(self):
+        post = get_object_or_404(Post, pk=self.kwargs["pk"])
+        return PostReporte.objects.filter(post=post).order_by("-created_at")

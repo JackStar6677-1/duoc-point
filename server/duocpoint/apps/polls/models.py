@@ -29,10 +29,10 @@ class Poll(models.Model):
         ARCHIVADA = "archivada", "Archivada"
 
     # Campos básicos
-    titulo = models.CharField(max_length=200, validators=[MinLengthValidator(5)])
+    titulo = models.CharField(max_length=200, validators=[MinLengthValidator(5)], default="Encuesta sin título")
     descripcion = models.TextField(blank=True)
     creador = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="encuestas_creadas"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="encuestas_creadas", null=True, blank=True
     )
     
     # Configuración de la encuesta
@@ -57,8 +57,8 @@ class Poll(models.Model):
     estado = models.CharField(max_length=20, choices=Estado.choices, default=Estado.BORRADOR)
     inicia_at = models.DateTimeField(default=timezone.now)
     cierra_at = models.DateTimeField(null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     
     # Relación opcional con posts del foro (para mantener compatibilidad)
     post = models.OneToOneField(
@@ -166,7 +166,7 @@ class PollVoto(models.Model):
     justificacion = models.TextField(blank=True, help_text="Comentario opcional del votante")
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     user_agent = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     
     # Metadatos del usuario al momento del voto (para análisis)
     sede_voto = models.ForeignKey(

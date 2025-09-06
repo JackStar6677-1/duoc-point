@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro DuocPoint</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="forum.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-graduation-cap me-2"></i>DuocPoint
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Foro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../market/index.html">Mercado</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../portfolio/index.html">Portafolio</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-1"></i>Usuario
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" id="moderationLink" style="display: none;">
+                                <i class="fas fa-shield-alt me-2"></i>Moderación
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1><i class="fas fa-comments me-2"></i>Foro DuocPoint</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPostModal">
+                        <i class="fas fa-plus me-2"></i>Nuevo Post
+                    </button>
+                </div>
+                <p class="text-muted">Comparte ideas, haz preguntas y conecta con tu comunidad estudiantil</p>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="forumFilter" class="form-label">Foro</label>
+                                <select class="form-select" id="forumFilter">
+                                    <option value="">Todos los foros</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="sortFilter" class="form-label">Ordenar por</label>
+                                <select class="form-select" id="sortFilter">
+                                    <option value="nuevo">Más recientes</option>
+                                    <option value="top">Más populares</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="statusFilter" class="form-label">Estado</label>
+                                <select class="form-select" id="statusFilter">
+                                    <option value="">Todos</option>
+                                    <option value="publicado">Publicados</option>
+                                    <option value="revision">En revisión</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Posts List -->
+        <div class="row">
+            <div class="col-12">
+                <div id="postsContainer">
+                    <!-- Posts will be loaded here -->
+                </div>
+                <div id="loadingSpinner" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Post Modal -->
+    <div class="modal fade" id="newPostModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear Nuevo Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newPostForm">
+                        <div class="mb-3">
+                            <label for="postForum" class="form-label">Foro</label>
+                            <select class="form-select" id="postForum" required>
+                                <option value="">Selecciona un foro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postTitle" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="postTitle" required maxlength="200">
+                        </div>
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label">Contenido</label>
+                            <textarea class="form-control" id="postContent" rows="6" required></textarea>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="postAnonymous">
+                            <label class="form-check-label" for="postAnonymous">
+                                Publicar de forma anónima
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="createPost()">Publicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reportar Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reportForm">
+                        <div class="mb-3">
+                            <label for="reportType" class="form-label">Tipo de reporte</label>
+                            <select class="form-select" id="reportType" required>
+                                <option value="">Selecciona un tipo</option>
+                                <option value="spam">Spam</option>
+                                <option value="contenido_inapropiado">Contenido Inapropiado</option>
+                                <option value="acoso">Acoso</option>
+                                <option value="desinformacion">Desinformación</option>
+                                <option value="violencia">Violencia</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reportDescription" class="form-label">Descripción (opcional)</label>
+                            <textarea class="form-control" id="reportDescription" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="submitReport()">Reportar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Moderation Modal -->
+    <div class="modal fade" id="moderationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Moderar Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="moderationForm">
+                        <div class="mb-3">
+                            <label for="moderationAction" class="form-label">Acción</label>
+                            <select class="form-select" id="moderationAction" required>
+                                <option value="">Selecciona una acción</option>
+                                <option value="aprobar">Aprobar</option>
+                                <option value="rechazar">Rechazar</option>
+                                <option value="ocultar">Ocultar</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="moderationReason" class="form-label">Razón (opcional)</label>
+                            <textarea class="form-control" id="moderationReason" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning" onclick="submitModeration()">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="forum.js"></script>
+</body>
+</html>

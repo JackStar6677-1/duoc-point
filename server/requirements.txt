@@ -21,12 +21,12 @@ weasyprint>=60.0
 # Market OpenGraph parsing
 beautifulsoup4>=4.12
 requests>=2.31
-# Google OAuth
-google-auth>=2.23
-google-auth-oauthlib>=1.1
-google-auth-httplib2>=0.1
-# Google Street View
-googlemaps>=4.10
+# Google OAuth (DESHABILITADO)
+# google-auth>=2.23
+# google-auth-oauthlib>=1.1
+# google-auth-httplib2>=0.1
+# Google Street View (DESHABILITADO - USAMOS STREET VIEW PERSONALIZADO)
+# googlemaps>=4.10
 # Opcionales:
 # django-channels>=4.1
 # channels-redis>=4.2

@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Comentario, Foro, Post
+from .models import Comentario, Foro, Post, PostReporte
 
 
 class ForoSerializer(serializers.ModelSerializer):
@@ -15,6 +15,10 @@ class ForoSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     """Serializa posts para listado y creación."""
+    
+    usuario_name = serializers.CharField(source="usuario.name", read_only=True)
+    total_comentarios = serializers.SerializerMethodField()
+    total_reportes = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Post
@@ -22,14 +26,28 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "foro",
             "usuario",
+            "usuario_name",
             "anonimo",
             "titulo",
             "cuerpo",
             "score",
             "estado",
             "created_at",
+            "updated_at",
+            "total_comentarios",
+            "total_reportes",
+            "moderado_por",
+            "razon_moderacion",
+            "moderado_at",
         ]
-        read_only_fields = ["usuario", "score", "estado", "created_at"]
+        read_only_fields = [
+            "usuario", "score", "estado", "created_at", "updated_at",
+            "total_comentarios", "total_reportes", "moderado_por", 
+            "razon_moderacion", "moderado_at"
+        ]
+    
+    def get_total_comentarios(self, obj):
+        return obj.comentarios.count()
 
 
 class ComentarioSerializer(serializers.ModelSerializer):
@@ -51,6 +69,27 @@ class ScoreSerializer(serializers.Serializer):
     """Respuesta que devuelve el score actualizado."""
 
     score = serializers.IntegerField()
+
+
+class PostReporteSerializer(serializers.ModelSerializer):
+    """Serializer para reportes de posts."""
+    
+    usuario_name = serializers.CharField(source="usuario.name", read_only=True)
+    
+    class Meta:
+        model = PostReporte
+        fields = [
+            "id", "post", "usuario", "usuario_name", "tipo", 
+            "descripcion", "created_at"
+        ]
+        read_only_fields = ["usuario", "created_at"]
+
+
+class ModeracionSerializer(serializers.Serializer):
+    """Serializer para acciones de moderación."""
+    
+    accion = serializers.ChoiceField(choices=["aprobar", "rechazar", "ocultar"])
+    razon = serializers.CharField(required=False, allow_blank=True)
 
 
 class ForumDetailSerializer(serializers.Serializer):

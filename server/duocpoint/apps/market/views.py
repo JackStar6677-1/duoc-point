@@ -31,6 +31,7 @@ class CategoriaProductoViewSet(viewsets.ReadOnlyModelViewSet):
 class ProductoViewSet(viewsets.ModelViewSet):
     """ViewSet para productos."""
     
+    queryset = Producto.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
@@ -203,6 +204,7 @@ class ProductoViewSet(viewsets.ModelViewSet):
 class ProductoReporteViewSet(viewsets.ModelViewSet):
     """ViewSet para reportes de productos."""
     
+    queryset = ProductoReporte.objects.all()
     serializer_class = ProductoReporteSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -261,6 +263,7 @@ class ProductoReporteViewSet(viewsets.ModelViewSet):
 class ProductoAnalyticsViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet para analytics de productos."""
     
+    queryset = ProductoAnalytics.objects.all()
     serializer_class = ProductoAnalyticsSerializer
     permission_classes = [permissions.IsAuthenticated]
     

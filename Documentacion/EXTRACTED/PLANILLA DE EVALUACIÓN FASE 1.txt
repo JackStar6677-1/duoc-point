@@ -1,0 +1,339 @@
+CONTENIDO EXTRAÍDO DE: PLANILLA DE EVALUACIÓN FASE 1.xlsx
+==================================================
+
+
+--- HOJA: EVALUACION1 ---
+0.75 | 0.25 | 1
+INTEGRANTES | IEP o IEE:  | EMPLEAB
+1 | =EVALUACION1!$C$24 | =$C$35 | =C4*C$2+D4*D$2
+2 | =EVALUACION1!$C$24 | =C47 | =C5*C$2+D5*D$2
+3 | =EVALUACION1!$C$24 | =C58 | =C6*C$2+D6*D$2
+GRUPAL | Nivel de Logro | NIVELES DE LOGRO Y PUNTAJES
+Aspectos a Evaluar | Completamente logrado | Logrado | Logro Incipiente | No logrado
+=RUBRICA!A5 | Completamente logrado | =IF($C13=CL,"X","") | =IF(D13="X",100*0.1,"") | =IF($C13=L,"X","") | =IF(F13="X",60*0.1,"") | =IF($C13=ML,"X","") | =IF(H13="X",30*0.1,"") | =IF($C13=NL,"X","") | =IF($J13="X",0,"")
+=RUBRICA!A6 | Completamente logrado | =IF($C14=CL,"X","") | =IF(D14="X",100*0.05,"") | =IF($C14=L,"X","") | =IF(F14="X",60*0.05,"") | =IF($C14=ML,"X","") | =IF(H14="X",30*0.05,"") | =IF($C14=NL,"X","") | =IF($J14="X",0,"")
+=RUBRICA!A8 | Completamente logrado | =IF($C15=CL,"X","") | =IF(D15="X",100*0.05,"") | =IF($C15=L,"X","") | =IF(F15="X",60*0.05,"") | =IF($C15=ML,"X","") | =IF(H15="X",30*0.05,"") | =IF($C15=NL,"X","") | =IF($J15="X",0,"")
+=RUBRICA!A9 | Completamente logrado | =IF($C16=CL,"X","") | =IF(D16="X",100*0.05,"") | =IF($C16=L,"X","") | =IF(F16="X",60*0.05,"") | =IF($C16=ML,"X","") | =IF(H16="X",30*0.05,"") | =IF($C16=NL,"X","") | =IF($J16="X",0,"")
+=RUBRICA!A10 | Completamente logrado | =IF($C17=CL,"X","") | =IF(D17="X",100*0.1,"") | =IF($C17=L,"X","") | =IF(F17="X",60*0.1,"") | =IF($C17=ML,"X","") | =IF(H17="X",30*0.1,"") | =IF($C17=NL,"X","") | =IF($J17="X",0,"")
+=RUBRICA!A11 | Completamente logrado | =IF($C18=CL,"X","") | =IF(D18="X",100*0.1,"") | =IF($C18=L,"X","") | =IF(F18="X",60*0.1,"") | =IF($C18=ML,"X","") | =IF(H18="X",30*0.1,"") | =IF($C18=NL,"X","") | =IF($J18="X",0,"")
+=RUBRICA!A12 | Completamente logrado | =IF($C19=CL,"X","") | =IF(D19="X",100*0.05,"") | =IF($C19=L,"X","") | =IF(F19="X",60*0.05,"") | =IF($C19=ML,"X","") | =IF(H19="X",30*0.05,"") | =IF($C19=NL,"X","") | =IF($J19="X",0,"")
+=RUBRICA!A13 | Completamente logrado | =IF($C20=CL,"X","") | =IF(D20="X",100*0.05,"") | =IF($C20=L,"X","") | =IF(F20="X",60*0.05,"") | =IF($C20=ML,"X","") | =IF(H20="X",30*0.05,"") | =IF($C20=NL,"X","") | =IF($J20="X",0,"")
+=RUBRICA!A14 | Completamente logrado | =IF($C21=CL,"X","") | =IF(D21="X",100*0.05,"") | =IF($C21=L,"X","") | =IF(F21="X",60*0.05,"") | =IF($C21=ML,"X","") | =IF(H21="X",30*0.05,"") | =IF($C21=NL,"X","") | =IF($J21="X",0,"")
+=RUBRICA!A16 | Completamente logrado | =IF($C22=CL,"X","") | =IF(D22="X",100*0.1,"") | =IF($C22=L,"X","") | =IF(F22="X",60*0.1,"") | =IF($C22=ML,"X","") | =IF(H22="X",30*0.1,"") | =IF($C22=NL,"X","") | =IF($J22="X",0,"")
+Puntaje | =E23+G23+I23+K23 | =SUM(E13:E22) | =SUM(G13:G22) | =SUM(I13:I22) | =SUM(K13:K22)
+Nota | =VLOOKUP(C23,ESCALA_IEP!A2:B142,2,FALSE)
+INDIVIDUAL | NOMBRE ALUMNO | =$B$4
+Capacidad de Trabajo en Equipo | Nivel de Logro | NIVELES DE LOGRO Y PUNTAJES
+Aspectos a Evaluar | Completamente logrado | Logrado | Medianamente logrado | No logrado
+=RUBRICA!A7 | Completamente logrado | =IF($C31=CL,"X","") | =IF(D31="X",100*0.1,"") | =IF($C31=L,"X","") | =IF(F31="X",60*0.1,"") | =IF($C31=ML,"X","") | =IF(H31="X",30*0.1,"") | =IF($C31=NL,"X","") | =IF($J31="X",0,"")
+=RUBRICA!A15 | Completamente logrado | =IF($C32=CL,"X","") | =IF(D32="X",100*0.1,"") | =IF($C32=L,"X","") | =IF(F32="X",60*0.1,"") | =IF($C32=ML,"X","") | =IF(H32="X",30*0.1,"") | =IF($C32=NL,"X","") | =IF($J32="X",0,"")
+=RUBRICA!A17 | Completamente logrado | =IF($C33=CL,"X","") | =IF(D33="X",100*0.1,"") | =IF($C33=L,"X","") | =IF(F33="X",60*0.1,"") | =IF($C33=ML,"X","") | =IF(H33="X",30*0.1,"") | =IF($C33=NL,"X","") | =IF($J33="X",0,"")
+PUNTAJE | =E34+G34+I34+K34 | =SUM(E31:E33) | =SUM(G31:G33) | =SUM(I31:I33) | =SUM(K31:K33)
+Nota | =VLOOKUP(C34,ESCALA_TRAB_EQUIP!A2:B62,2,FALSE)
+INDIVIDUAL | NOMBRE ALUMNO | =B5
+Capacidad de Trabajo en Equipo | Nivel de Logro | NIVELES DE LOGRO Y PUNTAJES
+Aspectos a Evaluar | Completamente logrado | Logrado | Medianamente logrado | No logrado
+=RUBRICA!A7 | Completamente logrado | =IF($C43=CL,"X","") | =IF(D43="X",100*0.1,"") | =IF($C43=L,"X","") | =IF(F43="X",60*0.1,"") | =IF($C43=ML,"X","") | =IF(H43="X",30*0.1,"") | =IF($C43=NL,"X","") | =IF($J43="X",0,"")
+=RUBRICA!A15 | Completamente logrado | =IF($C44=CL,"X","") | =IF(D44="X",100*0.1,"") | =IF($C44=L,"X","") | =IF(F44="X",60*0.1,"") | =IF($C44=ML,"X","") | =IF(H44="X",30*0.1,"") | =IF($C44=NL,"X","") | =IF($J44="X",0,"")
+=RUBRICA!A17 | Completamente logrado | =IF($C45=CL,"X","") | =IF(D45="X",100*0.1,"") | =IF($C45=L,"X","") | =IF(F45="X",60*0.1,"") | =IF($C45=ML,"X","") | =IF(H45="X",30*0.1,"") | =IF($C45=NL,"X","") | =IF($J45="X",0,"")
+PUNTAJE | =E46+G46+I46+K46 | =SUM(E43:E45) | =SUM(G43:G45) | =SUM(I43:I45) | =SUM(K43:K45)
+Nota | =VLOOKUP(C46,ESCALA_TRAB_EQUIP!A2:B62,2,FALSE)
+INDIVIDUAL | NOMBRE ALUMNO | =B6
+Capacidad de Trabajo en Equipo | Nivel de Logro | NIVELES DE LOGRO Y PUNTAJES
+Aspectos a Evaluar | Completamente logrado | Logrado | Medianamente logrado | No logrado
+=RUBRICA!A7 | Completamente logrado | =IF($C54=CL,"X","") | =IF(D54="X",100*0.1,"") | =IF($C54=L,"X","") | =IF(F54="X",60*0.1,"") | =IF($C54=ML,"X","") | =IF(H54="X",30*0.1,"") | =IF($C54=NL,"X","") | =IF($J54="X",0,"")
+=RUBRICA!A15 | Completamente logrado | =IF($C55=CL,"X","") | =IF(D55="X",100*0.1,"") | =IF($C55=L,"X","") | =IF(F55="X",60*0.1,"") | =IF($C55=ML,"X","") | =IF(H55="X",30*0.1,"") | =IF($C55=NL,"X","") | =IF($J55="X",0,"")
+=RUBRICA!A17 | Completamente logrado | =IF($C56=CL,"X","") | =IF(D56="X",100*0.1,"") | =IF($C56=L,"X","") | =IF(F56="X",60*0.1,"") | =IF($C56=ML,"X","") | =IF(H56="X",30*0.1,"") | =IF($C56=NL,"X","") | =IF($J56="X",0,"")
+PUNTAJE | =E57+G57+I57+K57 | =COUNTIF(D55:D56,"X") | =SUM(E54:E56) | =SUM(F54:F56) | =SUM(G54:G56) | =SUM(H54:H56) | =SUM(I54:I56) | =SUM(J54:J56) | =SUM(K54:K56)
+Nota | =VLOOKUP(C57,ESCALA_TRAB_EQUIP!A2:B62,2,FALSE)
+
+--- HOJA: RUBRICA ---
+Indicador de Evaluación | Categorías de Respuesta | Ponderación del Indicador de Evaluación
+Completamente Logrado (100%) | Logrado  (60%) | Logro incipiente  | No logrado
+-0.3 | 0
+1. Describe brevemente en qué consiste el Proyecto APT, justificando su relevancia para el campo laboral de su carrera. | Describe brevemente en qué consiste el proyecto APT, justificando la relevancia, impacto o beneficio (real o simulado) que tendría en el campo laboral de su carrera. | Describe brevemente en qué consiste el proyecto APT, señalando la relevancia, impacto o beneficio (real o simulado) que tendría, pero no queda clara la relación con el campo laboral de su carrera. | Describe brevemente en qué consiste el proyecto APT, pero no fue justificado ni relacionado con el campo laboral de su carrera.  | No describe o es confuso el proyecto APT, sin justificar ni relacionarlo con el campo laboral de su carrera.  | 10
+2. Relaciona el Proyecto APT con las competencias del perfil de egreso de su Plan de Estudio. | Describe una relación coherente entre el proyecto y el perfil de egreso del plan de estudio, especificando cómo debe utilizar distintas competencias para desarrollar su Proyecto APT.  | Describe una relación coherente entre el proyecto y el perfil de egreso del plan de estudio, pero no especifica cómo debe utilizar distintas competencias para desarrollar su Proyecto APT. | Describe una relación que tiene elementos pero que no son coherentes entre el proyecto y el perfil de egreso del plan de estudio. | Describe una relación sin coherencia entre el proyecto y el perfil de egreso del plan de estudio o no relaciona el proyecto con el perfil de egreso.  | 5
+3. Relaciona el Proyecto APT con sus intereses profesionales. * | Menciona los intereses profesionales y explica con claridad cómo estos se ven reflejados en el proyecto.  | Menciona los intereses profesionales, pero no queda completamente clara su conexión con el proyecto. | Menciona los intereses profesionales sin conectarlos con el proyecto.  | No menciona los intereses profesionales. | 10
+4.  Argumenta por qué el proyecto es factible de realizarse en el marco de la asignatura.  | Justifica por qué el proyecto puede desarrollarse considerado tiempo, materiales y factores externos, y en caso de posibles dificultades plantea como las abordaría. | Justifica por qué el proyecto puede desarrollarse, considerando el tiempo y materiales o factores externos y en caso de posibles dificultades no plantea claramente como las abordaría. | Justifica por qué el proyecto puede desarrollarse en el tiempo de la asignatura, sin considerar materiales ni factores externos y en caso de posibles dificultades no plantea como abordarlas. | No justifica las razones de porque el proyecto puede desarrollarse, o el proyecto presentado no es factible de realizarse en el tiempo asignado. | 5
+5. Formula objetivos claros, concisos y coherentes con la disciplina y la situación a abordar.  | Formula objetivos claros, concisos y coherentes con la disciplina y la situación a abordar. | Formula objetivos claros y coherentes con la situación a abordar, pero imprecisos de acuerdo a la disciplina.  | Formula objetivos confusos, por lo que no queda claro lo que se busca alcanzar ni si es coherente con la situación a abordar.   | No plantea objetivos o estos no son coherentes con la disciplina ni la situación a abordar. | 5
+6. Propone una metodología de trabajo que permite alcanzar los objetivos propuestos y es pertinente con los requerimientos disciplinares. | Describe una metodología pertinente con los requerimientos disciplinares, contemplando todos los aspectos necesarios para alcanzar los objetivos planteados. | Describe una metodología pertinente con los requerimientos disciplinares, pero no contempla todos los aspectos necesarios para alcanzar los objetivos planteados. | Describe una metodología que no es del todo pertinente para lograr los objetivos planteados. | No describe una metodología, o bien esta no es pertinente para lograr los objetivos propuestos.  | 10
+7. Establece un plan de trabajo para su proyecto APT considerando los recursos, duración, facilitadores y obstaculizadores en el desarrollo de las actividades.  | Establece un plan de trabajo con todas las actividades necesarias para cumplir los objetivos, teniendo en consideración los recursos, duración, facilitadores y obstaculizadores.  | Establece un plan de trabajo con la mayoría de las actividades necesarias para cumplir los objetivos, teniendo en consideración los recursos, duración, facilitadores y obstaculizadores.  | Establece un plan de trabajo que carece de actividades necesarias para cumplir los objetivos y/o no tiene en consideración los recursos, duración, facilitadores y obstaculizadores.  | No establece un plan de trabajo, o bien este no permite cumplir los objetivos del proyecto APT. | 10
+8. Determina evidencias, justificando cómo estas dan cuenta del logro de las actividades del Proyecto APT. | Describe evidencias que permiten dar cuenta del logro de las actividades del proyecto APT y justifica su selección.  | Describe evidencias que permiten dar cuenta del logro de las actividades del proyecto APT, pero no justifica con claridad su selección. | Describe evidencias que permiten dar cuenta del logro de solo algunas actividades del proyecto APT y/o no justifica su selección.  | No incluye evidencias que pueden dar cuenta del desarrollo del proyecto. | 5
+9. Utiliza reglas de redacción, ortografía (literal, puntual, acentual) y las normas para citas y referencias.  | El texto cumple con las reglas ortografía y de redacción en todos sus apartados y utiliza correctamente todas las normas de citación y referencias. | El texto presenta de 1 a 5 errores de ortografía, redacción o en las citas y referencias del informe. | El texto presenta de 6 a 10 errores de ortografía, redacción o en las citas y referencias del informe. | El texto presenta más de 10 errores de ortografía, redacción o en las citas y referencias del informe. | 5
+10. Cumple completando el contenido del informe de presentación del proyecto de acuerdo con la plantilla entregada. | Cumple con todos los ítems solicitados en el informe de presentación del proyecto, siendo estos contenidos coherentes con lo solicitado en cada ítem | No cumple con todos los ítems solicitados en el informe de presentación del proyecto, siendo los  contenidos entregados coherentes con lo solicitado en cada ítem | No cumple con todos los ítems solicitados en el 
+informe de presentación del proyecto, siendo los 
+contenidos entregados coherentes con lo solicitado en cada ítem | No cumple con todos los ítems solicitados en el informe de presentación del proyecto, y los contenidos entregados son poco coherentes con lo solicitado en cada ítem | 5
+11. Expone el tema utilizando un lenguaje técnico disciplinar al presentar la propuesta y responde evidenciando un manejo de la información. * | Expone el tema utilizando un lenguaje técnico disciplinar al presentar la propuesta y responde evidenciando un manejo de la información en todo momento | Expone el tema utilizando un lenguaje técnico disciplinar al presentar la propuesta y responde evidenciando un manejo de la información la mayoría del tiempo. | Expone el tema utilizando un lenguaje técnico disciplinar al presentar la propuesta y responde evidenciando un manejo de la información la mitad del tiempo. | Expone el tema utilizando un lenguaje técnico disciplinar al presentar la propuesta y responde evidenciando un manejo de la información en menos de la mitad del tiempo. | 10
+12. Desarrolla un plan de trabajo que permita del logro de los objetivos propuestos del proyecto de 
+acuerdo a los tiempos para su desarrollo | Desarrolla un plan de trabajo que permite el logro de los objetivos propuestos del proyecto de acuerdo a los tiempos para su desarrollo y contiene hitos claros para demostrar el estado de avance | Desarrolla un plan de trabajo que permita el logro de los objetivos propuestos del proyecto de acuerdo a los tiempos para su desarrollo pero no demuestran hitos claros para demostrar el estado de avance | El desarrollo del plan de trabajo no permite determinar si el logro de los objetivos propuestos del proyecto son alcanzables en los tiempos para su desarrollo pero si demuestran hitos claros para demostrar el estado de avance | El desarrollo del plan de trabajo no permite determinar si el logro de los objetivos propuestos del proyecto son alcanzables en los tiempos para su desarrollo y no demuestran hitos claros para demostrar el estado de avance | 10
+13. Colaboración y trabajo en equipo * | El estudiante realiza un excelente trabajo en equipo, fomentando un ambiente positivo, siendo participativo con su equipo en las sesiones presenciales de la asignatura y participando de manera equitativa en la presentación del caso | El estudiante realiza un buen trabajo en equipo, fomentando un ambiente positivo, siendo participativo con su equipo en las sesiones presenciales de la asignatura, pero no demuestra una participación de manera equitativa en la presentación del caso  | El estudiante realiza un trabajo deficiente con el equipo, fomentando un ambiente positivo pero no demuestra ser participativo con su equipo en las sesiones presenciales de la asignatura o se ausenta constantemente y/o  no demuestra una participación de manera equitativa en la presentación del caso | El estudiante realiza un mal trabajo con el equipo no fomentando un ambiente positivo, no demuestra ser participativo con su equipo en las sesiones presenciales de la asignatura o se ausenta constantemente y no demuestra una participación de manera equitativa en la presentación del caso | 10
+Total | 1
+
+--- HOJA: ESCALA_IEP ---
+Puntaje | Nota
+0 | 1
+0.5 | 1
+1 | 1.1
+1.5 | 1.1
+2 | 1.1
+2.5 | 1.2
+3 | 1.2
+3.5 | 1.3
+4 | 1.3
+4.5 | 1.3
+5 | 1.4
+5.5 | 1.4
+6 | 1.4
+6.5 | 1.5
+7 | 1.5
+7.5 | 1.5
+8 | 1.6
+8.5 | 1.6
+9 | 1.6
+9.5 | 1.7
+10 | 1.7
+10.5 | 1.8
+11 | 1.8
+11.5 | 1.8
+12 | 1.9
+12.5 | 1.9
+13 | 1.9
+13.5 | 2
+14 | 2
+14.5 | 2
+15 | 2.1
+15.5 | 2.1
+16 | 2.1
+16.5 | 2.2
+17 | 2.2
+17.5 | 2.3
+18 | 2.3
+18.5 | 2.3
+19 | 2.4
+19.5 | 2.4
+20 | 2.4
+20.5 | 2.5
+21 | 2.5
+21.5 | 2.5
+22 | 2.6
+22.5 | 2.6
+23 | 2.6
+23.5 | 2.7
+24 | 2.7
+24.5 | 2.8
+25 | 2.8
+25.5 | 2.8
+26 | 2.9
+26.5 | 2.9
+27 | 2.9
+27.5 | 3
+28 | 3
+28.5 | 3
+29 | 3.1
+29.5 | 3.1
+30 | 3.1
+30.5 | 3.2
+31 | 3.2
+31.5 | 3.3
+32 | 3.3
+32.5 | 3.3
+33 | 3.4
+33.5 | 3.4
+34 | 3.4
+34.5 | 3.5
+35 | 3.5
+35.5 | 3.5
+36 | 3.6
+36.5 | 3.6
+37 | 3.6
+37.5 | 3.7
+38 | 3.7
+38.5 | 3.8
+39 | 3.8
+39.5 | 3.8
+40 | 3.9
+40.5 | 3.9
+41 | 3.9
+41.5 | 4
+42 | 4
+42.5 | 4.1
+43 | 4.1
+43.5 | 4.2
+44 | 4.2
+44.5 | 4.3
+45 | 4.3
+45.5 | 4.4
+46 | 4.4
+46.5 | 4.5
+47 | 4.5
+47.5 | 4.6
+48 | 4.6
+48.5 | 4.7
+49 | 4.8
+49.5 | 4.8
+50 | 4.9
+50.5 | 4.9
+51 | 5
+51.5 | 5
+52 | 5.1
+52.5 | 5.1
+53 | 5.2
+53.5 | 5.2
+54 | 5.3
+54.5 | 5.3
+55 | 5.4
+55.5 | 5.4
+56 | 5.5
+56.5 | 5.6
+57 | 5.6
+57.5 | 5.7
+58 | 5.7
+58.5 | 5.8
+59 | 5.8
+59.5 | 5.9
+60 | 5.9
+60.5 | 6
+61 | 6
+61.5 | 6.1
+62 | 6.1
+62.5 | 6.2
+63 | 6.3
+63.5 | 6.3
+64 | 6.4
+64.5 | 6.4
+65 | 6.5
+65.5 | 6.5
+66 | 6.6
+66.5 | 6.6
+67 | 6.7
+67.5 | 6.7
+68 | 6.8
+68.5 | 6.8
+69 | 6.9
+69.5 | 6.9
+70 | 7
+
+--- HOJA: ESCALA_PRESENTACION ---
+PUNTOS | NOTA
+0 | 1
+1 | 1.1
+2 | 1.2
+3 | 1.3
+4 | 1.4
+5 | 1.5
+6 | 1.6
+7 | 1.7
+8 | 1.8
+9 | 1.9
+10 | 2
+11 | 2.1
+12 | 2.2
+13 | 2.3
+14 | 2.3
+15 | 2.4
+16 | 2.5
+17 | 2.6
+18 | 2.7
+19 | 2.8
+20 | 2.9
+21 | 3
+22 | 3.1
+23 | 3.2
+24 | 3.3
+25 | 3.4
+26 | 3.5
+27 | 3.6
+28 | 3.7
+29 | 3.8
+30 | 3.9
+31 | 4
+32 | 4.1
+33 | 4.3
+34 | 4.4
+35 | 4.5
+36 | 4.7
+37 | 4.8
+38 | 5
+39 | 5.1
+40 | 5.3
+41 | 5.4
+42 | 5.6
+43 | 5.7
+44 | 5.8
+45 | 6
+46 | 6.1
+47 | 6.3
+48 | 6.4
+49 | 6.6
+50 | 6.7
+51 | 6.9
+52 | 7
+
+--- HOJA: ESCALA_TRAB_EQUIP ---
+Puntaje | Nota
+0 | 1
+0.5 | 1.1
+1 | 1.2
+1.5 | 1.3
+2 | 1.3
+2.5 | 1.4
+3 | 1.5
+3.5 | 1.6
+4 | 1.7
+4.5 | 1.8
+5 | 1.8
+5.5 | 1.9
+6 | 2
+6.5 | 2.1
+7 | 2.2
+7.5 | 2.3
+8 | 2.3
+8.5 | 2.4
+9 | 2.5
+9.5 | 2.6
+10 | 2.7
+10.5 | 2.8
+11 | 2.8
+11.5 | 2.9
+12 | 3
+12.5 | 3.1
+13 | 3.2
+13.5 | 3.3
+14 | 3.3
+14.5 | 3.4
+15 | 3.5
+15.5 | 3.6
+16 | 3.7
+16.5 | 3.8
+17 | 3.8
+17.5 | 3.9
+18 | 4
+18.5 | 4.1
+19 | 4.3
+19.5 | 4.4
+20 | 4.5
+20.5 | 4.6
+21 | 4.8
+21.5 | 4.9
+22 | 5
+22.5 | 5.1
+23 | 5.3
+23.5 | 5.4
+24 | 5.5
+24.5 | 5.6
+25 | 5.8
+25.5 | 5.9
+26 | 6
+26.5 | 6.1
+27 | 6.3
+27.5 | 6.4
+28 | 6.5
+28.5 | 6.6
+29 | 6.8
+29.5 | 6.9
+30 | 7
+
+--- HOJA: RELEVANCIA-PUNTAJE ---
+Relevancia | Puntaje
+Completamente logrado | Logrado | Logro incipiente | No logrado
+Muy Relevante | 4 | 3 | 2 | 0

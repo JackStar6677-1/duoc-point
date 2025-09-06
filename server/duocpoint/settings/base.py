@@ -138,12 +138,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "http://localhost:3000").split(",")
 
 
-# ---- Google OAuth ----
-GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "")
+# ---- Google OAuth (DESHABILITADO) ----
+# GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "")
 
 
-# ---- Google Maps/Street View ----
-GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "")
+# ---- Google Maps/Street View (DESHABILITADO - USAMOS STREET VIEW PERSONALIZADO) ----
+# GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "")
 
 
 # ---- Celery ----

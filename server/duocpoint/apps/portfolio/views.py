@@ -9,9 +9,10 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
-from weasyprint import HTML, CSS
-from weasyprint.text.fonts import FontConfiguration
+# from weasyprint import HTML, CSS
+# from weasyprint.text.fonts import FontConfiguration
 
+from django.contrib.auth import get_user_model
 from .models import (
     Logro, Proyecto, ExperienciaLaboral, Habilidad,
     PortafolioConfig, PortafolioSugerencia, PortafolioAnalytics
@@ -22,10 +23,13 @@ from .serializers import (
     PortafolioAnalyticsSerializer, PortafolioCompletoSerializer
 )
 
+User = get_user_model()
+
 
 class LogroViewSet(viewsets.ModelViewSet):
     """ViewSet para logros."""
     
+    queryset = Logro.objects.all()
     serializer_class = LogroSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -39,6 +43,7 @@ class LogroViewSet(viewsets.ModelViewSet):
 class ProyectoViewSet(viewsets.ModelViewSet):
     """ViewSet para proyectos."""
     
+    queryset = Proyecto.objects.all()
     serializer_class = ProyectoSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -52,6 +57,7 @@ class ProyectoViewSet(viewsets.ModelViewSet):
 class ExperienciaLaboralViewSet(viewsets.ModelViewSet):
     """ViewSet para experiencias laborales."""
     
+    queryset = ExperienciaLaboral.objects.all()
     serializer_class = ExperienciaLaboralSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -65,6 +71,7 @@ class ExperienciaLaboralViewSet(viewsets.ModelViewSet):
 class HabilidadViewSet(viewsets.ModelViewSet):
     """ViewSet para habilidades."""
     
+    queryset = Habilidad.objects.all()
     serializer_class = HabilidadSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -78,6 +85,7 @@ class HabilidadViewSet(viewsets.ModelViewSet):
 class PortafolioConfigViewSet(viewsets.ModelViewSet):
     """ViewSet para configuración de portafolio."""
     
+    queryset = PortafolioConfig.objects.all()
     serializer_class = PortafolioConfigSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -98,6 +106,7 @@ class PortafolioConfigViewSet(viewsets.ModelViewSet):
 class PortafolioSugerenciaViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet para sugerencias de portafolio."""
     
+    queryset = PortafolioSugerencia.objects.all()
     serializer_class = PortafolioSugerenciaSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -131,6 +140,7 @@ class PortafolioSugerenciaViewSet(viewsets.ReadOnlyModelViewSet):
 class PortafolioAnalyticsViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet para analytics de portafolio."""
     
+    queryset = PortafolioAnalytics.objects.all()
     serializer_class = PortafolioAnalyticsSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -150,6 +160,7 @@ class PortafolioAnalyticsViewSet(viewsets.ReadOnlyModelViewSet):
 class PortafolioCompletoViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet para obtener toda la información del portafolio."""
     
+    queryset = User.objects.all()
     serializer_class = PortafolioCompletoSerializer
     permission_classes = [permissions.IsAuthenticated]
     
@@ -165,98 +176,11 @@ class PortafolioCompletoViewSet(viewsets.ReadOnlyModelViewSet):
     )
     @action(detail=False, methods=['get'])
     def generar_pdf(self, request):
-        """Genera un PDF del portafolio del usuario."""
-        try:
-            # Obtener datos del usuario
-            usuario = request.user
-            
-            # Asegurar que existe configuración
-            config, created = PortafolioConfig.objects.get_or_create(usuario=usuario)
-            
-            # Obtener datos del portafolio
-            logros = Logro.objects.filter(usuario=usuario, visible=True)
-            proyectos = Proyecto.objects.filter(usuario=usuario, visible=True)
-            experiencias = ExperienciaLaboral.objects.filter(usuario=usuario, visible=True)
-            habilidades = Habilidad.objects.filter(usuario=usuario, visible=True)
-            
-            # Contexto para el template
-            context = {
-                'usuario': usuario,
-                'config': config,
-                'logros': logros,
-                'proyectos': proyectos,
-                'experiencias': experiencias,
-                'habilidades': habilidades,
-            }
-            
-            # Renderizar HTML
-            html_string = render_to_string('portfolio/portafolio_pdf.html', context)
-            
-            # Generar PDF
-            font_config = FontConfiguration()
-            html_doc = HTML(string=html_string)
-            
-            # CSS personalizado
-            css_string = """
-            @page {
-                size: A4;
-                margin: 2cm;
-            }
-            body {
-                font-family: 'Arial', sans-serif;
-                line-height: 1.6;
-                color: #333;
-            }
-            .header {
-                text-align: center;
-                border-bottom: 2px solid #2e004f;
-                padding-bottom: 20px;
-                margin-bottom: 30px;
-            }
-            .section {
-                margin-bottom: 30px;
-            }
-            .section h2 {
-                color: #2e004f;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 5px;
-            }
-            .item {
-                margin-bottom: 15px;
-                padding: 10px;
-                border-left: 3px solid #2e004f;
-                background-color: #f9f9f9;
-            }
-            """
-            
-            css_doc = CSS(string=css_string, font_config=font_config)
-            
-            # Generar PDF
-            pdf_buffer = io.BytesIO()
-            html_doc.write_pdf(pdf_buffer, stylesheets=[css_doc], font_config=font_config)
-            pdf_buffer.seek(0)
-            
-            # Actualizar analytics
-            try:
-                analytics = usuario.portafolio_analytics
-                analytics.descargas_pdf += 1
-                analytics.save()
-            except PortafolioAnalytics.DoesNotExist:
-                PortafolioAnalytics.objects.create(usuario=usuario)
-            
-            # Marcar generación en configuración
-            config.generar_pdf()
-            
-            # Respuesta
-            response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="portafolio_{usuario.name.replace(" ", "_")}.pdf"'
-            return response
-            
-        except Exception as e:
-            return Response(
-                {'error': f'Error generando PDF: {str(e)}'}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        """Genera un PDF del portafolio del usuario (DESHABILITADO TEMPORALMENTE)."""
+        return Response(
+            {'error': 'Generación de PDF deshabilitada temporalmente. WeasyPrint requiere configuración adicional en Windows.'}, 
+            status=status.HTTP_501_NOT_IMPLEMENTED
+        )
     
     @extend_schema(
         summary="Generar sugerencias automáticas",

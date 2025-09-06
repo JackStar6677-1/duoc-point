@@ -54,11 +54,15 @@ class RecorridoPaso(models.Model):
     lat = models.FloatField(null=True, blank=True)
     lng = models.FloatField(null=True, blank=True)
     
-    # Campos para Street View
-    usar_streetview = models.BooleanField(default=False, help_text="Usar Google Street View en lugar de imagen personalizada")
+    # Campos para Street View personalizado
+    usar_streetview = models.BooleanField(default=False, help_text="Usar Street View personalizado en lugar de imagen estática")
     streetview_heading = models.FloatField(default=0, help_text="Dirección de la cámara en grados (0-360)")
     streetview_pitch = models.FloatField(default=0, help_text="Inclinación de la cámara (-90 a 90)")
     streetview_fov = models.FloatField(default=90, help_text="Campo de visión (10-120 grados)")
+    
+    # Imágenes adicionales para Street View personalizado
+    imagen_360_url = models.URLField(blank=True, help_text="URL de imagen 360° para Street View personalizado")
+    imagen_360_thumbnail = models.URLField(blank=True, help_text="Thumbnail de la imagen 360°")
 
     class Meta:
         ordering = ["orden"]
@@ -67,26 +71,17 @@ class RecorridoPaso(models.Model):
         return f"{self.orden}. {self.titulo}"
     
     @property
-    def streetview_url(self):
-        """Genera URL de Google Street View si está habilitado."""
-        if not self.usar_streetview or not self.lat or not self.lng:
+    def streetview_data(self):
+        """Retorna datos para Street View personalizado."""
+        if not self.usar_streetview:
             return None
         
-        from django.conf import settings
-        api_key = settings.GOOGLE_MAPS_API_KEY
-        
-        if not api_key:
-            return None
-        
-        base_url = "https://maps.googleapis.com/maps/api/streetview"
-        params = {
-            'size': '800x600',
-            'location': f"{self.lat},{self.lng}",
+        return {
+            'imagen_360': self.imagen_360_url,
+            'thumbnail': self.imagen_360_thumbnail,
             'heading': self.streetview_heading,
             'pitch': self.streetview_pitch,
             'fov': self.streetview_fov,
-            'key': api_key
+            'lat': self.lat,
+            'lng': self.lng
         }
-        
-        param_string = '&'.join([f"{k}={v}" for k, v in params.items()])
-        return f"{base_url}?{param_string}"
