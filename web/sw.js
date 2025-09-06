@@ -3,9 +3,9 @@
  * Versión: 1.0.0
  */
 
-const CACHE_NAME = 'duocpoint-v1.1.0';
-const STATIC_CACHE = 'duocpoint-static-v1.1.0';
-const DYNAMIC_CACHE = 'duocpoint-dynamic-v1.1.0';
+const CACHE_NAME = 'duocpoint-v1.2.0';
+const STATIC_CACHE = 'duocpoint-static-v1.2.0';
+const DYNAMIC_CACHE = 'duocpoint-dynamic-v1.2.0';
 
 // Archivos estáticos para cache
 const STATIC_FILES = [

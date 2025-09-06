@@ -18,13 +18,13 @@ class ForumManager {
 
     async loadUser() {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('access_token');
             if (!token) {
                 window.location.href = '../index.html';
                 return;
             }
 
-            const response = await fetch('/api/accounts/me/', {
+            const response = await fetch('/api/auth/me', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -35,12 +35,14 @@ class ForumManager {
                 this.currentUser = await response.json();
                 this.updateUserInterface();
             } else {
-                localStorage.removeItem('token');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
                 window.location.href = '../index.html';
             }
         } catch (error) {
             console.error('Error loading user:', error);
-            localStorage.removeItem('token');
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
             window.location.href = '../index.html';
         }
     }
@@ -203,7 +205,7 @@ class ForumManager {
 
     async votePost(postId, value) {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('access_token');
             const response = await fetch(`/api/forum/posts/${postId}/votar/`, {
                 method: 'POST',
                 headers: {
@@ -280,7 +282,7 @@ class ForumManager {
 
     async submitReport() {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('access_token');
             const reportType = document.getElementById('reportType').value;
             const reportDescription = document.getElementById('reportDescription').value;
 
@@ -322,7 +324,7 @@ class ForumManager {
 
     async submitModeration() {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('access_token');
             const action = document.getElementById('moderationAction').value;
             const reason = document.getElementById('moderationReason').value;
 
@@ -358,7 +360,7 @@ class ForumManager {
 
     async createPost() {
         try {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('access_token');
             const forumId = document.getElementById('postForum').value;
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('postContent').value;

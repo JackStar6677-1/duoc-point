@@ -25,6 +25,24 @@ class DuocPointPWA {
    */
   async registerServiceWorker() {
     if ('serviceWorker' in navigator) {
+      // Verificar si estamos en HTTPS o localhost
+      const isSecureContext = window.isSecureContext || 
+                              window.location.hostname === 'localhost' || 
+                              window.location.hostname === '127.0.0.1' || 
+                              window.location.hostname.includes('192.168.') ||
+                              window.location.hostname.includes('10.0.') ||
+                              window.location.hostname.includes('172.');
+      
+      console.log('PWA: Contexto seguro:', isSecureContext);
+      console.log('PWA: Hostname:', window.location.hostname);
+      console.log('PWA: Protocol:', window.location.protocol);
+      
+      if (!isSecureContext) {
+        console.warn('PWA: Service Worker requiere HTTPS o localhost');
+        console.log('PWA: Para desarrollo local, usa localhost en lugar de IP');
+        return;
+      }
+      
       try {
         const registration = await navigator.serviceWorker.register('/sw.js');
         console.log('PWA: Service Worker registrado exitosamente:', registration);
@@ -41,11 +59,10 @@ class DuocPointPWA {
         
       } catch (error) {
         console.error('PWA: Error registrando Service Worker:', error);
-        // En desarrollo local, no es crítico que falle
-        console.log('PWA: Continuando sin Service Worker (desarrollo local)');
+        console.log('PWA: Continuando sin Service Worker');
       }
     } else {
-      console.warn('PWA: Service Worker no soportado - continuando sin PWA');
+      console.warn('PWA: Service Worker no soportado en este navegador');
     }
   }
   

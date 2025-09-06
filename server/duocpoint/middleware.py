@@ -15,4 +15,6 @@ class DisableCSRFMiddleware(MiddlewareMixin):
         # Deshabilitar CSRF para todas las rutas de API
         if request.path.startswith('/api/'):
             setattr(request, '_dont_enforce_csrf_checks', True)
+            # También deshabilitar para el middleware de CSRF
+            request.csrf_processing_done = True
         return None

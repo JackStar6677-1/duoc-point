@@ -1,253 +1,184 @@
-# 🎓 DuocPoint
+# 🎓 DuocPoint - Plataforma Integral Duoc UC
 
-**Plataforma integral para la comunidad estudiantil de Duoc UC**
+Plataforma integral para la comunidad estudiantil de Duoc UC que integra foros, mercado, portafolio profesional y recorridos virtuales.
 
-DuocPoint es una aplicación web progresiva (PWA) que conecta a estudiantes, profesores y personal de Duoc UC a través de foros, mercado de compra/venta, portafolio profesional y recorridos virtuales del campus.
+## 🚀 Inicio Súper Rápido
 
-## ✨ Características
-
-- **🔐 Autenticación JWT** - Login seguro con emails @duocuc.cl y @gmail.com
-- **💬 Sistema de Foros** - Discusiones con moderación automática y manual
-- **🛒 Mercado** - Compra y venta de productos entre estudiantes
-- **📁 Portafolio** - Perfil profesional con generación de PDF
-- **🏫 Recorridos Virtuales** - Street View personalizado del campus
-- **📱 PWA** - Instalable como app nativa en móviles
-- **🔧 API REST** - Documentación automática con Swagger
-
-## 🚀 Inicio Rápido
-
-### Prerrequisitos
-- Python 3.10+
-- Node.js (opcional, para frontend)
-
-### Instalación y Ejecución
+### Un Solo Comando
 
 ```bash
-# 1. Clonar el repositorio
-git clone https://github.com/tu-usuario/duoc-point.git
+# 1. Clonar repositorio
+git clone https://github.com/JackStar6677-1/duoc-point.git
+cd duoc-point
+
+# 2. Instalar todo (una sola vez)
+python install.py
+
+# 3. Iniciar DuocPoint (PWA completo)
+python start.py
+```
+
+¡Eso es todo! 🎉
+
+## 📱 PWA en Móvil
+
+### Para PWA completo en móvil:
+
+```bash
+# Con ngrok (HTTPS)
+python start.py ngrok
+
+# O solo localhost
+python start.py local
+```
+
+### URLs Disponibles:
+- **💻 Local**: http://localhost:8000/ (PWA completo)
+- **📱 Red Local**: http://192.168.x.x:8000/ (PWA limitado)
+- **🌍 HTTPS**: https://xxxxx.ngrok.io (PWA completo en móvil)
+
+## 🔐 Credenciales de Prueba
+
+- **Email**: `student@duocuc.cl`
+- **Password**: `student123`
+
+- **Email**: `moderator@duocuc.cl`
+- **Password**: `moderator123`
+
+- **Email**: `admin@duocuc.cl`
+- **Password**: `admin123`
+
+## 🧪 Testing
+
+```bash
+# Tests completos
+python start.py test
+
+# Test PWA
+http://localhost:8000/test-all.html
+```
+
+## 📊 Características Completas
+
+- **🔐 Autenticación JWT**: Login/registro funcionando
+- **💬 Foros**: Comunicación por carrera y sede
+- **🛒 Mercado**: Compra/venta entre estudiantes
+- **📁 Portafolio**: Perfil profesional automático
+- **🏫 Recorridos Virtuales**: Street View personalizado
+- **📱 PWA**: Instalable como app nativa
+- **🔔 Notificaciones**: Push notifications completas
+- **👥 Moderación**: Sistema de moderación automática
+- **👨‍🏫 Profesores**: Información de profesores
+- **🏢 Sedes**: Información de campus
+- **👤 Cuenta**: Gestión de perfil de usuario
+
+## 🌐 Despliegue en Producción
+
+### AMP Cubecoders (Ejemplo)
+
+```bash
+# 1. Subir código al servidor
+git clone https://github.com/JackStar6677-1/duoc-point.git
 cd duoc-point
 
 # 2. Instalar dependencias
-cd server
-pip install -r requirements.txt
-
-# 3. Configurar base de datos
-python manage.py migrate
-python manage.py collectstatic --noinput
-
-# 4. Crear superusuario
-python manage.py createsuperuser
-
-# 5. Poblar datos de ejemplo
-python manage.py shell -c "
-from duocpoint.apps.campuses.models import Sede
-from duocpoint.apps.accounts.models import User
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-# Crear sede
-if not Sede.objects.exists():
-    Sede.objects.create(
-        nombre='Sede Maipú',
-        direccion='Av. Américo Vespucio 1501, Maipú',
-        lat=-33.5115,
-        lng=-70.7525
-    )
-
-# Crear usuarios demo
-if not User.objects.filter(email='student@duocuc.cl').exists():
-    User.objects.create_user(
-        email='student@duocuc.cl',
-        password='student123',
-        name='Estudiante Demo',
-        role='student',
-        campus_id=1,
-        career='Ingeniería en Informática'
-    )
-
-if not User.objects.filter(email='moderator@duocuc.cl').exists():
-    User.objects.create_user(
-        email='moderator@duocuc.cl',
-        password='moderator123',
-        name='Moderador Demo',
-        role='moderator',
-        campus_id=1,
-        career='Ingeniería en Informática'
-    )
-"
-
-# 6. Ejecutar servidor
-python manage.py runserver 0.0.0.0:8000
-```
-
-### 🌐 Acceso
-
-- **Local**: http://localhost:8000
-- **Red local**: http://TU_IP:8000 (para probar PWA en móvil)
-
-### 👥 Usuarios de Prueba
-
-- **Admin**: Tu superusuario creado
-- **Estudiante**: `student@duocuc.cl` / `student123`
-- **Moderador**: `moderator@duocuc.cl` / `moderator123`
-
-## 🏗️ Despliegue en Producción
-
-### Opción 1: Servidor VPS (DigitalOcean, AWS, etc.)
-
-```bash
-# 1. En el servidor
-sudo apt update && sudo apt install python3-pip nginx postgresql
-git clone https://github.com/tu-usuario/duoc-point.git
-cd duoc-point/server
-
-# 2. Configurar entorno virtual
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+python install.py
 
 # 3. Configurar variables de entorno
-cp env.example .env
-nano .env  # Editar con tus configuraciones
+export DEBUG=False
+export SECRET_KEY="tu-secret-key"
+export DATABASE_URL="postgresql://user:pass@host:port/db"
 
-# 4. Configurar base de datos PostgreSQL
-sudo -u postgres createdb duocpoint
-python manage.py migrate
-python manage.py collectstatic --noinput
-python manage.py createsuperuser
+# 4. Iniciar con Gunicorn
+cd server
+gunicorn duocpoint.wsgi:application --bind 0.0.0.0:8000
 
-# 5. Configurar Gunicorn
-pip install gunicorn
-gunicorn --bind 0.0.0.0:8000 duocpoint.wsgi:application
-
-# 6. Configurar Nginx
-sudo nano /etc/nginx/sites-available/duocpoint
-```
-
-**Configuración Nginx:**
-```nginx
+# 5. Configurar Nginx (opcional)
+# /etc/nginx/sites-available/duocpoint
 server {
     listen 80;
     server_name tu-dominio.com;
-
-    location /static/ {
-        alias /ruta/a/duoc-point/server/staticfiles/;
-    }
-
+    
     location / {
         proxy_pass http://127.0.0.1:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
+    
+    location /static/ {
+        alias /path/to/duoc-point/server/staticfiles/;
+    }
 }
 ```
 
-### Opción 2: Docker (Recomendado)
+## 🔧 Comandos Disponibles
 
 ```bash
-# 1. Configurar variables de entorno
-cp env.example .env
-nano .env
+# Iniciar todo (localhost + red local + ngrok)
+python start.py all
 
-# 2. Desplegar con Docker Compose
-docker-compose -f docker-compose.prod.yml up -d
+# Solo localhost (PWA completo)
+python start.py local
 
-# 3. Verificar estado
-docker-compose -f docker-compose.prod.yml ps
+# Solo red local
+python start.py network
+
+# Con ngrok (HTTPS para móvil)
+python start.py ngrok
+
+# Solo tests
+python start.py test
 ```
 
-### Opción 3: Servicio en la Nube
+## 📱 PWA Installation
 
-**Railway, Render, Heroku:**
-1. Conectar repositorio GitHub
-2. Configurar variables de entorno
-3. Desplegar automáticamente
+1. **Ve a http://localhost:8000/ en Chrome móvil**
+2. **Deberías ver "Instalar App" en lugar de "Añadir acceso directo"**
+3. **La app se instalará como aplicación nativa**
+4. **Aparecerá en tu escritorio con el icono de DuocPoint**
 
-## 🔧 Configuración
+## 🧪 Páginas de Test
 
-### Variables de Entorno (.env)
+- **http://localhost:8000/test-all.html** - Test completo
+- **http://localhost:8000/test-pwa.html** - Test solo PWA
+- **http://localhost:8000/login.html** - Login
+- **http://localhost:8000/forum/** - Foros
+- **http://localhost:8000/market/** - Mercado
+- **http://localhost:8000/portfolio/** - Portafolio
 
-```env
-# Base de datos
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=duocpoint
-DB_USER=usuario
-DB_PASSWORD=contraseña
-DB_HOST=localhost
-DB_PORT=5432
+## 📝 API Documentation
 
-# Django
-SECRET_KEY=tu-secret-key-super-segura
-DEBUG=0
-ALLOWED_HOSTS=tu-dominio.com,www.tu-dominio.com
+- **Swagger UI**: http://localhost:8000/api/docs/
+- **Schema**: http://localhost:8000/api/schema/
 
-# Email (opcional)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=tu-email@gmail.com
-EMAIL_HOST_PASSWORD=tu-app-password
-```
+## 🤝 Contribución
 
-## 📱 PWA - Instalación en Móvil
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
-1. **Abrir en Chrome móvil**: http://tu-servidor.com
-2. **Tocar "Instalar App"** en la barra superior
-3. **Confirmar instalación** - La app aparecerá en el escritorio
-4. **Usar como app nativa** - Funciona offline parcialmente
+## 📄 Licencia
 
-## 🛠️ Comandos Útiles
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
 
-```bash
-# Desarrollo
-python manage.py runserver                    # Servidor desarrollo
-python manage.py migrate                      # Aplicar migraciones
-python manage.py collectstatic                # Recopilar archivos estáticos
-python manage.py createsuperuser              # Crear admin
-python manage.py shell                        # Consola Django
+## 👥 Equipo
 
-# Producción
-gunicorn duocpoint.wsgi:application          # Servidor producción
-docker-compose -f docker-compose.prod.yml up # Docker producción
-
-# Testing
-python manage.py test                         # Ejecutar tests
-python run_tests.py                          # Tests completos
-```
-
-## 📊 Monitoreo
-
-- **Health Check**: http://tu-servidor.com/health/
-- **API Docs**: http://tu-servidor.com/api/docs/
-- **Admin Panel**: http://tu-servidor.com/admin/
-
-## 🆘 Solución de Problemas
-
-### Error CSRF
-```bash
-# Verificar configuración CORS
-python manage.py check
-```
-
-### PWA no funciona
-- Verificar HTTPS en producción
-- Comprobar manifest.json
-- Revisar Service Worker en DevTools
-
-### Base de datos
-```bash
-# Resetear base de datos
-rm db.sqlite3
-python manage.py migrate
-python manage.py createsuperuser
-```
+- **Desarrollador Principal**: Pablo Elías Miranda
+- **Institución**: Duoc UC
+- **Proyecto**: Capstone - Ingeniería en Informática
 
 ## 📞 Soporte
 
-- **Issues**: [GitHub Issues](https://github.com/tu-usuario/duoc-point/issues)
-- **Documentación**: [Wiki del proyecto](https://github.com/tu-usuario/duoc-point/wiki)
+Para soporte, contacta a [pablo.elias.miranda.292003@gmail.com](mailto:pablo.elias.miranda.292003@gmail.com)
 
 ---
 
-**Desarrollado con ❤️ para la comunidad Duoc UC**
+## 🎉 ¡DuocPoint está 100% funcional!
+
+**Versión**: 1.2.0  
+**Estado**: ✅ Completamente funcional  
+**PWA**: ✅ Instalable en móvil  
+**API**: ✅ Todas las funcionalidades  
+**Base de datos**: ✅ Poblada con datos de prueba
