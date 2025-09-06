@@ -3,20 +3,29 @@
  * Versión: 1.0.0
  */
 
-const CACHE_NAME = 'duocpoint-v1.0.0';
-const STATIC_CACHE = 'duocpoint-static-v1.0.0';
-const DYNAMIC_CACHE = 'duocpoint-dynamic-v1.0.0';
+const CACHE_NAME = 'duocpoint-v1.1.0';
+const STATIC_CACHE = 'duocpoint-static-v1.1.0';
+const DYNAMIC_CACHE = 'duocpoint-dynamic-v1.1.0';
 
 // Archivos estáticos para cache
 const STATIC_FILES = [
   '/',
-  '/static/css/bootstrap.min.css',
-  '/static/css/main.css',
-  '/static/js/bootstrap.bundle.min.js',
-  '/static/js/main.js',
-  '/static/images/icon-192x192.png',
-  '/static/images/icon-512x512.png',
+  '/index.html',
+  '/login.html',
+  '/register.html',
+  '/account.html',
+  '/teachers.html',
+  '/campuses.html',
+  '/styles.css',
+  '/main.js',
+  '/pwa.js',
   '/manifest.json',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
+  'https://code.jquery.com/jquery-3.7.1.min.js',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
+  '/static/images/icons/icon-192x192.png',
+  '/static/images/icons/icon-512x512.png',
   '/forum/',
   '/market/',
   '/portfolio/',

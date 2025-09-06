@@ -1,7 +1,7 @@
 """Serializers for push notification subscriptions."""
 
 from rest_framework import serializers
-from .models import PushSub
+from .models import PushSub, Notificacion
 
 
 class PushSubSerializer(serializers.ModelSerializer):
@@ -27,3 +27,15 @@ class SimpleStatusSerializer(serializers.Serializer):
     """Serializer for simple status responses."""
 
     status = serializers.CharField()
+
+
+class NotificacionSerializer(serializers.ModelSerializer):
+    """Serializer for notifications."""
+    
+    class Meta:
+        model = Notificacion
+        fields = [
+            'id', 'titulo', 'mensaje', 'tipo', 'leida', 
+            'created_at', 'data_extra'
+        ]
+        read_only_fields = ['id', 'created_at']

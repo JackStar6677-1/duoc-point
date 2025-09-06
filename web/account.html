@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - DuocPoint</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0066cc">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DuocPoint">
+    <link rel="apple-touch-icon" href="/static/images/icons/icon-192x192.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-graduation-cap me-2"></i>
+                DuocPoint
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/forum/">Foros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/market/">Mercado</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/portfolio/">Portafolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/account.html">Mi Cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link logout-link" href="#" onclick="logout()" style="display: none;">
+                            <i class="fas fa-sign-out-alt me-1"></i>Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Login Required Message -->
+        <div id="loginRequired" class="row" style="display: none;">
+            <div class="col-12">
+                <div class="alert alert-warning text-center">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                    <h4>Acceso Requerido</h4>
+                    <p>Necesitas iniciar sesión para acceder a tu cuenta.</p>
+                    <a href="/login.html" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Content -->
+        <div id="accountContent" style="display: none;">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="mb-4">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Mi Cuenta
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Profile Card -->
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <img id="userAvatar" 
+                                     src="/static/images/avatars/default.jpg" 
+                                     alt="Avatar" 
+                                     class="rounded-circle" 
+                                     style="width: 120px; height: 120px; object-fit: cover;"
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSIjRjNGNEY2Ii8+CjxjaXJjbGUgY3g9IjYwIiBjeT0iNDgiIHI9IjE4IiBmaWxsPSIjOUNBM0FGIi8+CjxwYXRoIGQ9Ik0yNCA5NkMyNCA3Ny4xNjQ0IDM5LjE2NDQgNjIgNTggNjJINjJDODAuODM1NiA2MiA5NiA3Ny4xNjQ0IDk2IDk2VjEyMEgyNFY5NloiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+'">
+                            </div>
+                            <h5 id="userName">Usuario</h5>
+                            <p class="text-muted" id="userEmail">usuario@ejemplo.com</p>
+                            <p class="text-muted" id="userRole">Estudiante</p>
+                            <button class="btn btn-outline-primary btn-sm" onclick="changeAvatar()">
+                                <i class="fas fa-camera me-1"></i>Cambiar Foto
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Information -->
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Información Personal
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="profileForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="name" class="form-label">Nombre Completo</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="career" class="form-label">Carrera</label>
+                                        <input type="text" class="form-control" id="career" name="career">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="campus" class="form-label">Sede</label>
+                                        <input type="text" class="form-control" id="campus" name="campus" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="role" class="form-label">Tipo de Usuario</label>
+                                        <input type="text" class="form-control" id="role" name="role" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="linkedin" class="form-label">LinkedIn</label>
+                                        <input type="url" class="form-control" id="linkedin" name="linkedin_url" placeholder="https://linkedin.com/in/tu-perfil">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="github" class="form-label">GitHub</label>
+                                        <input type="url" class="form-control" id="github" name="github_url" placeholder="https://github.com/tu-usuario">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Guardar Cambios
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-shield-alt me-2"></i>
+                                Seguridad
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Cambiar Contraseña</h6>
+                                    <form id="passwordForm">
+                                        <div class="mb-3">
+                                            <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                                            <input type="password" class="form-control" id="currentPassword" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                                            <input type="password" class="form-control" id="newPassword" required minlength="8">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                                            <input type="password" class="form-control" id="confirmPassword" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-warning">
+                                            <i class="fas fa-key me-2"></i>Cambiar Contraseña
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Configuración de Notificaciones</h6>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                        <label class="form-check-label" for="emailNotifications">
+                                            Notificaciones por Email
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="pushNotifications" checked>
+                                        <label class="form-check-label" for="pushNotifications">
+                                            Notificaciones Push
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="forumNotifications" checked>
+                                        <label class="form-check-label" for="forumNotifications">
+                                            Notificaciones de Foros
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="marketNotifications">
+                                        <label class="form-check-label" for="marketNotifications">
+                                            Notificaciones de Mercado
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Section -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Actividad Reciente
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="activityList">
+                                <p class="text-muted">Cargando actividad...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+    <script src="pwa.js"></script>
+    
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isAuthenticated()) {
+                document.getElementById('loginRequired').style.display = 'block';
+                return;
+            }
+            
+            document.getElementById('accountContent').style.display = 'block';
+            loadUserProfile();
+            setupForms();
+        });
+
+        async function loadUserProfile() {
+            try {
+                const response = await apiRequest('/api/me');
+                if (response && response.ok) {
+                    const user = await response.json();
+                    populateUserData(user);
+                } else {
+                    showAlert('Error al cargar el perfil', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error de conexión', 'danger');
+            }
+        }
+
+        function populateUserData(user) {
+            document.getElementById('userName').textContent = user.name || 'Usuario';
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userRole').textContent = user.role || 'Estudiante';
+            
+            // Populate form
+            document.getElementById('name').value = user.name || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('career').value = user.career || '';
+            document.getElementById('campus').value = user.campus || '';
+            document.getElementById('phone').value = user.telefono || '';
+            document.getElementById('role').value = user.role || '';
+            document.getElementById('linkedin').value = user.linkedin_url || '';
+            document.getElementById('github').value = user.github_url || '';
+        }
+
+        function setupForms() {
+            // Profile form
+            document.getElementById('profileForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData.entries());
+                
+                try {
+                    const response = await apiRequest('/api/me/update', {
+                        method: 'PATCH',
+                        body: JSON.stringify(data)
+                    });
+                    
+                    if (response && response.ok) {
+                        showAlert('Perfil actualizado exitosamente', 'success');
+                        loadUserProfile(); // Reload data
+                    } else {
+                        showAlert('Error al actualizar el perfil', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('Error de conexión', 'danger');
+                }
+            });
+
+            // Password form
+            document.getElementById('passwordForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const currentPassword = document.getElementById('currentPassword').value;
+                const newPassword = document.getElementById('newPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (newPassword !== confirmPassword) {
+                    showAlert('Las contraseñas no coinciden', 'danger');
+                    return;
+                }
+                
+                try {
+                    const response = await apiRequest('/api/auth/change-password/', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            current_password: currentPassword,
+                            new_password: newPassword
+                        })
+                    });
+                    
+                    if (response && response.ok) {
+                        showAlert('Contraseña cambiada exitosamente', 'success');
+                        this.reset();
+                    } else {
+                        showAlert('Error al cambiar la contraseña', 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showAlert('Error de conexión', 'danger');
+                }
+            });
+        }
+
+        function changeAvatar() {
+            // Placeholder for avatar change functionality
+            showAlert('Función de cambio de avatar próximamente', 'info');
+        }
+
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertHTML = `
+                <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            alertContainer.insertAdjacentHTML('beforeend', alertHTML);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                const alert = document.getElementById(alertId);
+                if (alert) {
+                    alert.remove();
+                }
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

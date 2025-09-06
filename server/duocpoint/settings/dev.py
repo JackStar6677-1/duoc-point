@@ -18,6 +18,16 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
 CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://0.0.0.0:8000",
+    "http://192.168.100.2:8000",
+    "http://192.168.100.1:8000",
+    "http://192.168.1.1:8000",
+    "http://192.168.0.1:8000",
+]
 
 # Permitir CORS para desarrollo
 CORS_ALLOW_ALL_ORIGINS = True
