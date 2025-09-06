@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "duocpoint.apps.accounts",
     "duocpoint.apps.campuses",
     "duocpoint.apps.forum",
+    "duocpoint.apps.health",
     "duocpoint.apps.market",
     "duocpoint.apps.notifications",
     "duocpoint.apps.otec",

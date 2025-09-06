@@ -46,5 +46,6 @@ urlpatterns = [
     path('api/', include('duocpoint.apps.portfolio.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
+    path('', include('duocpoint.apps.health.urls')),
     re_path(r'^(?P<path>.*)$', spa_serve),
 ]
