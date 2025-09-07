@@ -43,8 +43,9 @@ class ForumTestCase(APITestCase):
         )
         
         self.foro = Foro.objects.create(
-            nombre='Foro General',
-            descripcion='Foro general de discusión',
+            titulo='Foro General',
+            carrera='Ingeniería en Informática',
+            slug='foro-general',
             sede=self.sede
         )
     
@@ -55,9 +56,9 @@ class ForumTestCase(APITestCase):
             'foro': self.foro.id,
             'titulo': 'Test Post',
             'cuerpo': 'Este es un post de prueba',
-            'es_anonimo': False
+            'anonimo': False
         }
-        response = self.client.post('/api/forum/posts/', post_data)
+        response = self.client.post('/api/posts', post_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Post.objects.filter(titulo='Test Post').exists())
     
@@ -68,12 +69,12 @@ class ForumTestCase(APITestCase):
             'foro': self.foro.id,
             'titulo': 'Test Post Anónimo',
             'cuerpo': 'Este es un post anónimo',
-            'es_anonimo': True
+            'anonimo': True
         }
-        response = self.client.post('/api/forum/posts/', post_data)
+        response = self.client.post('/api/posts', post_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         post = Post.objects.get(titulo='Test Post Anónimo')
-        self.assertTrue(post.es_anonimo)
+        self.assertTrue(post.anonimo)
     
     def test_create_post_with_banned_words(self):
         """Test: Post con palabras prohibidas es enviado a revisión"""
@@ -82,12 +83,12 @@ class ForumTestCase(APITestCase):
             'foro': self.foro.id,
             'titulo': 'Test Post con palabra prohibida',
             'cuerpo': 'Este post contiene una palabra prohibida: spam',
-            'es_anonimo': False
+            'anonimo': False
         }
-        response = self.client.post('/api/forum/posts/', post_data)
+        response = self.client.post('/api/posts', post_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         post = Post.objects.get(titulo='Test Post con palabra prohibida')
-        self.assertEqual(post.estado, 'REVISION')
+        self.assertEqual(post.estado, Post.Estado.REVISION)
     
     def test_create_comment_success(self):
         """Test: Usuario puede crear comentario exitosamente"""
@@ -104,7 +105,7 @@ class ForumTestCase(APITestCase):
             'post': post.id,
             'cuerpo': 'Este es un comentario de prueba'
         }
-        response = self.client.post('/api/forum/comentarios/', comment_data)
+        response = self.client.post('/api/posts/{}/comentarios'.format(post.id), comment_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(Comentario.objects.filter(cuerpo='Este es un comentario de prueba').exists())
     
@@ -120,11 +121,13 @@ class ForumTestCase(APITestCase):
         
         self.client.force_authenticate(user=self.user)
         vote_data = {
-            'post': post.id,
-            'tipo_voto': 'POSITIVO'
+            'valor': 1
         }
-        response = self.client.post('/api/forum/posts/{}/votar/'.format(post.id), vote_data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = self.client.post('/api/posts/{}/votar'.format(post.id), vote_data)
+        if response.status_code != status.HTTP_200_OK:
+            print(f"Vote error response: {response.data}")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        post.refresh_from_db()
         self.assertEqual(post.score, 1)
     
     def test_report_post_success(self):
@@ -140,10 +143,12 @@ class ForumTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
         report_data = {
             'post': post.id,
-            'tipo_reporte': 'CONTENIDO_INAPROPIADO',
+            'tipo': 'contenido_inapropiado',
             'descripcion': 'Este post contiene contenido inapropiado'
         }
-        response = self.client.post('/api/forum/posts/{}/reportar/'.format(post.id), report_data)
+        response = self.client.post('/api/posts/{}/reportar'.format(post.id), report_data)
+        if response.status_code != status.HTTP_201_CREATED:
+            print(f"Report error response: {response.data}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(PostReporte.objects.filter(post=post).exists())
     
@@ -159,13 +164,15 @@ class ForumTestCase(APITestCase):
         
         self.client.force_authenticate(user=self.moderator)
         moderation_data = {
-            'accion': 'APROBAR',
+            'accion': 'aprobar',
             'razon': 'Post aprobado por moderador'
         }
-        response = self.client.post('/api/forum/posts/{}/moderar/'.format(post.id), moderation_data)
+        response = self.client.post('/api/posts/{}/moderar'.format(post.id), moderation_data)
+        if response.status_code != status.HTTP_200_OK:
+            print(f"Moderation error response: {response.data}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         post.refresh_from_db()
-        self.assertEqual(post.estado, 'PUBLICADO')
+        self.assertEqual(post.estado, Post.Estado.PUBLICADO)
         self.assertEqual(post.moderado_por, self.moderator)
     
     def test_moderate_post_reject(self):
@@ -180,13 +187,15 @@ class ForumTestCase(APITestCase):
         
         self.client.force_authenticate(user=self.moderator)
         moderation_data = {
-            'accion': 'RECHAZAR',
+            'accion': 'rechazar',
             'razon': 'Post rechazado por contenido inapropiado'
         }
-        response = self.client.post('/api/forum/posts/{}/moderar/'.format(post.id), moderation_data)
+        response = self.client.post('/api/posts/{}/moderar'.format(post.id), moderation_data)
+        if response.status_code != status.HTTP_200_OK:
+            print(f"Moderation error response: {response.data}")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         post.refresh_from_db()
-        self.assertEqual(post.estado, 'RECHAZADO')
+        self.assertEqual(post.estado, Post.Estado.RECHAZADO)
         self.assertEqual(post.moderado_por, self.moderator)
     
     def test_list_posts_by_forum(self):
@@ -207,13 +216,13 @@ class ForumTestCase(APITestCase):
         )
         
         self.client.force_authenticate(user=self.user)
-        response = self.client.get('/api/forum/posts/?foro={}'.format(self.foro.id))
+        response = self.client.get('/api/posts?foro={}'.format(self.foro.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 2)
     
     def test_list_posts_requires_authentication(self):
         """Test: Listar posts requiere autenticación"""
-        response = self.client.get('/api/forum/posts/')
+        response = self.client.get('/api/posts')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
@@ -239,16 +248,17 @@ class ForumModelTestCase(TestCase):
         )
         
         self.foro = Foro.objects.create(
-            nombre='Foro General',
-            descripcion='Foro general de discusión',
+            titulo='Foro General',
+            carrera='Ingeniería en Informática',
+            slug='foro-general',
             sede=self.sede
         )
     
     def test_foro_creation(self):
         """Test: Foro puede ser creado correctamente"""
-        self.assertEqual(self.foro.nombre, 'Foro General')
+        self.assertEqual(self.foro.titulo, 'Foro General')
         self.assertEqual(self.foro.sede, self.sede)
-        self.assertEqual(str(self.foro), 'Foro General - Sede Maipú')
+        self.assertEqual(str(self.foro), 'Foro General')
     
     def test_post_creation(self):
         """Test: Post puede ser creado correctamente"""
@@ -274,8 +284,8 @@ class ForumModelTestCase(TestCase):
             cuerpo='Este es un post con contenido limpio',
             estado='REVISION'
         )
-        post.verificar_contenido()
-        self.assertEqual(post.estado, 'PUBLICADO')
+        post.estado = post.verificar_contenido()
+        self.assertEqual(post.estado, Post.Estado.PUBLICADO)
         
         # Post con palabras prohibidas
         post = Post.objects.create(
@@ -285,8 +295,8 @@ class ForumModelTestCase(TestCase):
             cuerpo='Este post contiene spam',
             estado='REVISION'
         )
-        post.verificar_contenido()
-        self.assertEqual(post.estado, 'REVISION')
+        post.estado = post.verificar_contenido()
+        self.assertEqual(post.estado, Post.Estado.REVISION)
     
     def test_post_moderar(self):
         """Test: Moderación de post"""
@@ -299,14 +309,14 @@ class ForumModelTestCase(TestCase):
         )
         
         # Aprobar post
-        post.moderar('APROBAR', 'Post aprobado', self.user)
-        self.assertEqual(post.estado, 'PUBLICADO')
+        post.moderar(self.user, 'aprobar', 'Post aprobado')
+        self.assertEqual(post.estado, Post.Estado.PUBLICADO)
         self.assertEqual(post.moderado_por, self.user)
         
         # Rechazar post
         post.estado = 'REVISION'
-        post.moderar('RECHAZAR', 'Post rechazado', self.user)
-        self.assertEqual(post.estado, 'RECHAZADO')
+        post.moderar(self.user, 'rechazar', 'Post rechazado')
+        self.assertEqual(post.estado, Post.Estado.RECHAZADO)
     
     def test_post_reportar(self):
         """Test: Reporte de post"""
@@ -318,7 +328,7 @@ class ForumModelTestCase(TestCase):
             estado='PUBLICADO'
         )
         
-        post.reportar('CONTENIDO_INAPROPIADO', self.user, 'Contenido inapropiado')
+        post.reportar(self.user, 'CONTENIDO_INAPROPIADO', 'Contenido inapropiado')
         self.assertEqual(post.total_reportes, 1)
         self.assertTrue(PostReporte.objects.filter(post=post).exists())
     

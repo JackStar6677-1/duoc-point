@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes de Infraestructura - Duoc Point</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="reportes.css">
+    <meta name="theme-color" content="#2e004f">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><i class="bi bi-exclamation-triangle"></i> Reportes de Infraestructura</h1>
+            <nav class="header-nav">
+                <button id="btnNuevoReporte" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Nuevo Reporte
+                </button>
+                <button id="btnFiltrar" class="btn btn-secondary">
+                    <i class="bi bi-funnel"></i> Filtrar
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Filtros -->
+        <section class="filtros-section">
+            <div class="filtros-card">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="sedeSelect" class="form-label">Sede</label>
+                        <select id="sedeSelect" class="form-select">
+                            <option value="">Todas las sedes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="estadoSelect" class="form-label">Estado</label>
+                        <select id="estadoSelect" class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="abierto">Abierto</option>
+                            <option value="revision">En Revisión</option>
+                            <option value="resuelto">Resuelto</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="categoriaSelect" class="form-label">Categoría</label>
+                        <select id="categoriaSelect" class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="Iluminación">Iluminación</option>
+                            <option value="Equipamiento">Equipamiento</option>
+                            <option value="Infraestructura">Infraestructura</option>
+                            <option value="Limpieza">Limpieza</option>
+                            <option value="Seguridad">Seguridad</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lista de Reportes -->
+        <section class="reportes-section">
+            <div class="row" id="listaReportes">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Modal para nuevo reporte -->
+        <div class="modal fade" id="nuevoReporteModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo Reporte de Infraestructura</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formNuevoReporte">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="sedeReporte" class="form-label">Sede *</label>
+                                    <select id="sedeReporte" class="form-select" required>
+                                        <option value="">Seleccionar sede</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="categoriaReporte" class="form-label">Categoría *</label>
+                                    <select id="categoriaReporte" class="form-select" required>
+                                        <option value="">Seleccionar categoría</option>
+                                        <option value="Iluminación">Iluminación</option>
+                                        <option value="Equipamiento">Equipamiento</option>
+                                        <option value="Infraestructura">Infraestructura</option>
+                                        <option value="Limpieza">Limpieza</option>
+                                        <option value="Seguridad">Seguridad</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcionReporte" class="form-label">Descripción del problema *</label>
+                                <textarea id="descripcionReporte" class="form-control" rows="4" required
+                                    placeholder="Describe detalladamente el problema encontrado..."></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="latitudReporte" class="form-label">Latitud</label>
+                                    <input type="number" id="latitudReporte" class="form-control" step="any" 
+                                        placeholder="Opcional - se detectará automáticamente">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="longitudReporte" class="form-label">Longitud</label>
+                                    <input type="number" id="longitudReporte" class="form-control" step="any" 
+                                        placeholder="Opcional - se detectará automáticamente">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="imagenReporte" class="form-label">Imagen (opcional)</label>
+                                <input type="file" id="imagenReporte" class="form-control" accept="image/*">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="enviarReporte()">Enviar Reporte</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ver reporte -->
+        <div class="modal fade" id="verReporteModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTituloReporte"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="modalContenidoReporte">
+                        <!-- Contenido del modal -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/main.js"></script>
+    <script src="reportes.js"></script>
+</body>
+</html>

@@ -32,8 +32,8 @@ from pathlib import Path
 class DuocPointLauncher:
     def __init__(self):
         self.base_dir = Path(__file__).parent
-        self.server_dir = self.base_dir / "server"
-        self.web_dir = self.base_dir / "web"
+        self.server_dir = self.base_dir / "src" / "backend"
+        self.web_dir = self.base_dir / "src" / "frontend"
         self.processes = []
         
     def print_banner(self):

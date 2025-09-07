@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos Abiertos - Duoc Point</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="cursos.css">
+    <meta name="theme-color" content="#2e004f">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><i class="bi bi-book"></i> Cursos Abiertos</h1>
+            <nav class="header-nav">
+                <button id="btnNuevoCurso" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Publicar Curso
+                </button>
+                <button id="btnFiltrar" class="btn btn-secondary">
+                    <i class="bi bi-funnel"></i> Filtrar
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Filtros -->
+        <section class="filtros-section">
+            <div class="filtros-card">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="etiquetaSelect" class="form-label">Etiqueta</label>
+                        <input type="text" id="etiquetaSelect" class="form-control" placeholder="Buscar por etiqueta...">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="vigenciaSelect" class="form-label">Vigencia</label>
+                        <select id="vigenciaSelect" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="vigentes">Solo Vigentes</option>
+                            <option value="proximos">Próximos</option>
+                            <option value="finalizados">Finalizados</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="ordenSelect" class="form-label">Ordenar por</label>
+                        <select id="ordenSelect" class="form-select">
+                            <option value="fecha_desc">Más Recientes</option>
+                            <option value="fecha_asc">Más Antiguos</option>
+                            <option value="titulo">Título A-Z</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lista de Cursos -->
+        <section class="cursos-section">
+            <div class="row" id="listaCursos">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Modal para nuevo curso -->
+        <div class="modal fade" id="nuevoCursoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Publicar Nuevo Curso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formNuevoCurso">
+                            <div class="mb-3">
+                                <label for="tituloCurso" class="form-label">Título del Curso *</label>
+                                <input type="text" id="tituloCurso" class="form-control" required
+                                    placeholder="Ej: Curso de Python para Principiantes">
+                            </div>
+                            <div class="mb-3">
+                                <label for="descripcionCurso" class="form-label">Descripción *</label>
+                                <textarea id="descripcionCurso" class="form-control" rows="4" required
+                                    placeholder="Describe el contenido y objetivos del curso..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="etiquetasCurso" class="form-label">Etiquetas *</label>
+                                <input type="text" id="etiquetasCurso" class="form-control" required
+                                    placeholder="python, programacion, principiantes (separadas por comas)">
+                                <div class="form-text">Separa las etiquetas con comas</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="urlCurso" class="form-label">URL del Curso *</label>
+                                <input type="url" id="urlCurso" class="form-control" required
+                                    placeholder="https://ejemplo.com/curso">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="fechaInicioCurso" class="form-label">Fecha de Inicio *</label>
+                                    <input type="date" id="fechaInicioCurso" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="fechaFinCurso" class="form-label">Fecha de Fin *</label>
+                                    <input type="date" id="fechaFinCurso" class="form-control" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="enviarCurso()">Publicar Curso</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ver curso -->
+        <div class="modal fade" id="verCursoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTituloCurso"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="modalContenidoCurso">
+                        <!-- Contenido del modal -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <a id="btnAccederCurso" href="#" target="_blank" class="btn btn-primary">
+                            <i class="bi bi-box-arrow-up-right"></i> Acceder al Curso
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/main.js"></script>
+    <script src="cursos.js"></script>
+</body>
+</html>

@@ -111,6 +111,42 @@
           "sizes": "96x96"
         }
       ]
+    },
+    {
+      "name": "Bienestar",
+      "short_name": "Bienestar",
+      "description": "Rutinas de kinesiología y bienestar",
+      "url": "/bienestar/",
+      "icons": [
+        {
+          "src": "/static/images/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "short_name": "Reportes",
+      "description": "Reportar problemas de infraestructura",
+      "url": "/reportes/",
+      "icons": [
+        {
+          "src": "/static/images/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Cursos",
+      "short_name": "Cursos",
+      "description": "Cursos abiertos y OTEC",
+      "url": "/cursos/",
+      "icons": [
+        {
+          "src": "/static/images/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "related_applications": [],

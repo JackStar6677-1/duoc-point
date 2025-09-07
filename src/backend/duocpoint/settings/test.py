@@ -2,6 +2,7 @@
 Configuración de testing para DuocPoint
 """
 
+from datetime import timedelta
 from .base import *
 
 # Configuración específica para testing

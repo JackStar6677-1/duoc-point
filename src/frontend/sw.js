@@ -29,7 +29,12 @@ const STATIC_FILES = [
   '/forum/',
   '/market/',
   '/portfolio/',
-  '/streetview/'
+  '/streetview/',
+  '/bienestar/',
+  '/reportes/',
+  '/cursos/',
+  '/encuestas/',
+  '/horarios/'
 ];
 
 // Archivos de API para cache dinámico
@@ -39,7 +44,12 @@ const API_PATTERNS = [
   '/api/market/',
   '/api/portfolio/',
   '/api/polls/',
-  '/api/campuses/'
+  '/api/campuses/',
+  '/api/bienestar/',
+  '/api/reports/',
+  '/api/otec/',
+  '/api/notifications/',
+  '/api/schedules/'
 ];
 
 // Instalación del Service Worker

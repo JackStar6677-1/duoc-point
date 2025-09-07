@@ -22,7 +22,7 @@ DAY_MAP = {
     "Domingo": 6,
 }
 
-CONFIG_DIR = Path(settings.BASE_DIR).parent / "config"
+CONFIG_DIR = Path(settings.BASE_DIR).parent.parent / "config"
 
 
 @shared_task

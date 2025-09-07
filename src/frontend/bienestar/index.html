@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Estudiantil - Duoc Point</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="bienestar.css">
+    <meta name="theme-color" content="#2e004f">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><i class="bi bi-heart-pulse"></i> Bienestar Estudiantil</h1>
+            <nav class="header-nav">
+                <button id="btnFiltrar" class="btn btn-secondary">
+                    <i class="bi bi-funnel"></i> Filtrar por Carrera
+                </button>
+                <button id="btnConfigurar" class="btn btn-outline-secondary">
+                    <i class="bi bi-gear"></i> Configurar
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Filtros -->
+        <section class="filtros-section">
+            <div class="filtros-card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="carreraSelect" class="form-label">Carrera</label>
+                        <select id="carreraSelect" class="form-select">
+                            <option value="">Todas las carreras</option>
+                            <option value="Informatica">Ingeniería en Informática</option>
+                            <option value="Derecho">Derecho</option>
+                            <option value="Enfermeria">Enfermería</option>
+                            <option value="Psicologia">Psicología</option>
+                            <option value="Administracion">Administración</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tipoSelect" class="form-label">Tipo de Contenido</label>
+                        <select id="tipoSelect" class="form-select">
+                            <option value="">Todos los tipos</option>
+                            <option value="kine">Kinesiología</option>
+                            <option value="psico">Psicología</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenido de Bienestar -->
+        <section class="contenido-section">
+            <div class="row" id="contenidoBienestar">
+                <!-- Se llenará dinámicamente -->
+            </div>
+        </section>
+
+        <!-- Modal para ver contenido -->
+        <div class="modal fade" id="contenidoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitulo"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="modalContenido">
+                        <!-- Contenido del modal -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/main.js"></script>
+    <script src="bienestar.js"></script>
+</body>
+</html>

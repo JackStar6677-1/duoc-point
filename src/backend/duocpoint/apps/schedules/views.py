@@ -14,7 +14,7 @@ from .tasks import parse_schedule_pdf
 
 import yaml
 
-CONFIG_DIR = Path(settings.BASE_DIR).parent / "config"
+CONFIG_DIR = Path(settings.BASE_DIR).parent.parent / "config"
 SECURITY_CONF = yaml.safe_load((CONFIG_DIR / "security.yaml").read_text())
 
 

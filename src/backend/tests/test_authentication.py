@@ -9,6 +9,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from unittest.mock import patch
+from duocpoint.apps.campuses.models import Sede
 
 User = get_user_model()
 
@@ -18,18 +19,29 @@ class AuthenticationTestCase(APITestCase):
     
     def setUp(self):
         """Configuración inicial para los tests"""
+        # Crear una sede de prueba
+        self.sede = Sede.objects.create(
+            slug='test-campus',
+            nombre='Campus de Prueba',
+            direccion='Dirección de Prueba',
+            lat=-33.4489,
+            lng=-70.6693
+        )
+        
         self.user_data = {
             'email': 'test@duocuc.cl',
             'password': 'testpass123',
             'name': 'Test User',
             'role': 'student',
-            'campus': 1,
+            'campus': self.sede.id,
             'career': 'Ingeniería en Informática'
         }
     
     def test_user_registration_duocuc_email(self):
         """Test: Usuario puede registrarse con email @duocuc.cl"""
         response = self.client.post('/api/auth/register/', self.user_data)
+        if response.status_code != status.HTTP_201_CREATED:
+            print(f"Error response: {response.data}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertTrue(User.objects.filter(email='test@duocuc.cl').exists())
     
@@ -49,7 +61,9 @@ class AuthenticationTestCase(APITestCase):
     
     def test_user_login_success(self):
         """Test: Usuario puede iniciar sesión exitosamente"""
-        user = User.objects.create_user(**self.user_data)
+        user_data_copy = self.user_data.copy()
+        user_data_copy['campus'] = self.sede  # Para create_user necesitamos la instancia
+        user = User.objects.create_user(**user_data_copy)
         login_data = {
             'email': 'test@duocuc.cl',
             'password': 'testpass123'
@@ -70,7 +84,9 @@ class AuthenticationTestCase(APITestCase):
     
     def test_jwt_token_refresh(self):
         """Test: Usuario puede refrescar token JWT"""
-        user = User.objects.create_user(**self.user_data)
+        user_data_copy = self.user_data.copy()
+        user_data_copy['campus'] = self.sede  # Para create_user necesitamos la instancia
+        user = User.objects.create_user(**user_data_copy)
         refresh = RefreshToken.for_user(user)
         refresh_data = {'refresh': str(refresh)}
         response = self.client.post('/api/auth/refresh/', refresh_data)
@@ -79,20 +95,33 @@ class AuthenticationTestCase(APITestCase):
     
     def test_protected_endpoint_access(self):
         """Test: Endpoint protegido requiere autenticación"""
-        response = self.client.get('/api/accounts/me/')
+        response = self.client.get('/api/auth/me')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
     
     def test_authenticated_endpoint_access(self):
         """Test: Usuario autenticado puede acceder a endpoint protegido"""
-        user = User.objects.create_user(**self.user_data)
+        user_data_copy = self.user_data.copy()
+        user_data_copy['campus'] = self.sede  # Para create_user necesitamos la instancia
+        user = User.objects.create_user(**user_data_copy)
         self.client.force_authenticate(user=user)
-        response = self.client.get('/api/accounts/me/')
+        response = self.client.get('/api/auth/me')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['email'], 'test@duocuc.cl')
 
 
 class UserModelTestCase(TestCase):
     """Tests para el modelo de Usuario"""
+    
+    def setUp(self):
+        """Configuración inicial para los tests"""
+        # Crear una sede de prueba
+        self.sede = Sede.objects.create(
+            slug='test-campus',
+            nombre='Campus de Prueba',
+            direccion='Dirección de Prueba',
+            lat=-33.4489,
+            lng=-70.6693
+        )
     
     def test_user_creation(self):
         """Test: Usuario puede ser creado correctamente"""
@@ -101,7 +130,7 @@ class UserModelTestCase(TestCase):
             password='testpass123',
             name='Test User',
             role='student',
-            campus_id=1,
+            campus=self.sede,
             career='Ingeniería en Informática'
         )
         self.assertEqual(user.email, 'test@duocuc.cl')
@@ -125,7 +154,7 @@ class UserModelTestCase(TestCase):
             email='test@duocuc.cl',
             password='testpass123'
         )
-        self.assertTrue(user.es_estudiante_duocuc)
+        self.assertTrue(user.es_duoc)
         
         # Email válido @gmail.com
         user = User.objects.create_user(
@@ -135,7 +164,8 @@ class UserModelTestCase(TestCase):
         self.assertTrue(user.es_estudiante_gmail)
         
         # Email inválido
-        with self.assertRaises(ValueError):
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError):
             User.objects.create_user(
                 email='test@hotmail.com',
                 password='testpass123'

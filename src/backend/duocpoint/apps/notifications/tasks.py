@@ -13,7 +13,7 @@ import yaml
 from .models import PushSub
 from duocpoint.apps.schedules.models import Horario
 
-CONFIG_DIR = Path(settings.BASE_DIR).parent / "config"
+CONFIG_DIR = Path(settings.BASE_DIR).parent.parent / "config"
 PUSH_CONF = yaml.safe_load((CONFIG_DIR / "push.yaml").read_text())
 
 

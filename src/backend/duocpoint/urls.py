@@ -21,10 +21,11 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.conf import settings
 from django.views.static import serve
 from pathlib import Path
+from rest_framework_simplejwt.views import TokenRefreshView
 
 
 def spa_serve(request, path=""):
-    base = Path(settings.BASE_DIR).parent / "web"
+    base = Path(settings.BASE_DIR).parent / "frontend"
     target = base / path
     if target.is_dir():
         path = f"{path.rstrip('/')}/index.html"
@@ -44,6 +45,7 @@ urlpatterns = [
     path('api/', include('duocpoint.apps.otec.urls')),
     path('api/', include('duocpoint.apps.wellbeing.urls')),
     path('api/', include('duocpoint.apps.portfolio.urls')),
+    path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
     path('', include('duocpoint.apps.health.urls')),
