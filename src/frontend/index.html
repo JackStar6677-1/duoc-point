@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="manifest" href="/manifest.json" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/styles.css" />
+<meta name="theme-color" content="#0066cc" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="DuocPoint" />
+<meta name="description" content="Plataforma integral para la comunidad estudiantil de Duoc UC" />
+<meta name="keywords" content="Duoc UC, estudiantes, foros, mercado, portafolio, bienestar" />
+<meta name="author" content="DuocPoint Team" />
+<meta property="og:title" content="DuocPoint - Plataforma Integral Duoc UC" />
+<meta property="og:description" content="Plataforma integral para la comunidad estudiantil de Duoc UC" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://duocpoint.duocuc.cl" />
+<meta property="og:image" content="/static/images/og-image.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DuocPoint - Plataforma Integral Duoc UC" />
+<meta name="twitter:description" content="Plataforma integral para la comunidad estudiantil de Duoc UC" />
+<meta name="twitter:image" content="/static/images/og-image.png" />
+<title>DuocPoint - Plataforma Integral Duoc UC</title>
+</head>
+<body>
+  <!-- Botón de instalación PWA -->
+  <button id="install-button" class="btn btn-primary position-fixed" style="top: 20px; right: 20px; z-index: 9999; display: none;">
+    <i class="fas fa-download"></i> Instalar App
+  </button>
+
+  <!-- Header -->
+  <header class="bg-primary text-white py-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h1 class="mb-0">
+            <i class="fas fa-graduation-cap me-2"></i>
+            DuocPoint
+          </h1>
+          <p class="mb-0">Plataforma Integral para la Comunidad Duoc UC</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-outline-light btn-sm" onclick="window.duocPointPWA?.clearCache()">
+              <i class="fas fa-sync-alt"></i> Limpiar Cache
+            </button>
+            <button class="btn btn-outline-light btn-sm" onclick="window.duocPointPWA?.getVersion()">
+              <i class="fas fa-info-circle"></i> Versión
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/">
+              <i class="fas fa-cog"></i> Administración
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/">
+              <i class="fas fa-code"></i> API
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-th-large"></i> Apps
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/forum/">
+                <i class="fas fa-comments"></i> Foros
+              </a></li>
+              <li><a class="dropdown-item" href="/market/">
+                <i class="fas fa-store"></i> Mercado
+              </a></li>
+              <li><a class="dropdown-item" href="/portfolio/">
+                <i class="fas fa-briefcase"></i> Portafolio
+              </a></li>
+              <li><a class="dropdown-item" href="/streetview/">
+                <i class="fas fa-map"></i> Recorridos
+              </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/api/auth/login">
+                <i class="fas fa-user"></i> Cuenta
+              </a></li>
+              <li><a class="dropdown-item" href="/api/campuses/">
+                <i class="fas fa-building"></i> Sedes
+              </a></li>
+              <li><a class="dropdown-item" href="/api/polls/">
+                <i class="fas fa-poll"></i> Encuestas
+              </a></li>
+              <li><a class="dropdown-item" href="/api/notifications/">
+                <i class="fas fa-bell"></i> Notificaciones
+              </a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <span class="navbar-text">
+              <i class="fas fa-circle text-success" id="connection-status"></i>
+              <span id="connection-text">Online</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="container my-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title mb-0">
+              <i class="fas fa-home"></i> Bienvenido a DuocPoint
+            </h2>
+          </div>
+          <div class="card-body">
+            <p class="lead">Tu plataforma integral para la vida universitaria en Duoc UC.</p>
+            
+            <div class="row g-4">
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Foros</h5>
+                    <p class="card-text">Comunícate con tus compañeros por carrera y sede.</p>
+                    <a href="/forum/" class="btn btn-primary">Acceder</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-store fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Mercado</h5>
+                    <p class="card-text">Compra y vende productos de forma segura.</p>
+                    <a href="/market/" class="btn btn-success">Acceder</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-briefcase fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Portafolio</h5>
+                    <p class="card-text">Gestiona tu portafolio profesional automáticamente.</p>
+                    <a href="/portfolio/" class="btn btn-warning">Acceder</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-map fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Recorridos</h5>
+                    <p class="card-text">Explora la sede con recorridos virtuales 360°.</p>
+                    <a href="/streetview/" class="btn btn-info">Acceder</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Segunda fila -->
+            <div class="row g-4 mt-2">
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-heart-pulse fa-3x text-danger mb-3"></i>
+                    <h5 class="card-title">Bienestar</h5>
+                    <p class="card-text">Rutinas de kinesiología y recomendaciones psicológicas.</p>
+                    <a href="/bienestar/" class="btn btn-danger">Ver Bienestar</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Reportes</h5>
+                    <p class="card-text">Reporta problemas de infraestructura y equipamiento.</p>
+                    <a href="/reportes/" class="btn btn-warning">Ver Reportes</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-book fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Cursos Abiertos</h5>
+                    <p class="card-text">Cursos OTEC y externos disponibles para todos.</p>
+                    <a href="/cursos/" class="btn btn-info">Ver Cursos</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-poll fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Encuestas</h5>
+                    <p class="card-text">Participa en encuestas y votaciones de la comunidad.</p>
+                    <a href="/encuestas/" class="btn btn-primary">Ver Encuestas</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Tercera fila -->
+            <div class="row g-4 mt-2">
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-clock fa-3x text-secondary mb-3"></i>
+                    <h5 class="card-title">Horarios</h5>
+                    <p class="card-text">Importa tu horario PDF y recibe notificaciones.</p>
+                    <a href="/horarios/" class="btn btn-secondary">Ver Horarios</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-chalkboard-teacher fa-3x text-dark mb-3"></i>
+                    <h5 class="card-title">Profesores</h5>
+                    <p class="card-text">Conoce a nuestros profesores y sus especialidades.</p>
+                    <a href="/teachers.html" class="btn btn-dark">Ver Profesores</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-university fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Sedes</h5>
+                    <p class="card-text">Información sobre nuestras sedes y campus.</p>
+                    <a href="/campuses.html" class="btn btn-success">Ver Sedes</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-lg-3">
+                <div class="card h-100 text-center">
+                  <div class="card-body">
+                    <i class="fas fa-user-circle fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Mi Cuenta</h5>
+                    <p class="card-text">Gestiona tu perfil y configuración personal.</p>
+                    <a href="/account.html" class="btn btn-primary">Mi Cuenta</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>DuocPoint</h5>
+          <p>Plataforma integral para la comunidad estudiantil de Duoc UC.</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <p class="mb-0">
+            <i class="fas fa-code"></i> Desarrollado con ❤️ por el equipo DuocPoint
+          </p>
+          <small class="text-muted">Versión 1.0.0</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/pwa.js"></script>
+  <script src="/main.js"></script>
+  
+  <script>
+    // Función para mostrar notificaciones
+    function showNotifications() {
+      const token = localStorage.getItem('access_token');
+      
+      if (!token) {
+        alert('Debes iniciar sesión para ver las notificaciones');
+        window.location.href = '/login.html';
+        return;
+      }
+      
+      // Crear modal de notificaciones
+      const modalHTML = `
+        <div class="modal fade" id="notificationsModal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">🔔 Notificaciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div id="notificationsList">
+                  <div class="text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="markAllAsRead()">Marcar todas como leídas</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Agregar modal al DOM
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+      
+      // Mostrar modal
+      const modal = new bootstrap.Modal(document.getElementById('notificationsModal'));
+      modal.show();
+      
+      // Cargar notificaciones
+      loadNotifications();
+    }
+    
+    // Cargar notificaciones
+    async function loadNotifications() {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        const response = await fetch('/api/notifications/', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const notifications = await response.json();
+          displayNotifications(notifications);
+        } else {
+          document.getElementById('notificationsList').innerHTML = 
+            '<div class="alert alert-warning">Error al cargar las notificaciones</div>';
+        }
+      } catch (error) {
+        document.getElementById('notificationsList').innerHTML = 
+          '<div class="alert alert-danger">Error de conexión</div>';
+      }
+    }
+    
+    // Mostrar notificaciones
+    function displayNotifications(notifications) {
+      const container = document.getElementById('notificationsList');
+      
+      if (notifications.length === 0) {
+        container.innerHTML = '<div class="alert alert-info">No tienes notificaciones</div>';
+        return;
+      }
+      
+      const notificationsHTML = notifications.map(notification => `
+        <div class="card mb-3 ${notification.leida ? '' : 'border-primary'}">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="card-title">${notification.titulo}</h6>
+                <p class="card-text">${notification.mensaje}</p>
+                <small class="text-muted">${new Date(notification.created_at).toLocaleString()}</small>
+              </div>
+              <div>
+                <span class="badge bg-${getNotificationBadgeColor(notification.tipo)}">${notification.tipo}</span>
+                ${!notification.leida ? '<span class="badge bg-primary ms-1">Nueva</span>' : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+      container.innerHTML = notificationsHTML;
+    }
+    
+    // Obtener color del badge según el tipo
+    function getNotificationBadgeColor(tipo) {
+      const colors = {
+        'info': 'info',
+        'success': 'success',
+        'warning': 'warning',
+        'error': 'danger',
+        'forum': 'primary',
+        'market': 'success',
+        'portfolio': 'warning',
+        'campus': 'info'
+      };
+      return colors[tipo] || 'secondary';
+    }
+    
+    // Marcar todas como leídas
+    async function markAllAsRead() {
+      const token = localStorage.getItem('access_token');
+      
+      try {
+        const response = await fetch('/api/notifications/mark-all-read', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          loadNotifications(); // Recargar notificaciones
+        } else {
+          alert('Error al marcar notificaciones como leídas');
+        }
+      } catch (error) {
+        alert('Error de conexión');
+      }
+    }
+  </script>
+</body>
+</html>

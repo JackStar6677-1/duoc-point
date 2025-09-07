@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: duocpoint_dev
+      POSTGRES_USER: duocpoint
+      POSTGRES_PASSWORD: duocpoint123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ../../src/backend
+      dockerfile: Dockerfile
+    environment:
+      - DEBUG=True
+      - DATABASE_URL=postgresql://duocpoint:duocpoint123@db:5432/duocpoint_dev
+      - REDIS_URL=redis://redis:6379/0
+    volumes:
+      - ../../src/backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    command: python manage.py runserver 0.0.0.0:8000
+
+volumes:
+  postgres_data:
+

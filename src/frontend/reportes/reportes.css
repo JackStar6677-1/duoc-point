@@ -1,0 +1,194 @@
+/* Estilos para Reportes de Infraestructura */
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+
+.header-content h1 {
+    color: #2e004f;
+    margin: 0;
+    font-size: 2rem;
+}
+
+.header-nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.filtros-section {
+    margin-bottom: 2rem;
+}
+
+.filtros-card {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.reportes-section {
+    margin-bottom: 2rem;
+}
+
+.reporte-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.reporte-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.reporte-card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reporte-titulo {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2e004f;
+}
+
+.reporte-estado {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.reporte-estado.abierto {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.reporte-estado.revision {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.reporte-estado.resuelto {
+    background: #d4edda;
+    color: #155724;
+}
+
+.reporte-card-body {
+    padding: 1.5rem;
+}
+
+.reporte-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.reporte-categoria {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    background: #e9ecef;
+    color: #495057;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.reporte-descripcion {
+    color: #495057;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.reporte-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.btn-ver-reporte {
+    background: #2e004f;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-ver-reporte:hover {
+    background: #1a0033;
+    color: white;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 3rem;
+}
+
+.spinner-border {
+    color: #2e004f;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #dee2e6;
+}
+
+.reporte-imagen {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.reporte-ubicacion {
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .header-nav {
+        justify-content: center;
+    }
+    
+    .reporte-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .reporte-actions {
+        flex-direction: column;
+    }
+}

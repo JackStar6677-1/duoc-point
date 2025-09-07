@@ -1,0 +1,1 @@
+{"ast":null,"code":"// src/app-globals/index.ts\nvar globalScripts = /* default */\n() => {};\nvar globalStyles = /* default */\n\"\";\nexport { globalScripts, globalStyles };","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

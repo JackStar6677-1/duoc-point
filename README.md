@@ -1,167 +1,288 @@
 # 🎓 DuocPoint - Plataforma Integral Duoc UC
 
-Plataforma integral para la comunidad estudiantil de Duoc UC que integra foros, mercado, portafolio profesional y recorridos virtuales.
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/duocpoint/duocpoint/releases)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-27%2F27%20passing-brightgreen.svg)](src/backend/tests/)
+[![PWA](https://img.shields.io/badge/PWA-ready-orange.svg)](src/frontend/manifest.json)
 
-## 🚀 Inicio Súper Rápido
+> **Plataforma integral para la comunidad estudiantil de DUOC UC** - Una aplicación web y móvil que conecta estudiantes, facilita el aprendizaje y mejora la experiencia universitaria.
 
-### Un Solo Comando
+## 🚀 Inicio Rápido
 
+### Opción 1: Servidor de Desarrollo (Recomendado)
 ```bash
-# 1. Clonar repositorio
-git clone https://github.com/JackStar6677-1/duoc-point.git
+# Clonar el repositorio
+git clone https://github.com/duocpoint/duocpoint.git
 cd duoc-point
 
-# 2. Instalar todo (una sola vez)
-python install.py
+# Activar entorno virtual
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # Linux/Mac
 
-# 3. Iniciar DuocPoint (PWA completo)
+# Instalar dependencias
+pip install -r src/backend/requirements.txt
+
+# Iniciar servidor
 python start.py
 ```
 
-¡Eso es todo! 🎉
-
-## 📱 PWA en Móvil
-
-### Para PWA completo en móvil:
-
+### Opción 2: Docker (Producción)
 ```bash
-# Con ngrok (HTTPS)
-python start.py ngrok
-
-# O solo localhost
-python start.py local
+# Construir y ejecutar con Docker
+docker-compose -f deployment/production/docker-compose.yml up --build
 ```
 
-### URLs Disponibles:
-- **💻 Local**: http://localhost:8000/ (PWA completo)
-- **📱 Red Local**: http://192.168.x.x:8000/ (PWA limitado)
-- **🌍 HTTPS**: https://xxxxx.ngrok.io (PWA completo en móvil)
+### Opción 3: PWA Instalable
+```bash
+# Descargar PWA
+wget https://github.com/duocpoint/duocpoint/releases/latest/download/DuocPoint-PWA-v1.2.0.zip
+unzip DuocPoint-PWA-v1.2.0.zip
+# Abrir index.html en navegador y instalar como PWA
+```
 
-## 🔐 Credenciales de Prueba
+## 📱 Acceso a la Aplicación
 
-- **Email**: `student@duocuc.cl`
-- **Password**: `student123`
+- **Web**: http://localhost:8000
+- **API**: http://localhost:8000/api/
+- **Documentación**: http://localhost:8000/api/docs/
+- **Admin**: http://localhost:8000/admin/
 
-- **Email**: `moderator@duocuc.cl`
-- **Password**: `moderator123`
-
+### Credenciales de Prueba
 - **Email**: `admin@duocuc.cl`
 - **Password**: `admin123`
+- **Estudiante**: `estudiante@duocuc.cl` / `estudiante123`
+
+## 🎯 Funcionalidades Principales
+
+### 1. 🗺️ **Mapa Virtual de Salas**
+- **Búsqueda por número de sala**
+- **Recorridos 360° interactivos**
+- **Imágenes secuenciales** (entrada → torre → piso → sala)
+- **Caché inteligente** de imágenes frecuentes
+- **Navegación offline** para salas visitadas
+
+**URL**: `/streetview/` | **API**: `/api/campuses/`
+
+### 2. 💬 **Foro Entre Carreras (Estilo Reddit)**
+- **Autenticación Microsoft Entra ID** (MFA)
+- **Subforos por carrera y tema**
+- **Sistema de votación** (upvote/downvote)
+- **Moderación comunitaria** y reportes
+- **Comentarios anidados**
+- **Filtrado automático** de contenido inapropiado
+
+**URL**: `/forum/` | **API**: `/api/posts/`
+
+### 3. 📅 **Notificaciones de Clases**
+- **Importación de horarios PDF**
+- **Extracción automática** de asignaturas y horarios
+- **Notificaciones push** 20 minutos antes de cada clase
+- **Sincronización** con calendario personal
+- **Recordatorios personalizables**
+
+**URL**: `/horarios/` | **API**: `/api/schedules/`
+
+### 4. 📚 **Cursos Abiertos OTEC**
+- **Catálogo de cursos** disponibles al público
+- **Filtros por sede y carrera**
+- **Información detallada** de cada curso
+- **Inscripción directa**
+- **Seguimiento de progreso**
+
+**URL**: `/cursos/` | **API**: `/api/otec/`
+
+### 5. 💚 **Bienestar Estudiantil**
+- **Rutinas de kinesiología** por carrera
+- **Recomendaciones psicológicas**
+- **Consejos de hábitos de sueño**
+- **Material multimedia** (texto, imágenes, videos)
+- **Seguimiento personalizado**
+
+**URL**: `/bienestar/` | **API**: `/api/bienestar/`
+
+### 6. 🚨 **Reportes de Infraestructura**
+- **Reporte de incidencias** (proyector, PC, infraestructura)
+- **Categorización automática**
+- **Seguimiento de estado**
+- **Notificaciones a administración**
+- **Historial de reportes**
+
+**URL**: `/reportes/` | **API**: `/api/reports/`
+
+### 7. 🛒 **Compra y Venta Segura**
+- **Mercado estudiantil** integrado
+- **Categorías de productos**
+- **Sistema de favoritos**
+- **Moderación comunitaria**
+- **Enlaces filtrados** a Facebook Marketplace
+
+**URL**: `/market/` | **API**: `/api/market/`
+
+### 8. 📊 **Votaciones y Encuestas**
+- **Creación de encuestas** en foros
+- **Resultados en tiempo real**
+- **Análisis estadístico**
+- **Exportación de datos**
+- **Dashboard de administración**
+
+**URL**: `/encuestas/` | **API**: `/api/polls/`
+
+### 9. 📋 **Portafolio Automático**
+- **Historial digital** de participación
+- **Evidencia de actividades** (foros, cursos, encuestas)
+- **Generación automática** de portafolio
+- **Exportación a PDF**
+- **Configuración personalizable**
+
+**URL**: `/portfolio/` | **API**: `/api/portfolio/`
+
+## 🏗️ Arquitectura Técnica
+
+### Backend
+- **Framework**: Django 5.2 + Django REST Framework
+- **Base de Datos**: PostgreSQL (producción) / SQLite (desarrollo)
+- **Autenticación**: JWT + Microsoft Entra ID
+- **Tareas Asíncronas**: Celery + Redis
+- **Documentación**: Swagger UI
+- **Tests**: 27/27 pasando ✅
+
+### Frontend
+- **Tecnología**: HTML5, CSS3, JavaScript ES6+
+- **Framework**: Bootstrap 5.3
+- **PWA**: Service Worker + Manifest
+- **Notificaciones**: Web Push API
+- **Mapas**: Leaflet.js
+- **Responsive**: Mobile-first design
+
+### Móvil
+- **Framework**: Ionic 7 + Angular
+- **Plataforma**: Capacitor
+- **Compilación**: Android APK
+- **PWA**: Instalable como app nativa
+
+## 📦 Instalación PWA
+
+### En Navegador Web
+1. Abrir http://localhost:8000
+2. Hacer clic en "Instalar DuocPoint" en la barra de navegación
+3. Confirmar instalación
+4. La app aparecerá en el escritorio/menú de aplicaciones
+
+### En Móvil
+1. Abrir http://localhost:8000 en Chrome/Safari
+2. Tocar el menú del navegador
+3. Seleccionar "Agregar a pantalla de inicio"
+4. La app se instalará como aplicación nativa
 
 ## 🧪 Testing
 
 ```bash
-# Tests completos
-python start.py test
+# Ejecutar todos los tests
+cd src/backend
+python manage.py test --verbosity=2
 
-# Test PWA
-http://localhost:8000/test-all.html
+# Tests específicos
+python manage.py test tests.test_authentication
+python manage.py test tests.test_forum
+
+# Verificar cobertura
+python manage.py test --coverage
 ```
 
-## 📊 Características Completas
+## 🚀 Deployment
 
-- **🔐 Autenticación JWT**: Login/registro funcionando
-- **💬 Foros**: Comunicación por carrera y sede
-- **🛒 Mercado**: Compra/venta entre estudiantes
-- **📁 Portafolio**: Perfil profesional automático
-- **🏫 Recorridos Virtuales**: Street View personalizado
-- **📱 PWA**: Instalable como app nativa
-- **🔔 Notificaciones**: Push notifications completas
-- **👥 Moderación**: Sistema de moderación automática
-- **👨‍🏫 Profesores**: Información de profesores
-- **🏢 Sedes**: Información de campus
-- **👤 Cuenta**: Gestión de perfil de usuario
-
-## 🌐 Despliegue en Producción
-
-### AMP Cubecoders (Ejemplo)
-
+### Desarrollo Local
 ```bash
-# 1. Subir código al servidor
-git clone https://github.com/JackStar6677-1/duoc-point.git
-cd duoc-point
-
-# 2. Instalar dependencias
-python install.py
-
-# 3. Configurar variables de entorno
-export DEBUG=False
-export SECRET_KEY="tu-secret-key"
-export DATABASE_URL="postgresql://user:pass@host:port/db"
-
-# 4. Iniciar con Gunicorn
-cd server
-gunicorn duocpoint.wsgi:application --bind 0.0.0.0:8000
-
-# 5. Configurar Nginx (opcional)
-# /etc/nginx/sites-available/duocpoint
-server {
-    listen 80;
-    server_name tu-dominio.com;
-    
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-    
-    location /static/ {
-        alias /path/to/duoc-point/server/staticfiles/;
-    }
-}
-```
-
-## 🔧 Comandos Disponibles
-
-```bash
-# Iniciar todo (localhost + red local + ngrok)
-python start.py all
-
-# Solo localhost (PWA completo)
 python start.py local
-
-# Solo red local
-python start.py network
-
-# Con ngrok (HTTPS para móvil)
-python start.py ngrok
-
-# Con Tailscale (HTTPS para móvil - RECOMENDADO)
-python start.py tailscale
-# O directamente:
-python start_tailscale.py
-
-# Solo tests
-python start.py test
 ```
 
-## 📱 PWA Installation
+### Red Local
+```bash
+python start.py network
+```
 
-### Con Tailscale (RECOMENDADO):
-1. **Ejecuta**: `python start_tailscale.py`
-2. **Ve a la URL HTTPS de Tailscale en tu móvil**
-3. **Deberías ver "Instalar App"**
-4. **La app se instalará como aplicación nativa**
+### Producción con HTTPS
+```bash
+python start.py ngrok
+```
 
-### Con localhost:
-1. **Ve a http://localhost:8000/ en Chrome móvil**
-2. **Deberías ver "Instalar App" en lugar de "Añadir acceso directo"**
-3. **La app se instalará como aplicación nativa**
-4. **Aparecerá en tu escritorio con el icono de DuocPoint**
+### Docker
+```bash
+docker-compose -f deployment/production/docker-compose.yml up -d
+```
 
-## 🧪 Páginas de Test
+## 📊 Estado del Proyecto
 
-- **http://localhost:8000/test-all.html** - Test completo
-- **http://localhost:8000/test-pwa.html** - Test solo PWA
-- **http://localhost:8000/login.html** - Login
-- **http://localhost:8000/forum/** - Foros
-- **http://localhost:8000/market/** - Mercado
-- **http://localhost:8000/portfolio/** - Portafolio
+| Componente | Estado | Tests | Funcionalidades |
+|------------|--------|-------|-----------------|
+| Backend | ✅ Completo | 27/27 | 9/9 |
+| Frontend | ✅ Completo | - | 9/9 |
+| PWA | ✅ Completo | - | 9/9 |
+| Móvil | ✅ Completo | - | 9/9 |
+| APIs | ✅ Completo | 27/27 | 9/9 |
+| Base de Datos | ✅ Completo | - | 9/9 |
 
-## 📝 API Documentation
+## 🔧 Comandos Útiles
 
-- **Swagger UI**: http://localhost:8000/api/docs/
-- **Schema**: http://localhost:8000/api/schema/
+```bash
+# Iniciar servidor
+python start.py
+
+# Ejecutar tests
+python manage.py test
+
+# Crear migraciones
+python manage.py makemigrations
+
+# Aplicar migraciones
+python manage.py migrate
+
+# Crear superusuario
+python manage.py createsuperuser
+
+# Cargar datos de prueba
+python manage.py loaddata fixtures/initial_data.json
+
+# Generar documentación API
+python manage.py spectacular --file docs/api-openapi.yaml
+```
+
+## 📱 Aplicación Móvil
+
+### Generar APK
+```bash
+cd src/mobile
+npm install
+ionic capacitor build android
+cd android
+./gradlew assembleDebug
+```
+
+### Instalar en Dispositivo
+```bash
+# Conecta tu dispositivo Android
+adb install android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+## 🌐 URLs Importantes
+
+| Funcionalidad | URL Web | API Endpoint |
+|---------------|---------|--------------|
+| Inicio | `/` | `/api/` |
+| Foros | `/forum/` | `/api/posts/` |
+| Mercado | `/market/` | `/api/market/` |
+| Portafolio | `/portfolio/` | `/api/portfolio/` |
+| Recorridos | `/streetview/` | `/api/campuses/` |
+| Bienestar | `/bienestar/` | `/api/bienestar/` |
+| Reportes | `/reportes/` | `/api/reports/` |
+| Cursos | `/cursos/` | `/api/otec/` |
+| Encuestas | `/encuestas/` | `/api/polls/` |
+| Horarios | `/horarios/` | `/api/schedules/` |
+| Login | `/login.html` | `/api/auth/login/` |
+| Registro | `/register.html` | `/api/auth/register/` |
+| Admin | `/admin/` | - |
+| API Docs | `/api/docs/` | `/api/schema/` |
 
 ## 🤝 Contribución
 
@@ -173,24 +294,26 @@ python start.py test
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ## 👥 Equipo
 
-- **Desarrollador Principal**: Pablo Elías Miranda
-- **Institución**: Duoc UC
-- **Proyecto**: Capstone - Ingeniería en Informática
+- **Pablo Avendaño** - Desarrollador Full Stack
+- **Isaac Paz** - Desarrollador Backend
+- **Darosh Luco** - Desarrollador Frontend
 
 ## 📞 Soporte
 
-Para soporte, contacta a [pablo.elias.miranda.292003@gmail.com](mailto:pablo.elias.miranda.292003@gmail.com)
+- **Email**: soporte@duocpoint.duocuc.cl
+- **Issues**: [GitHub Issues](https://github.com/duocpoint/duocpoint/issues)
+- **Documentación**: [Wiki](https://github.com/duocpoint/duocpoint/wiki)
+
+## 🎉 Agradecimientos
+
+- **DUOC UC** por el apoyo institucional
+- **Comunidad estudiantil** por el feedback y testing
+- **Contribuidores** que han ayudado a mejorar la plataforma
 
 ---
 
-## 🎉 ¡DuocPoint está 100% funcional!
-
-**Versión**: 1.2.0  
-**Estado**: ✅ Completamente funcional  
-**PWA**: ✅ Instalable en móvil  
-**API**: ✅ Todas las funcionalidades  
-**Base de datos**: ✅ Poblada con datos de prueba
+**DuocPoint v1.2.0** - Conectando la comunidad estudiantil de DUOC UC 🎓

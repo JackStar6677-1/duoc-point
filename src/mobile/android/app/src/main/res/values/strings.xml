@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DuocPoint</string>
+    <string name="title_activity_main">DuocPoint</string>
+    <string name="package_name">cl.duocuc.duocpoint</string>
+    <string name="custom_url_scheme">cl.duocuc.duocpoint</string>
+</resources>
