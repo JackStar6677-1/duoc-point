@@ -1,0 +1,122 @@
+HERRAMIENTAS Y TECNOLOGÍAS UTILIZADAS - DUOCPOINT
+==================================================
+
+HERRAMIENTAS DE DESARROLLO:
+- Python 3.8+ - Lenguaje principal del backend
+- Django 5.2.6 - Framework web de Python
+- Django REST Framework - Para API REST
+- SQLite - Base de datos para desarrollo
+- PostgreSQL - Base de datos para producción
+- Git - Control de versiones
+- PowerShell - Scripts de automatización
+- Visual Studio Code - Editor de código
+
+HERRAMIENTAS FRONTEND:
+- HTML5 - Estructura semántica
+- CSS3 - Estilos y animaciones
+- JavaScript ES6+ - Funcionalidad interactiva
+- Bootstrap 5 - Framework CSS (solo componentes base)
+- Font Awesome 6 - Iconografía
+- Bootstrap Icons - Iconos adicionales
+- Web Audio API - Sistema de sonidos
+- Service Worker API - PWA
+
+HERRAMIENTAS DE DISEÑO:
+- CSS Variables - Para tema personalizado
+- CSS Grid y Flexbox - Layout responsive
+- CSS Animations - Efectos visuales
+- Media Queries - Diseño responsive
+- Custom Properties - Variables CSS
+
+HERRAMIENTAS PWA:
+- Manifest.json - Configuración de PWA
+- Service Worker - Cache y funcionamiento offline
+- Cache API - Almacenamiento offline
+- Push API - Notificaciones push
+- Web App Manifest - Instalación nativa
+
+HERRAMIENTAS DE AUTENTICACIÓN:
+- JWT (JSON Web Tokens) - Autenticación
+- Django JWT - Implementación en backend
+- Local Storage - Almacenamiento de tokens
+- Refresh Tokens - Renovación automática
+
+HERRAMIENTAS DE COMUNICACIÓN:
+- Fetch API - Comunicación con backend
+- WebSocket (preparado) - Comunicación en tiempo real
+- Push Notifications - Notificaciones push
+- Email (configurado) - Notificaciones por email
+
+HERRAMIENTAS DE DESARROLLO:
+- Django Admin - Panel de administración
+- Django Debug Toolbar - Debugging
+- Django CORS Headers - CORS
+- Django Filter - Filtros de API
+- Django Pagination - Paginación
+
+HERRAMIENTAS DE SEGURIDAD:
+- Django Security - Configuración de seguridad
+- CORS - Cross-Origin Resource Sharing
+- CSRF Protection - Protección CSRF
+- Rate Limiting - Limitación de requests
+- Input Validation - Validación de entrada
+
+HERRAMIENTAS DE CACHE:
+- Django Cache - Sistema de cache
+- Redis (producción) - Cache en memoria
+- Browser Cache - Cache del navegador
+- Service Worker Cache - Cache PWA
+
+HERRAMIENTAS DE TESTING:
+- Django Test Framework - Testing del backend
+- JavaScript Testing - Testing del frontend
+- Manual Testing - Pruebas manuales
+- User Acceptance Testing - Pruebas de usuario
+
+HERRAMIENTAS DE DEPLOYMENT:
+- Docker (configurado) - Containerización
+- Nginx (configurado) - Servidor web
+- Gunicorn (configurado) - Servidor WSGI
+- Environment Variables - Configuración
+
+HERRAMIENTAS DE DOCUMENTACIÓN:
+- Markdown - Documentación
+- Django Admin - Documentación automática
+- API Documentation - Documentación de API
+- README.md - Documentación principal
+
+HERRAMIENTAS DE AUTOMATIZACIÓN:
+- PowerShell Scripts - Scripts de inicio
+- Batch Files - Scripts de Windows
+- Django Management Commands - Comandos personalizados
+- Git Hooks - Automatización Git
+
+HERRAMIENTAS DE MONITOREO:
+- Django Logging - Sistema de logs
+- Browser DevTools - Debugging frontend
+- Network Tab - Monitoreo de requests
+- Console Logging - Logs de JavaScript
+
+HERRAMIENTAS DE OPTIMIZACIÓN:
+- Django Query Optimization - Optimización de queries
+- CSS Optimization - Optimización de estilos
+- JavaScript Minification - Minificación de JS
+- Image Optimization - Optimización de imágenes
+
+HERRAMIENTAS DE ACCESIBILIDAD:
+- Semantic HTML - HTML semántico
+- ARIA Labels - Etiquetas de accesibilidad
+- Keyboard Navigation - Navegación por teclado
+- Screen Reader Support - Soporte para lectores de pantalla
+
+HERRAMIENTAS DE RESPONSIVE:
+- CSS Media Queries - Diseño responsive
+- Bootstrap Grid - Sistema de grid
+- Flexible Images - Imágenes responsivas
+- Touch-friendly Design - Diseño táctil
+
+HERRAMIENTAS DE PERFORMANCE:
+- Lazy Loading - Carga diferida
+- Code Splitting - División de código
+- Cache Strategies - Estrategias de cache
+- Compression - Compresión de archivos

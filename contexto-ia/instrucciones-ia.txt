@@ -1,0 +1,95 @@
+INSTRUCCIONES PARA IA - DUOCPOINT
+==================================
+
+CONTEXTO DEL PROYECTO:
+DuocPoint es una aplicación web progresiva (PWA) desarrollada desde cero para la comunidad estudiantil de Duoc UC. Es un proyecto académico del programa Capstone que integra múltiples módulos funcionales.
+
+INFORMACIÓN IMPORTANTE:
+- Proyecto desarrollado completamente desde cero
+- No se usaron plantillas o frameworks preconstruidos
+- Todo el código es original y específico para Duoc UC
+- PWA optimizada para funcionamiento local y producción
+- Documentación académica preservada en carpeta Documentacion/
+
+ESTRUCTURA CLAVE:
+- src/backend/ - Backend Django con API REST
+- src/frontend/ - Frontend PWA con archivos estáticos organizados
+- config/ - Configuración del sistema
+- imagenes/ - Imágenes del proyecto (NO TOCAR)
+- Documentacion/ - Documentación académica (NO TOCAR)
+- contexto-ia/ - Contexto para IA (ESTE ARCHIVO)
+
+ARCHIVOS PRINCIPALES:
+- iniciar_desarrollo.bat - Script de desarrollo
+- iniciar_produccion.bat - Script de producción
+- README.md - Documentación principal
+
+MÓDULOS IMPLEMENTADOS:
+1. Foros de Discusión
+2. Mercado Estudiantil
+3. Portafolio Profesional
+4. Navegación Virtual (por diapositivas)
+5. Bienestar Estudiantil
+6. Sistema de Reportes
+7. Cursos OTEC
+8. Encuestas
+9. Horarios
+10. Notificaciones
+
+CARACTERÍSTICAS TÉCNICAS:
+- PWA instalable con funcionamiento offline
+- Sistema de autenticación JWT
+- API REST completa
+- Notificaciones push
+- Diseño responsive
+- Sistema de sonidos interactivos
+- Navegación virtual del campus
+
+INSTRUCCIONES ESPECÍFICAS:
+1. NO modificar archivos en carpeta Documentacion/
+2. NO modificar archivos en carpeta imagenes/
+3. Mantener solo 2 archivos .bat (desarrollo y producción)
+4. Preservar estructura de archivos estáticos
+5. Mantener compatibilidad PWA
+6. Conservar funcionalidad de todos los módulos
+7. Mantener diseño responsive
+8. Preservar sistema de sonidos
+9. Conservar navegación virtual por diapositivas
+10. Mantener logo de DuocUC en todas las páginas
+
+DESARROLLO DESDE CERO:
+- Todo el código fue escrito específicamente para este proyecto
+- No se usaron plantillas HTML preconstruidas
+- No se usaron frameworks CSS como Tailwind
+- No se usaron frameworks JavaScript como React/Vue
+- Diseño visual único para Duoc UC
+- Funcionalidades específicas para la institución
+
+HERRAMIENTAS UTILIZADAS:
+- Python 3.8+ con Django 5.2.6
+- HTML5, CSS3, JavaScript ES6+
+- Bootstrap 5 (solo componentes base)
+- Font Awesome 6
+- Web Audio API
+- Service Worker API
+- JWT para autenticación
+- SQLite (desarrollo) / PostgreSQL (producción)
+
+ESTADO ACTUAL:
+- Completamente funcional y probado
+- Todos los módulos implementados
+- PWA optimizada
+- Documentación completa
+- Listo para uso en desarrollo y producción
+
+INSTRUCCIONES PARA MODIFICACIONES:
+1. Mantener compatibilidad con estructura existente
+2. Preservar funcionalidad PWA
+3. Conservar diseño responsive
+4. Mantener sistema de autenticación
+5. Preservar integración entre módulos
+6. Conservar documentación académica
+7. Mantener contexto para IA actualizado
+8. Preservar scripts de automatización
+9. Conservar configuración de desarrollo/producción
+10. Mantener calidad del código y documentación
