@@ -1,238 +1,422 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Market - Duoc Point</title>
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="market.css">
-    <meta name="theme-color" content="#2e004f">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/duoc-theme.css" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="market.css" />
+  <title>Mercado - DuocPoint</title>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1><i class="bi bi-shop"></i> Market DuocPoint</h1>
-            <nav class="header-nav">
-                <button id="btnCrearProducto" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Publicar Producto
-                </button>
-                <button id="btnMisProductos" class="btn btn-secondary">
-                    <i class="bi bi-person-check"></i> Mis Productos
-                </button>
-                <button id="btnFavoritos" class="btn btn-secondary">
-                    <i class="bi bi-heart"></i> Favoritos
-                </button>
-            </nav>
+  <!-- Header -->
+  <header class="duoc-header text-white py-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="duoc-logo">
+            <i class="fas fa-store duoc-icon"></i>
+            <div>
+              <h1 class="mb-0">Mercado DuocPoint</h1>
+              <p class="mb-0">Compra y vende productos de forma segura</p>
+            </div>
+          </div>
         </div>
-    </header>
-
-    <main class="main-content">
-        <!-- Filtros -->
-        <section class="filtros-section">
-            <div class="filtros-container">
-                <div class="filtro-grupo">
-                    <label for="filtroCategoria">Categoría:</label>
-                    <select id="filtroCategoria">
-                        <option value="">Todas</option>
-                    </select>
-                </div>
-                
-                <div class="filtro-grupo">
-                    <label for="filtroCampus">Campus:</label>
-                    <select id="filtroCampus">
-                        <option value="">Todos</option>
-                    </select>
-                </div>
-                
-                <div class="filtro-grupo">
-                    <label for="filtroPrecio">Precio máximo:</label>
-                    <input type="number" id="filtroPrecio" placeholder="Ej: 50000">
-                </div>
-                
-                <div class="filtro-grupo">
-                    <label for="busqueda">Buscar:</label>
-                    <input type="text" id="busqueda" placeholder="Título o descripción...">
-                </div>
-                
-                <button id="btnFiltrar" class="btn btn-outline">
-                    <i class="bi bi-funnel"></i> Filtrar
-                </button>
-                
-                <button id="btnLimpiarFiltros" class="btn btn-outline">
-                    <i class="bi bi-x-circle"></i> Limpiar
-                </button>
-            </div>
-        </section>
-
-        <!-- Lista de Productos -->
-        <section id="productosSection" class="productos-section">
-            <div id="productosList" class="productos-grid">
-                <!-- Los productos se cargarán dinámicamente -->
-            </div>
-            
-            <div id="loading" class="loading" style="display: none;">
-                <i class="bi bi-hourglass-split"></i> Cargando productos...
-            </div>
-            
-            <div id="noResults" class="no-results" style="display: none;">
-                <i class="bi bi-search"></i>
-                <p>No se encontraron productos con los criterios seleccionados.</p>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal para Ver Producto -->
-    <div id="modalVerProducto" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitulo"></h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            
-            <div class="modal-body">
-                <div id="productoDetalle">
-                    <!-- Contenido dinámico -->
-                </div>
-                
-                <div id="productoAcciones" class="producto-acciones">
-                    <button id="btnVerEnlace" class="btn btn-primary">
-                        <i class="bi bi-box-arrow-up-right"></i> Ver en Enlace
-                    </button>
-                    <button id="btnToggleFavorito" class="btn btn-outline">
-                        <i class="bi bi-heart"></i> <span id="favoritoTexto">Agregar a Favoritos</span>
-                    </button>
-                    <button id="btnReportar" class="btn btn-danger">
-                        <i class="bi bi-flag"></i> Reportar
-                    </button>
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button class="btn btn-secondary modal-close">Cerrar</button>
-            </div>
+        <div class="col-md-6 text-end">
+          <div class="d-flex justify-content-end gap-2">
+            <a href="/" class="duoc-btn duoc-btn-outline btn-sm">
+              <i class="fas fa-home"></i> Inicio
+            </a>
+            <button class="duoc-btn duoc-btn-outline btn-sm" onclick="showFavorites()">
+              <i class="fas fa-heart"></i> Favoritos
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación -->
+  <nav class="navbar navbar-expand-lg duoc-nav">
+    <div class="container">
+      <div class="navbar-nav me-auto">
+        <a class="nav-link" href="/market/">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a class="nav-link" href="/market/?categoria=libros">
+          <i class="fas fa-book"></i> Libros
+        </a>
+        <a class="nav-link" href="/market/?categoria=electronica">
+          <i class="fas fa-laptop"></i> Electrónica
+        </a>
+        <a class="nav-link" href="/market/?categoria=ropa">
+          <i class="fas fa-tshirt"></i> Ropa
+        </a>
+        <a class="nav-link" href="/market/?categoria=otros">
+          <i class="fas fa-box"></i> Otros
+        </a>
+      </div>
+      <div class="navbar-nav">
+        <button class="duoc-btn duoc-btn-primary" onclick="showCreateProductModal()">
+          <i class="fas fa-plus"></i> Vender Producto
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="container my-4">
+    <!-- Filtros y búsqueda -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="duoc-card animate-slide-down">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Buscar productos..." id="searchInput">
+                  <button class="duoc-btn duoc-btn-primary" type="button" onclick="searchProducts()">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-2">
+                  <select class="form-select" id="categoriaFilter">
+                    <option value="">Todas las categorías</option>
+                    <option value="libros">Libros</option>
+                    <option value="electronica">Electrónica</option>
+                    <option value="ropa">Ropa</option>
+                    <option value="otros">Otros</option>
+                  </select>
+                  <select class="form-select" id="precioFilter">
+                    <option value="">Todos los precios</option>
+                    <option value="0-5000">$0 - $5.000</option>
+                    <option value="5000-15000">$5.000 - $15.000</option>
+                    <option value="15000-30000">$15.000 - $30.000</option>
+                    <option value="30000+">$30.000+</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Modal para Crear/Editar Producto -->
-    <div id="modalCrearProducto" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h2>Publicar Producto</h2>
-                <button class="modal-close">&times;</button>
+    <!-- Lista de productos -->
+    <div class="row">
+      <div class="col-12">
+        <div class="duoc-card animate-zoom-in">
+          <div class="card-header">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-store duoc-icon"></i> Productos Disponibles
+            </h3>
+          </div>
+          <div class="card-body">
+            <div id="productsList">
+              <!-- Productos se cargarán aquí -->
+              <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando productos...</span>
+                </div>
+              </div>
             </div>
-            
-            <form id="formCrearProducto" class="modal-body">
-                <div class="form-group">
-                    <label for="inputTitulo">Título *</label>
-                    <input type="text" id="inputTitulo" required maxlength="200">
-                </div>
-                
-                <div class="form-group">
-                    <label for="inputDescripcion">Descripción *</label>
-                    <textarea id="inputDescripcion" rows="4" required></textarea>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputCategoria">Categoría *</label>
-                        <select id="inputCategoria" required>
-                            <option value="">Seleccionar categoría</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="inputTipoEnlace">Tipo de Enlace</label>
-                        <select id="inputTipoEnlace">
-                            <option value="otro">Otro</option>
-                            <option value="facebook">Facebook Marketplace</option>
-                            <option value="yapo">Yapo.cl</option>
-                            <option value="mercadolibre">MercadoLibre</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="inputUrlPrincipal">Enlace Principal *</label>
-                    <input type="url" id="inputUrlPrincipal" required placeholder="https://...">
-                    <small>Enlace donde está publicado el producto</small>
-                </div>
-                
-                <div class="form-group">
-                    <label for="inputUrlsAdicionales">Enlaces Adicionales (opcional)</label>
-                    <textarea id="inputUrlsAdicionales" rows="2" placeholder="Un enlace por línea"></textarea>
-                    <small>Enlaces adicionales como fotos, videos, etc.</small>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="inputPrecio">Precio (CLP)</label>
-                        <input type="number" id="inputPrecio" min="0" placeholder="Ej: 50000">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="inputMoneda">Moneda</label>
-                        <select id="inputMoneda">
-                            <option value="CLP">Pesos Chilenos (CLP)</option>
-                            <option value="USD">Dólares (USD)</option>
-                        </select>
-                    </div>
-                </div>
-            </form>
-            
-            <div class="modal-footer">
-                <button type="submit" form="formCrearProducto" class="btn btn-primary">
-                    <i class="bi bi-check-circle"></i> Publicar Producto
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para crear producto -->
+  <div class="modal fade" id="createProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-plus duoc-icon"></i> Vender Producto
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="createProductForm">
+            <div class="mb-3">
+              <label for="productName" class="form-label">Nombre del Producto</label>
+              <input type="text" class="form-control" id="productName" required>
+            </div>
+            <div class="mb-3">
+              <label for="productCategory" class="form-label">Categoría</label>
+              <select class="form-select" id="productCategory" required>
+                <option value="">Seleccionar categoría</option>
+                <option value="libros">Libros</option>
+                <option value="electronica">Electrónica</option>
+                <option value="ropa">Ropa</option>
+                <option value="otros">Otros</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="productPrice" class="form-label">Precio</label>
+              <input type="number" class="form-control" id="productPrice" required>
+            </div>
+            <div class="mb-3">
+              <label for="productDescription" class="form-label">Descripción</label>
+              <textarea class="form-control" id="productDescription" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="productImage" class="form-label">Imagen</label>
+              <input type="file" class="form-control" id="productImage" accept="image/*">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="duoc-btn duoc-btn-primary" onclick="createProduct()">
+            <i class="fas fa-paper-plane"></i> Publicar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="duoc-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="gradient-text">DuocPoint Mercado</h5>
+          <p>Compra y vende productos de forma segura con tu comunidad estudiantil.</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <p class="mb-0">
+            <i class="fas fa-code duoc-icon"></i> Desarrollado con ❤️ por el equipo DuocPoint
+          </p>
+          <small class="text-muted">Versión 1.2.0</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/sounds.js"></script>
+  <script src="/pwa.js"></script>
+  <script src="/main.js"></script>
+  <script src="market.js"></script>
+
+  <script>
+    // Inicializar animaciones y sonidos
+    document.addEventListener('DOMContentLoaded', function() {
+      // Reproducir sonido de bienvenida
+      setTimeout(() => {
+        if (window.playSound) {
+          window.playSound('success');
+        }
+      }, 500);
+
+      // Agregar efectos hover con sonido
+      const cards = document.querySelectorAll('.duoc-card');
+      cards.forEach(card => {
+        card.classList.add('duoc-card-hover-sound');
+        card.addEventListener('mouseenter', () => {
+          if (window.playSound) {
+            window.playSound('hover');
+          }
+        });
+      });
+
+      // Agregar efectos a los botones
+      const buttons = document.querySelectorAll('.duoc-btn');
+      buttons.forEach(button => {
+        button.classList.add('duoc-btn-hover-sound');
+        button.addEventListener('mouseenter', () => {
+          if (window.playSound) {
+            window.playSound('hover');
+          }
+        });
+      });
+
+      // Agregar efectos a los iconos
+      const icons = document.querySelectorAll('.duoc-icon');
+      icons.forEach(icon => {
+        icon.classList.add('duoc-icon-hover-sound');
+        icon.addEventListener('mouseenter', () => {
+          if (window.playSound) {
+            window.playSound('hover');
+          }
+        });
+      });
+
+      // Cargar productos
+      loadProducts();
+    });
+
+    // Función para mostrar modal de crear producto
+    function showCreateProductModal() {
+      if (window.playSound) {
+        window.playSound('click');
+      }
+      const modal = new bootstrap.Modal(document.getElementById('createProductModal'));
+      modal.show();
+    }
+
+    // Función para cargar productos
+    async function loadProducts() {
+      try {
+        const response = await fetch('/api/market/products/');
+        if (response.ok) {
+          const products = await response.json();
+          displayProducts(products);
+        } else {
+          // Mostrar productos de ejemplo si la API no está disponible
+          displayExampleProducts();
+        }
+      } catch (error) {
+        displayExampleProducts();
+      }
+    }
+
+    // Función para mostrar productos de ejemplo
+    function displayExampleProducts() {
+      const productsList = document.getElementById('productsList');
+      const exampleProducts = [
+        {
+          id: 1,
+          nombre: "Libro de Programación Java",
+          descripcion: "Libro usado en excelente estado, incluye ejercicios resueltos",
+          precio: 15000,
+          categoria: "libros",
+          vendedor: "Juan Pérez",
+          fecha: "2025-01-07",
+          imagen: "/static/images/products/libro-java.jpg"
+        },
+        {
+          id: 2,
+          nombre: "Laptop HP Pavilion",
+          descripcion: "Laptop en buen estado, ideal para estudiantes",
+          precio: 250000,
+          categoria: "electronica",
+          vendedor: "María González",
+          fecha: "2025-01-06",
+          imagen: "/static/images/products/laptop-hp.jpg"
+        },
+        {
+          id: 3,
+          nombre: "Chaqueta Duoc UC",
+          descripcion: "Chaqueta oficial de Duoc UC, talla M",
+          precio: 35000,
+          categoria: "ropa",
+          vendedor: "Pedro Soto",
+          fecha: "2025-01-05",
+          imagen: "/static/images/products/chaqueta-duoc.jpg"
+        }
+      ];
+
+      const productsHTML = exampleProducts.map(product => `
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="duoc-card h-100 duoc-card-hover-sound animate-zoom-in" onclick="playSound('click')">
+            <div class="card-body">
+              <div class="text-center mb-3">
+                <i class="fas fa-${getCategoryIcon(product.categoria)} fa-3x duoc-icon-hover-sound mb-2" style="color: var(--duoc-gold);"></i>
+              </div>
+              <h5 class="card-title">${product.nombre}</h5>
+              <p class="card-text">${product.descripcion}</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="h5 text-primary mb-0">$${product.precio.toLocaleString()}</span>
+                <span class="badge bg-${getCategoryColor(product.categoria)}">${product.categoria}</span>
+              </div>
+              <div class="mt-3">
+                <small class="text-muted">
+                  <i class="fas fa-user"></i> ${product.vendedor}
+                </small>
+                <br>
+                <small class="text-muted">
+                  <i class="fas fa-calendar"></i> ${new Date(product.fecha).toLocaleDateString()}
+                </small>
+              </div>
+              <div class="mt-3 d-flex gap-2">
+                <button class="duoc-btn duoc-btn-primary flex-fill" onclick="viewProduct(${product.id})">
+                  <i class="fas fa-eye"></i> Ver
                 </button>
-                <button class="btn btn-secondary modal-close">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Reportar Producto -->
-    <div id="modalReportar" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Reportar Producto</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            
-            <form id="formReportar" class="modal-body">
-                <div class="form-group">
-                    <label for="inputTipoReporte">Tipo de Reporte *</label>
-                    <select id="inputTipoReporte" required>
-                        <option value="">Seleccionar tipo</option>
-                        <option value="fraude">Posible Fraude</option>
-                        <option value="inapropiado">Contenido Inapropiado</option>
-                        <option value="spam">Spam</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="inputDescripcionReporte">Descripción *</label>
-                    <textarea id="inputDescripcionReporte" rows="4" required placeholder="Explica por qué reportas este producto..."></textarea>
-                </div>
-            </form>
-            
-            <div class="modal-footer">
-                <button type="submit" form="formReportar" class="btn btn-danger">
-                    <i class="bi bi-flag"></i> Enviar Reporte
+                <button class="duoc-btn duoc-btn-outline" onclick="addToFavorites(${product.id})">
+                  <i class="fas fa-heart"></i>
                 </button>
-                <button class="btn btn-secondary modal-close">Cancelar</button>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      `).join('');
 
-    <!-- Toast para notificaciones -->
-    <div id="toast" class="toast">
-        <div class="toast-content">
-            <span id="toastMessage"></span>
-        </div>
-    </div>
+      productsList.innerHTML = `<div class="row">${productsHTML}</div>`;
+    }
 
-    <script src="market.js"></script>
+    // Función para obtener icono de categoría
+    function getCategoryIcon(categoria) {
+      const icons = {
+        'libros': 'book',
+        'electronica': 'laptop',
+        'ropa': 'tshirt',
+        'otros': 'box'
+      };
+      return icons[categoria] || 'box';
+    }
+
+    // Función para obtener color de categoría
+    function getCategoryColor(categoria) {
+      const colors = {
+        'libros': 'info',
+        'electronica': 'primary',
+        'ropa': 'success',
+        'otros': 'secondary'
+      };
+      return colors[categoria] || 'secondary';
+    }
+
+    // Función para ver producto
+    function viewProduct(productId) {
+      if (window.playSound) {
+        window.playSound('click');
+      }
+      alert(`Viendo producto ${productId}`);
+    }
+
+    // Función para agregar a favoritos
+    function addToFavorites(productId) {
+      if (window.playSound) {
+        window.playSound('success');
+      }
+      alert(`Producto ${productId} agregado a favoritos`);
+    }
+
+    // Función para crear producto
+    function createProduct() {
+      if (window.playSound) {
+        window.playSound('success');
+      }
+      alert('Producto creado exitosamente');
+      const modal = bootstrap.Modal.getInstance(document.getElementById('createProductModal'));
+      modal.hide();
+    }
+
+    // Función para buscar productos
+    function searchProducts() {
+      if (window.playSound) {
+        window.playSound('click');
+      }
+      const searchTerm = document.getElementById('searchInput').value;
+      alert(`Buscando: ${searchTerm}`);
+    }
+
+    // Función para mostrar favoritos
+    function showFavorites() {
+      if (window.playSound) {
+        window.playSound('click');
+      }
+      alert('Mostrando favoritos');
+    }
+  </script>
 </body>
 </html>
