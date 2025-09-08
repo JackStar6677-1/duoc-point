@@ -17,7 +17,6 @@ django-redis>=5.4
 django-celery-beat>=2.5
 django-celery-results>=2.5
 django-cors-headers>=4.3
-django-filter>=25.0
 # Parsing PDF schedules
 PyPDF2>=3.0
 # Web push notifications
