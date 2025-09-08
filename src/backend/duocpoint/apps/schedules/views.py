@@ -15,7 +15,27 @@ from .tasks import parse_schedule_pdf
 import yaml
 
 CONFIG_DIR = Path(settings.BASE_DIR).parent.parent / "config"
-SECURITY_CONF = yaml.safe_load((CONFIG_DIR / "security.yaml").read_text())
+SECURITY_CONFIG_FILE = CONFIG_DIR / "security.yaml"
+
+# Cargar configuración de seguridad con valores por defecto
+try:
+    SECURITY_CONF = yaml.safe_load(SECURITY_CONFIG_FILE.read_text())
+except FileNotFoundError:
+    # Configuración por defecto para desarrollo
+    SECURITY_CONF = {
+        "file_validation": {
+            "max_file_size": 10485760,  # 10MB
+            "allowed_extensions": [".pdf", ".jpg", ".jpeg", ".png", ".gif"]
+        },
+        "rate_limiting": {
+            "requests_per_minute": 60,
+            "requests_per_hour": 1000
+        },
+        "authentication": {
+            "max_login_attempts": 5,
+            "lockout_duration": 900
+        }
+    }
 
 
 class ScheduleImportCreateView(generics.GenericAPIView):

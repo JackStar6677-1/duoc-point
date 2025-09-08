@@ -1,0 +1,22 @@
+# Configuración de Web Push Notifications para DuocPoint
+# Este archivo contiene las claves VAPID para las notificaciones push
+
+# Claves VAPID (Voluntary Application Server Identification)
+# Para desarrollo, estas son claves de ejemplo - cambiar en producción
+vapid_public: "BEl62iUYgUivxIkv69yViEuiBIa40HI8l8V6V1V8H3BZ7pRJvnSW4UPHW3v3T1td1K3_fSqiNI2j_lLQ6Ypy1XM"
+vapid_private: "3K1XdXz0L8Fz0aJSOdwuSeiJfZ5JWY7BdI3R2kS2aJ8"
+
+# Subject (email del administrador)
+subject: "mailto:admin@duocuc.cl"
+
+# Configuración adicional
+app_name: "DuocPoint"
+app_url: "https://duocpoint.duocuc.cl"
+
+# Configuración de notificaciones
+default_ttl: 86400  # 24 horas en segundos
+default_urgency: "normal"  # normal, high, low
+
+# Configuración de reintentos
+max_retries: 3
+retry_delay: 5  # segundos

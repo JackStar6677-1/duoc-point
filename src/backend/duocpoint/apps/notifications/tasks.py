@@ -14,7 +14,18 @@ from .models import PushSub
 from duocpoint.apps.schedules.models import Horario
 
 CONFIG_DIR = Path(settings.BASE_DIR).parent.parent / "config"
-PUSH_CONF = yaml.safe_load((CONFIG_DIR / "push.yaml").read_text())
+PUSH_CONFIG_FILE = CONFIG_DIR / "push.yaml"
+
+# Cargar configuración de push con valores por defecto
+try:
+    PUSH_CONF = yaml.safe_load(PUSH_CONFIG_FILE.read_text())
+except FileNotFoundError:
+    # Configuración por defecto para desarrollo
+    PUSH_CONF = {
+        "vapid_public": "BEl62iUYgUivxIkv69yViEuiBIa40HI8l8V6V1V8H3BZ7pRJvnSW4UPHW3v3T1td1K3_fSqiNI2j_lLQ6Ypy1XM",
+        "vapid_private": "3K1XdXz0L8Fz0aJSOdwuSeiJfZ5JWY7BdI3R2kS2aJ8",
+        "subject": "mailto:admin@duocuc.cl"
+    }
 
 
 @shared_task
