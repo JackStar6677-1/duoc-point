@@ -49,7 +49,7 @@ class ForumManager {
 
     async loadForums() {
         try {
-            const response = await fetch('/api/forum/foros/');
+            const response = await fetch('/api/foros/');
             if (response.ok) {
                 this.forums = await response.json();
                 this.populateForumSelects();
@@ -72,7 +72,7 @@ class ForumManager {
             if (sortFilter) params.append('orden', sortFilter);
             if (statusFilter) params.append('estado', statusFilter);
 
-            const response = await fetch(`/api/forum/posts/?${params}`);
+            const response = await fetch(`/api/posts/?${params}`);
             if (response.ok) {
                 this.posts = await response.json();
                 this.renderPosts();
@@ -206,7 +206,7 @@ class ForumManager {
     async votePost(postId, value) {
         try {
             const token = localStorage.getItem('access_token');
-            const response = await fetch(`/api/forum/posts/${postId}/votar/`, {
+            const response = await fetch(`/api/posts/${postId}/votar/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -244,7 +244,7 @@ class ForumManager {
         
         if (commentsContainer.style.display === 'none') {
             try {
-                const response = await fetch(`/api/forum/posts/${postId}/comentarios/`);
+                const response = await fetch(`/api/posts/${postId}/comentarios/`);
                 if (response.ok) {
                     const comments = await response.json();
                     commentsContainer.innerHTML = this.renderComments(comments);
@@ -291,7 +291,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch(`/api/forum/posts/${this.currentPostId}/reportar/`, {
+            const response = await fetch(`/api/posts/${this.currentPostId}/reportar/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -333,7 +333,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch(`/api/forum/posts/${this.currentPostId}/moderar/`, {
+            const response = await fetch(`/api/posts/${this.currentPostId}/moderar/`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -371,7 +371,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch('/api/forum/posts/', {
+            const response = await fetch('/api/posts/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
