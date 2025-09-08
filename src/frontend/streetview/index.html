@@ -3,136 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Street View Personalizado - Duoc Point</title>
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="stylesheet" href="/styles.css">
+    <title>Navegación Virtual - Duoc Point</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="streetview.css">
     <meta name="theme-color" content="#2e004f">
-    <!-- Three.js para Street View personalizado -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1><i class="bi bi-camera-video"></i> Street View Personalizado</h1>
-            <nav class="header-nav">
-                <button id="btnFullscreen" class="btn btn-secondary">
-                    <i class="bi bi-fullscreen"></i> Pantalla Completa
-                </button>
-                <button id="btnInfo" class="btn btn-secondary">
-                    <i class="bi bi-info-circle"></i> Información
-                </button>
-                <button id="btnBack" class="btn btn-primary">
-                    <i class="bi bi-arrow-left"></i> Volver
-                </button>
-            </nav>
+    <header class="duoc-header text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="duoc-logo">
+                        <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="DuocUC Logo" class="duoc-logo-img">
+                        <div>
+                            <h1 class="mb-0">Navegación Virtual</h1>
+                            <p class="mb-0">Recorre el campus paso a paso</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="/" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                        <button id="btnFullscreen" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="bi bi-fullscreen"></i> Pantalla Completa
+                        </button>
+                        <button id="btnInfo" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="bi bi-info-circle"></i> Información
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
     <main class="main-content">
-        <!-- Contenedor del Street View -->
-        <div id="streetview-container" class="streetview-container">
-            <div id="loading" class="loading">
-                <i class="bi bi-hourglass-split"></i> Cargando Street View...
-            </div>
-            
-            <div id="error" class="error" style="display: none;">
-                <i class="bi bi-exclamation-triangle"></i>
-                <p>Error cargando Street View</p>
-                <button id="btnRetry" class="btn btn-primary">Reintentar</button>
-            </div>
-            
-            <!-- Canvas para Three.js -->
-            <canvas id="streetview-canvas"></canvas>
-            
-            <!-- Controles de navegación -->
-            <div class="streetview-controls">
-                <div class="control-group">
-                    <button id="btnRotateLeft" class="btn btn-control" title="Rotar izquierda">
-                        <i class="bi bi-arrow-left"></i>
-                    </button>
-                    <button id="btnRotateRight" class="btn btn-control" title="Rotar derecha">
-                        <i class="bi bi-arrow-right"></i>
-                    </button>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Panel de navegación -->
+                <div class="col-md-3 navigation-panel">
+                    <div class="duoc-card">
+                        <h3><i class="bi bi-map"></i> Recorrido Virtual</h3>
+                        <div class="route-info">
+                            <p><strong>Campus:</strong> Duoc UC Maipú</p>
+                            <p><strong>Duración:</strong> 15-20 minutos</p>
+                            <p><strong>Puntos:</strong> <span id="total-points">8</span></p>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress">
+                                <div id="route-progress" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <small class="text-muted">Progreso del recorrido</small>
+                        </div>
+                        
+                        <div class="points-list">
+                            <h4>Puntos de Interés</h4>
+                            <div id="points-list" class="list-group">
+                                <!-- Se llenará dinámicamente -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="control-group">
-                    <button id="btnLookUp" class="btn btn-control" title="Mirar arriba">
-                        <i class="bi bi-arrow-up"></i>
-                    </button>
-                    <button id="btnLookDown" class="btn btn-control" title="Mirar abajo">
-                        <i class="bi bi-arrow-down"></i>
-                    </button>
+                <!-- Contenido principal -->
+                <div class="col-md-9">
+                    <div class="streetview-container">
+                        <!-- Imagen actual -->
+                        <div class="image-container">
+                            <img id="current-image" src="/imagenes/streetviewSalas/entrada.jpg" alt="Imagen del campus" class="campus-image">
+                            
+                            <!-- Overlay de información -->
+                            <div class="image-overlay">
+                                <div class="point-info">
+                                    <h2 id="point-title">Entrada Principal</h2>
+                                    <p id="point-description">Bienvenido al campus Duoc UC Maipú. Aquí comienza tu recorrido virtual por nuestras instalaciones.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Controles de navegación -->
+                            <div class="navigation-controls">
+                                <button id="btnPrev" class="btn btn-control btn-prev" disabled>
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button id="btnNext" class="btn btn-control btn-next">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Indicador de posición -->
+                            <div class="position-indicator">
+                                <span id="current-position">1</span> / <span id="total-positions">8</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Información detallada -->
+                        <div class="point-details">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h3 id="detail-title">Entrada Principal</h3>
+                                    <p id="detail-description">La entrada principal del campus Duoc UC Maipú es el punto de acceso principal para estudiantes, profesores y visitantes. Aquí encontrarás la recepción, información general y el acceso a todas las instalaciones del campus.</p>
+                                    
+                                    <div class="point-features">
+                                        <h4>Características:</h4>
+                                        <ul id="detail-features">
+                                            <li>Recepción y atención al público</li>
+                                            <li>Información general del campus</li>
+                                            <li>Acceso a todas las instalaciones</li>
+                                            <li>Estacionamiento para visitantes</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="point-meta">
+                                        <h4>Información</h4>
+                                        <div class="meta-item">
+                                            <strong>Ubicación:</strong>
+                                            <span id="meta-location">Entrada Principal</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <strong>Horario:</strong>
+                                            <span id="meta-hours">Lunes a Viernes: 8:00 - 20:00</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <strong>Servicios:</strong>
+                                            <span id="meta-services">Recepción, Información</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="control-group">
-                    <button id="btnZoomIn" class="btn btn-control" title="Acercar">
-                        <i class="bi bi-zoom-in"></i>
-                    </button>
-                    <button id="btnZoomOut" class="btn btn-control" title="Alejar">
-                        <i class="bi bi-zoom-out"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Información del punto -->
-            <div id="point-info" class="point-info">
-                <h3 id="point-title">Título del Punto</h3>
-                <p id="point-description">Descripción del punto de interés</p>
-                <div class="point-coordinates">
-                    <span id="point-coords">Lat: 0, Lng: 0</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Panel de navegación entre puntos -->
-        <div id="navigation-panel" class="navigation-panel">
-            <h3>Puntos de Interés</h3>
-            <div id="points-list" class="points-list">
-                <!-- Se llenará dinámicamente -->
             </div>
         </div>
     </main>
 
     <!-- Modal de información -->
-    <div id="modalInfo" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Street View Personalizado</h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            
-            <div class="modal-body">
-                <div class="info-content">
-                    <h3>Controles de Navegación</h3>
-                    <ul>
-                        <li><strong>Ratón:</strong> Arrastra para rotar la vista</li>
-                        <li><strong>Rueda del ratón:</strong> Zoom in/out</li>
-                        <li><strong>Botones de control:</strong> Navegación manual</li>
-                        <li><strong>Pantalla completa:</strong> Experiencia inmersiva</li>
-                    </ul>
-                    
-                    <h3>Características</h3>
-                    <ul>
-                        <li>Imágenes 360° de alta calidad</li>
-                        <li>Navegación fluida entre puntos</li>
-                        <li>Información detallada de cada ubicación</li>
-                        <li>Compatible con dispositivos móviles</li>
-                    </ul>
-                    
-                    <h3>Instrucciones</h3>
-                    <p>Utiliza los controles para explorar el campus de Duoc UC Maipú. Cada punto de interés incluye información detallada sobre la ubicación y su importancia para los estudiantes.</p>
+    <div id="modalInfo" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Navegación Virtual - Duoc UC</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button class="btn btn-secondary modal-close">Cerrar</button>
+                
+                <div class="modal-body">
+                    <div class="info-content">
+                        <h3>Controles de Navegación</h3>
+                        <ul>
+                            <li><strong>Botones de navegación:</strong> Usa los botones izquierda/derecha para moverte entre puntos</li>
+                            <li><strong>Lista de puntos:</strong> Haz clic en cualquier punto de la lista para ir directamente</li>
+                            <li><strong>Pantalla completa:</strong> Para una experiencia inmersiva</li>
+                            <li><strong>Teclado:</strong> Usa las flechas izquierda/derecha para navegar</li>
+                        </ul>
+                        
+                        <h3>Características</h3>
+                        <ul>
+                            <li>Recorrido paso a paso por el campus</li>
+                            <li>Información detallada de cada ubicación</li>
+                            <li>Progreso visual del recorrido</li>
+                            <li>Compatible con dispositivos móviles</li>
+                        </ul>
+                        
+                        <h3>Instrucciones</h3>
+                        <p>Utiliza los controles para explorar el campus de Duoc UC Maipú. Cada punto incluye información detallada sobre la ubicación, servicios disponibles y horarios de atención.</p>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/sounds.js"></script>
+    <script src="/static/js/pwa.js"></script>
     <script src="streetview.js"></script>
 </body>
 </html>

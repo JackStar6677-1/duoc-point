@@ -24,7 +24,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch('/api/auth/me', {
+            const response = await fetch('/api/auth/me/', {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

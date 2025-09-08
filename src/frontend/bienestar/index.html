@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienestar Estudiantil - Duoc Point</title>
     <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/duoc-theme.css">
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="bienestar.css">
     <meta name="theme-color" content="#2e004f">
@@ -12,54 +15,77 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1><i class="bi bi-heart-pulse"></i> Bienestar Estudiantil</h1>
-            <nav class="header-nav">
-                <button id="btnFiltrar" class="btn btn-secondary">
-                    <i class="bi bi-funnel"></i> Filtrar por Carrera
-                </button>
-                <button id="btnConfigurar" class="btn btn-outline-secondary">
-                    <i class="bi bi-gear"></i> Configurar
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <!-- Filtros -->
-        <section class="filtros-section">
-            <div class="filtros-card">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="carreraSelect" class="form-label">Carrera</label>
-                        <select id="carreraSelect" class="form-select">
-                            <option value="">Todas las carreras</option>
-                            <option value="Informatica">Ingeniería en Informática</option>
-                            <option value="Derecho">Derecho</option>
-                            <option value="Enfermeria">Enfermería</option>
-                            <option value="Psicologia">Psicología</option>
-                            <option value="Administracion">Administración</option>
-                        </select>
+    <!-- Header -->
+    <header class="duoc-header text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="duoc-logo">
+                        <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="DuocUC Logo" class="duoc-logo-img">
+                        <div>
+                            <h1 class="mb-0">Bienestar Estudiantil</h1>
+                            <p class="mb-0">Cuida tu salud física y mental</p>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="tipoSelect" class="form-label">Tipo de Contenido</label>
-                        <select id="tipoSelect" class="form-select">
-                            <option value="">Todos los tipos</option>
-                            <option value="kine">Kinesiología</option>
-                            <option value="psico">Psicología</option>
-                        </select>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="/" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                        <button id="btnFiltrar" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                        <button id="btnConfigurar" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-cog"></i> Configurar
+                        </button>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="container my-4">
+        <!-- Filtros -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="duoc-card animate-slide-down">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-filter duoc-icon"></i> Filtros de Bienestar
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex gap-2">
+                                    <select id="carreraSelect" class="form-select">
+                                        <option value="">Todas las carreras</option>
+                                        <option value="Informatica">Ingeniería en Informática</option>
+                                        <option value="Derecho">Derecho</option>
+                                        <option value="Enfermeria">Enfermería</option>
+                                        <option value="Psicologia">Psicología</option>
+                                        <option value="Administracion">Administración</option>
+                                    </select>
+                                    <select id="tipoSelect" class="form-select">
+                                        <option value="">Todos los tipos</option>
+                                        <option value="kine">Kinesiología</option>
+                                        <option value="psico">Psicología</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Contenido de Bienestar -->
-        <section class="contenido-section">
-            <div class="row" id="contenidoBienestar">
-                <!-- Se llenará dinámicamente -->
-            </div>
-        </section>
+        <div class="row" id="contenidoBienestar">
+            <!-- Se llenará dinámicamente -->
+        </div>
+    </main>
 
         <!-- Modal para ver contenido -->
         <div class="modal fade" id="contenidoModal" tabindex="-1">
@@ -80,8 +106,159 @@
         </div>
     </main>
 
+    <!-- Footer -->
+    <footer class="duoc-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="gradient-text">DuocPoint Bienestar</h5>
+                    <p>Cuida tu salud física y mental durante tu vida universitaria.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="mb-0">
+                        <i class="fas fa-code duoc-icon"></i> Desarrollado con ❤️ por el equipo DuocPoint
+                    </p>
+                    <small class="text-muted">Versión 1.2.0</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/sounds.js"></script>
+    <script src="/pwa.js"></script>
     <script src="/main.js"></script>
     <script src="bienestar.js"></script>
+    
+    <script>
+        // Inicializar animaciones y sonidos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reproducir sonido de bienvenida
+            setTimeout(() => {
+                if (window.playSound) {
+                    window.playSound('pageLoad');
+                }
+            }, 500);
+
+            // Agregar efectos hover con sonido
+            const cards = document.querySelectorAll('.duoc-card');
+            cards.forEach(card => {
+                card.classList.add('duoc-card-hover-sound');
+                card.addEventListener('mouseenter', () => {
+                    if (window.playSound) {
+                        window.playSound('hover');
+                    }
+                });
+            });
+
+            // Agregar efectos a los botones
+            const buttons = document.querySelectorAll('.duoc-btn');
+            buttons.forEach(button => {
+                button.classList.add('duoc-btn-hover-sound');
+                button.addEventListener('mouseenter', () => {
+                    if (window.playSound) {
+                        window.playSound('hover');
+                    }
+                });
+                button.addEventListener('click', () => {
+                    if (window.playSound) {
+                        window.playSound('click');
+                    }
+                });
+            });
+
+            // Agregar efectos a los iconos
+            const icons = document.querySelectorAll('.duoc-icon');
+            icons.forEach(icon => {
+                icon.classList.add('duoc-icon-hover-sound');
+                icon.addEventListener('mouseenter', () => {
+                    if (window.playSound) {
+                        window.playSound('hover');
+                    }
+                });
+            });
+
+            // Cargar contenido de bienestar
+            loadBienestarContent();
+        });
+
+        // Función para cargar contenido de bienestar
+        function loadBienestarContent() {
+            const contenidoBienestar = document.getElementById('contenidoBienestar');
+            const bienestarData = [
+                {
+                    id: 1,
+                    titulo: "Ejercicios de Relajación",
+                    descripcion: "Técnicas de respiración y relajación para reducir el estrés",
+                    tipo: "psico",
+                    carrera: "Todas",
+                    icono: "fas fa-leaf",
+                    color: "success"
+                },
+                {
+                    id: 2,
+                    titulo: "Rutina de Estiramientos",
+                    descripcion: "Ejercicios de kinesiología para estudiantes que pasan mucho tiempo sentados",
+                    tipo: "kine",
+                    carrera: "Informatica",
+                    icono: "fas fa-dumbbell",
+                    color: "primary"
+                },
+                {
+                    id: 3,
+                    titulo: "Técnicas de Estudio",
+                    descripcion: "Métodos psicológicos para mejorar la concentración y el rendimiento académico",
+                    tipo: "psico",
+                    carrera: "Todas",
+                    icono: "fas fa-brain",
+                    color: "info"
+                },
+                {
+                    id: 4,
+                    titulo: "Postura Correcta",
+                    descripcion: "Consejos de kinesiología para mantener una postura saludable",
+                    tipo: "kine",
+                    carrera: "Todas",
+                    icono: "fas fa-user-check",
+                    color: "warning"
+                }
+            ];
+
+            const bienestarHTML = bienestarData.map(item => `
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="duoc-card h-100 duoc-card-hover-sound animate-zoom-in" onclick="viewBienestarContent(${item.id})">
+                        <div class="card-body text-center">
+                            <i class="${item.icono} fa-3x duoc-icon-hover-sound mb-3" style="color: var(--duoc-${item.color});"></i>
+                            <h5 class="card-title">${item.titulo}</h5>
+                            <p class="card-text">${item.descripcion}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="badge bg-${item.color}">${item.tipo === 'kine' ? 'Kinesiología' : 'Psicología'}</span>
+                                <span class="badge bg-secondary">${item.carrera}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            contenidoBienestar.innerHTML = bienestarHTML;
+        }
+
+        // Función para ver contenido de bienestar
+        function viewBienestarContent(id) {
+            if (window.playSound) {
+                window.playSound('click');
+            }
+            
+            const modal = new bootstrap.Modal(document.getElementById('contenidoModal'));
+            document.getElementById('modalTitulo').textContent = `Contenido de Bienestar ${id}`;
+            document.getElementById('modalContenido').innerHTML = `
+                <p>Aquí se mostraría el contenido detallado del elemento de bienestar ${id}.</p>
+                <p>Este contenido incluiría videos, imágenes, instrucciones paso a paso, etc.</p>
+            `;
+            modal.show();
+        }
+    </script>
 </body>
 </html>
