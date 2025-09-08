@@ -6,6 +6,7 @@
 <link rel="manifest" href="/manifest.json" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/duoc-theme.css" />
 <link rel="stylesheet" href="/styles.css" />
 <meta name="theme-color" content="#0066cc" />
 <meta name="mobile-web-app-capable" content="yes" />
@@ -33,22 +34,24 @@
   </button>
 
   <!-- Header -->
-  <header class="bg-primary text-white py-4">
+  <header class="duoc-header text-white py-4">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6">
-          <h1 class="mb-0">
-            <i class="fas fa-graduation-cap me-2"></i>
-            DuocPoint
-          </h1>
-          <p class="mb-0">Plataforma Integral para la Comunidad Duoc UC</p>
+          <div class="duoc-logo">
+            <i class="fas fa-graduation-cap duoc-icon"></i>
+            <div>
+              <h1 class="mb-0">DuocPoint</h1>
+              <p class="mb-0">Plataforma Integral para la Comunidad Duoc UC</p>
+            </div>
+          </div>
         </div>
         <div class="col-md-6 text-end">
           <div class="d-flex justify-content-end gap-2">
-            <button class="btn btn-outline-light btn-sm" onclick="window.duocPointPWA?.clearCache()">
+            <button class="duoc-btn duoc-btn-outline btn-sm" onclick="window.duocPointPWA?.clearCache()">
               <i class="fas fa-sync-alt"></i> Limpiar Cache
             </button>
-            <button class="btn btn-outline-light btn-sm" onclick="window.duocPointPWA?.getVersion()">
+            <button class="duoc-btn duoc-btn-outline btn-sm" onclick="window.duocPointPWA?.getVersion()">
               <i class="fas fa-info-circle"></i> Versión
             </button>
           </div>
@@ -58,7 +61,7 @@
   </header>
 
   <!-- Navegación -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg duoc-nav">
     <div class="container">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -124,10 +127,10 @@
   <main class="container my-4">
     <div class="row">
       <div class="col-12">
-        <div class="card">
+        <div class="duoc-card fade-in-up">
           <div class="card-header">
             <h2 class="card-title mb-0">
-              <i class="fas fa-home"></i> Bienvenido a DuocPoint
+              <i class="fas fa-home duoc-icon"></i> Bienvenido a DuocPoint
             </h2>
           </div>
           <div class="card-body">
@@ -135,45 +138,45 @@
             
             <div class="row g-4">
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 text-center">
+                <div class="duoc-card h-100 text-center duoc-card-hover slide-in-left">
                   <div class="card-body">
-                    <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+                    <i class="fas fa-comments fa-3x duoc-icon mb-3" style="color: var(--duoc-blue);"></i>
                     <h5 class="card-title">Foros</h5>
                     <p class="card-text">Comunícate con tus compañeros por carrera y sede.</p>
-                    <a href="/forum/" class="btn btn-primary">Acceder</a>
+                    <a href="/forum/" class="duoc-btn duoc-btn-primary">Acceder</a>
                   </div>
                 </div>
               </div>
               
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 text-center">
+                <div class="duoc-card h-100 text-center duoc-card-hover slide-in-left" style="animation-delay: 0.1s;">
                   <div class="card-body">
-                    <i class="fas fa-store fa-3x text-success mb-3"></i>
+                    <i class="fas fa-store fa-3x duoc-icon mb-3" style="color: var(--duoc-gold);"></i>
                     <h5 class="card-title">Mercado</h5>
                     <p class="card-text">Compra y vende productos de forma segura.</p>
-                    <a href="/market/" class="btn btn-success">Acceder</a>
+                    <a href="/market/" class="duoc-btn duoc-btn-secondary">Acceder</a>
                   </div>
                 </div>
               </div>
               
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 text-center">
+                <div class="duoc-card h-100 text-center duoc-card-hover slide-in-left" style="animation-delay: 0.2s;">
                   <div class="card-body">
-                    <i class="fas fa-briefcase fa-3x text-warning mb-3"></i>
+                    <i class="fas fa-briefcase fa-3x duoc-icon mb-3" style="color: var(--duoc-purple);"></i>
                     <h5 class="card-title">Portafolio</h5>
                     <p class="card-text">Gestiona tu portafolio profesional automáticamente.</p>
-                    <a href="/portfolio/" class="btn btn-warning">Acceder</a>
+                    <a href="/portfolio/" class="duoc-btn duoc-btn-primary">Acceder</a>
                   </div>
                 </div>
               </div>
               
               <div class="col-md-6 col-lg-3">
-                <div class="card h-100 text-center">
+                <div class="duoc-card h-100 text-center duoc-card-hover slide-in-left" style="animation-delay: 0.3s;">
                   <div class="card-body">
-                    <i class="fas fa-map fa-3x text-info mb-3"></i>
+                    <i class="fas fa-map fa-3x duoc-icon mb-3" style="color: var(--duoc-blue);"></i>
                     <h5 class="card-title">Recorridos</h5>
                     <p class="card-text">Explora la sede con recorridos virtuales 360°.</p>
-                    <a href="/streetview/" class="btn btn-info">Acceder</a>
+                    <a href="/streetview/" class="duoc-btn duoc-btn-primary">Acceder</a>
                   </div>
                 </div>
               </div>
@@ -279,18 +282,18 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white py-4 mt-5">
+  <footer class="duoc-footer">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <h5>DuocPoint</h5>
+          <h5 class="gradient-text">DuocPoint</h5>
           <p>Plataforma integral para la comunidad estudiantil de Duoc UC.</p>
         </div>
         <div class="col-md-6 text-end">
           <p class="mb-0">
-            <i class="fas fa-code"></i> Desarrollado con ❤️ por el equipo DuocPoint
+            <i class="fas fa-code duoc-icon"></i> Desarrollado con ❤️ por el equipo DuocPoint
           </p>
-          <small class="text-muted">Versión 1.0.0</small>
+          <small class="text-muted">Versión 1.2.0</small>
         </div>
       </div>
     </div>

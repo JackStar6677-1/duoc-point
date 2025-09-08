@@ -110,38 +110,58 @@ def check_email(request):
 @permission_classes([permissions.AllowAny])
 def login(request):
     """Inicia sesión con email y contraseña."""
-    email = request.data.get('email', '').lower()
-    password = request.data.get('password', '')
-    
-    if not email or not password:
-        return Response(
-            {'detail': 'Email y contraseña son requeridos'}, 
-            status=status.HTTP_400_BAD_REQUEST
-        )
-    
-    # Autenticar usuario
-    user = authenticate(request, email=email, password=password)
-    
-    if user is not None:
-        # Generar tokens JWT
-        refresh = RefreshToken.for_user(user)
+    try:
+        # Obtener datos del request
+        if hasattr(request, 'data'):
+            email = request.data.get('email', '').lower()
+            password = request.data.get('password', '')
+        else:
+            # Fallback para request.POST
+            email = request.POST.get('email', '').lower()
+            password = request.POST.get('password', '')
         
-        return Response({
-            'access': str(refresh.access_token),
-            'refresh': str(refresh),
-            'user': {
-                'id': user.id,
-                'email': user.email,
-                'name': user.name,
-                'role': user.role,
-                'campus': user.campus.nombre if user.campus else None,
-                'career': user.career
-            }
-        })
-    else:
+        if not email or not password:
+            return Response(
+                {'detail': 'Email y contraseña son requeridos'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Buscar usuario por email
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response(
+                {'detail': 'Credenciales inválidas'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        
+        # Verificar contraseña
+        if user.check_password(password):
+            # Generar tokens JWT
+            refresh = RefreshToken.for_user(user)
+            
+            return Response({
+                'access': str(refresh.access_token),
+                'refresh': str(refresh),
+                'user': {
+                    'id': user.id,
+                    'email': user.email,
+                    'name': user.name,
+                    'role': user.role,
+                    'campus': user.campus.nombre if user.campus else None,
+                    'career': user.career
+                }
+            })
+        else:
+            return Response(
+                {'detail': 'Credenciales inválidas'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+            
+    except Exception as e:
         return Response(
-            {'detail': 'Credenciales inválidas'}, 
-            status=status.HTTP_401_UNAUTHORIZED
+            {'detail': f'Error en el servidor: {str(e)}'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
 

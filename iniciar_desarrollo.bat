@@ -85,6 +85,12 @@ echo.
 echo Presiona Ctrl+C para detener el servidor
 echo.
 
+:: Crear usuarios de prueba
+echo [INFO] Creando usuarios de prueba...
+cd src\backend
+python create_test_users.py
+cd ..\..
+
 :: Ejecutar con configuración de desarrollo
 set DJANGO_SETTINGS_MODULE=duocpoint.settings.dev
 python start.py
