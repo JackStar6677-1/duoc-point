@@ -95,8 +95,8 @@ USE_TZ = True
 # ---- Archivos estáticos y media ----
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-if (BASE_DIR / "static").exists():
-    STATICFILES_DIRS = [BASE_DIR / "static"]
+# Configurar archivos estáticos del frontend
+STATICFILES_DIRS = [BASE_DIR.parent / "frontend/static"]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

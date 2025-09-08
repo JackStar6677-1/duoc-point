@@ -56,3 +56,5 @@ urlpatterns = [
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # Servir imágenes desde la carpeta imagenes
+    urlpatterns += static('/imagenes/', document_root=Path(settings.BASE_DIR).parent / "imagenes")
