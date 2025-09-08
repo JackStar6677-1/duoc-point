@@ -50,7 +50,7 @@ urlpatterns = [
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
     path('', include('duocpoint.apps.health.urls')),
     # Servir imágenes antes del catch-all
-    re_path(r'^imagenes/(?P<path>.*)$', serve, {'document_root': Path(settings.BASE_DIR).parent / "imagenes"}),
+    re_path(r'^imagenes/(?P<path>.*)$', serve, {'document_root': Path(settings.BASE_DIR).parent.parent / "imagenes"}),
     re_path(r'^(?P<path>.*)$', spa_serve),
 ]
 
@@ -59,4 +59,4 @@ if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     # Servir imágenes desde la carpeta imagenes
-    urlpatterns += static('/imagenes/', document_root=Path(settings.BASE_DIR).parent / "imagenes")
+    urlpatterns += static('/imagenes/', document_root=Path(settings.BASE_DIR).parent.parent / "imagenes")
