@@ -2,11 +2,11 @@
 
 ## Descripción del Proyecto
 
-DuocPoint es una aplicación web progresiva (PWA) completa desarrollada **desde cero** para la comunidad estudiantil de Duoc UC. La plataforma integra múltiples módulos funcionales que facilitan la vida académica y social de los estudiantes, incluyendo foros de discusión, mercado estudiantil, portafolio profesional, navegación virtual del campus, y más.
+DuocPoint es una aplicación web progresiva (PWA) completa desarrollada desde cero para la comunidad estudiantil de Duoc UC. La plataforma integra múltiples módulos funcionales que facilitan la vida académica y social de los estudiantes, incluyendo foros de discusión, mercado estudiantil, portafolio profesional, navegación virtual del campus, y más.
 
 ### Desarrollo Desde Cero
 
-Este proyecto fue desarrollado **completamente desde cero**, sin usar plantillas, frameworks preconstruidos o generadores de código. Todo el código fuente es original y fue escrito específicamente para Duoc UC:
+Este proyecto fue desarrollado completamente desde cero, sin usar plantillas, frameworks preconstruidos o generadores de código. Todo el código fuente es original y fue escrito específicamente para Duoc UC:
 
 - **Frontend**: HTML5, CSS3 y JavaScript ES6+ vanilla desarrollados desde cero
 - **Backend**: Django 5.2.6 configurado y desarrollado desde cero
@@ -19,13 +19,19 @@ Este proyecto fue desarrollado **completamente desde cero**, sin usar plantillas
 ## Características Principales
 
 ### Aplicación Web Progresiva (PWA)
+
+DuocPoint está implementado como una PWA completa con las siguientes características:
+
 - **Instalable**: Se puede instalar como aplicación nativa en dispositivos móviles y desktop
 - **Funcionamiento offline**: Cache inteligente para funcionar sin conexión a internet
 - **Notificaciones push**: Sistema de notificaciones en tiempo real
 - **Responsive**: Optimizada para todos los tamaños de pantalla
 - **Actualizaciones automáticas**: Service Worker para actualizaciones transparentes
+- **Música de fondo**: Sistema de audio integrado con controles independientes
+- **Efectos de sonido**: Sistema completo de sonidos interactivos
 
 ### Módulos Implementados
+
 1. **Foros de Discusión** - Sistema de comunicación por carrera y sede
 2. **Mercado Estudiantil** - Plataforma de compra/venta de productos
 3. **Portafolio Profesional** - Gestión de perfil académico y profesional
@@ -40,22 +46,24 @@ Este proyecto fue desarrollado **completamente desde cero**, sin usar plantillas
 ## Instalación y Configuración
 
 ### Requisitos del Sistema
+
 - Python 3.8 o superior
 - Navegador web moderno (Chrome, Firefox, Safari, Edge)
 - Conexión a internet (para dependencias iniciales)
+- Windows 10/11 (para scripts .bat)
 
 ### Inicio Rápido
 
 #### Desarrollo Local
 ```bash
 # Ejecutar el script de desarrollo
-iniciar_desarrollo.bat
+.\iniciar_desarrollo.bat
 ```
 
 #### Producción
 ```bash
 # Ejecutar el script de producción
-iniciar_produccion.bat
+.\iniciar_produccion.bat
 ```
 
 ### Acceso a la Aplicación
@@ -92,6 +100,7 @@ El sistema incluye usuarios de prueba preconfigurados:
 ### Funcionamiento Offline
 
 La PWA está configurada para funcionar offline:
+
 - **Cache estático**: Páginas principales y recursos
 - **Cache dinámico**: Datos de API y contenido dinámico
 - **Sincronización**: Actualización automática cuando se restaura la conexión
@@ -99,9 +108,19 @@ La PWA está configurada para funcionar offline:
 ### Notificaciones Push
 
 El sistema incluye notificaciones push configuradas:
+
 - **Desarrollo**: Notificaciones de prueba habilitadas
 - **Producción**: Notificaciones reales con claves VAPID
 - **Configuración**: Archivo `config/push.yaml` para personalización
+
+### Sistema de Audio
+
+DuocPoint incluye un sistema de audio completo:
+
+- **Música de fondo**: Reproducción automática con controles independientes
+- **Efectos de sonido**: Sonidos interactivos para todas las acciones
+- **Controles de volumen**: Volumen separado para música y efectos
+- **Auto-reproducción**: La música se inicia automáticamente al cargar la página
 
 ## Estructura del Proyecto
 
@@ -142,6 +161,8 @@ duoc-point/
 │       │   │   ├── pwa.js         # Gestor de PWA
 │       │   │   ├── sounds.js      # Sistema de sonidos
 │       │   │   └── sw.js          # Service Worker
+│       │   ├── audio/             # Archivos de audio
+│       │   │   └── background.mp3 # Música de fondo
 │       │   ├── images/            # Imágenes e iconos
 │       │   │   └── icons/         # Iconos PWA
 │       │   ├── manifest.json      # Manifest de la PWA
@@ -172,7 +193,7 @@ duoc-point/
 
 - **Organización modular**: Cada funcionalidad en su propio módulo
 - **Separación clara**: Frontend y backend completamente separados
-- **Archivos estáticos organizados**: CSS, JS e imágenes en carpetas específicas
+- **Archivos estáticos organizados**: CSS, JS, audio e imágenes en carpetas específicas
 - **Configuración por entorno**: Desarrollo y producción separados
 - **Documentación estructurada**: Contexto para IA y documentación académica
 - **Scripts de automatización**: Solo 2 archivos .bat necesarios
@@ -181,6 +202,7 @@ duoc-point/
 ## Tecnologías y Herramientas Utilizadas
 
 ### Herramientas de Desarrollo Principal
+
 - **Python 3.8+**: Lenguaje principal del backend
 - **Django 5.2.6**: Framework web de Python (configurado desde cero)
 - **Django REST Framework**: API REST robusta
@@ -189,6 +211,7 @@ duoc-point/
 - **Visual Studio Code**: Editor de código principal
 
 ### Frontend (Desarrollado Desde Cero)
+
 - **HTML5**: Estructura semántica y accesible
 - **CSS3**: Estilos avanzados con variables CSS y animaciones personalizadas
 - **JavaScript ES6+**: Funcionalidad interactiva vanilla (sin frameworks)
@@ -199,6 +222,7 @@ duoc-point/
 - **Service Worker API**: PWA con cache inteligente
 
 ### Backend (Desarrollado Desde Cero)
+
 - **Django 5.2.6**: Framework web configurado desde cero
 - **Django REST Framework**: API REST completamente desarrollada
 - **JWT**: Autenticación con tokens JSON Web personalizada
@@ -209,6 +233,7 @@ duoc-point/
 - **Django Security**: Configuración de seguridad
 
 ### PWA (Progressive Web App)
+
 - **Manifest.json**: Configuración de PWA personalizada
 - **Service Worker**: Cache y funcionamiento offline implementado desde cero
 - **Cache API**: Almacenamiento offline inteligente
@@ -216,6 +241,7 @@ duoc-point/
 - **Web App Manifest**: Instalación nativa optimizada
 
 ### Herramientas de Diseño
+
 - **CSS Variables**: Tema personalizado con colores oficiales Duoc UC
 - **CSS Grid y Flexbox**: Layout responsive desarrollado desde cero
 - **CSS Animations**: Efectos visuales personalizados
@@ -223,6 +249,7 @@ duoc-point/
 - **Custom Properties**: Variables CSS para consistencia
 
 ### Herramientas de Seguridad
+
 - **Django Security**: Configuración de seguridad personalizada
 - **CORS**: Cross-Origin Resource Sharing configurado
 - **CSRF Protection**: Protección CSRF implementada
@@ -230,18 +257,21 @@ duoc-point/
 - **Input Validation**: Validación de entrada en todos los endpoints
 
 ### Herramientas de Automatización
+
 - **PowerShell Scripts**: Scripts de inicio personalizados
 - **Batch Files**: Scripts de Windows para automatización
 - **Django Management Commands**: Comandos personalizados
 - **Git Hooks**: Automatización de Git configurada
 
 ### Herramientas de Testing
+
 - **Django Test Framework**: Testing del backend
 - **JavaScript Testing**: Testing del frontend
 - **Manual Testing**: Pruebas manuales exhaustivas
 - **User Acceptance Testing**: Pruebas de usuario realizadas
 
 ### Herramientas de Deployment
+
 - **Docker**: Containerización configurada
 - **Nginx**: Servidor web configurado
 - **Gunicorn**: Servidor WSGI configurado
@@ -250,38 +280,53 @@ duoc-point/
 ## Funcionalidades Detalladas
 
 ### Sistema de Autenticación
+
 - **Registro de usuarios**: Con validación de datos
 - **Inicio de sesión**: Con JWT y refresh tokens
 - **Recuperación de contraseña**: Sistema de reset por email
 - **Perfiles de usuario**: Gestión completa de perfiles
+- **Logout automático**: Cuando el token expira
 
 ### Foros de Discusión
+
 - **Categorías por carrera**: Organización temática
 - **Sistema de moderación**: Control de contenido
 - **Búsqueda avanzada**: Filtros y ordenamiento
 - **Notificaciones**: Alertas de nuevas respuestas
 
 ### Mercado Estudiantil
+
 - **Publicación de productos**: Con imágenes y descripción
 - **Sistema de favoritos**: Productos guardados
 - **Búsqueda y filtros**: Por categoría, precio, ubicación
 - **Sistema de reportes**: Moderación de contenido
 
 ### Portafolio Profesional
+
 - **Perfil completo**: Información académica y profesional
 - **Gestión de proyectos**: Portafolio de trabajos
 - **Generación de PDF**: Exportación de perfil
 - **Habilidades y competencias**: Sistema de etiquetas
 
 ### Navegación Virtual
+
 - **Recorrido paso a paso**: Navegación por diapositivas
 - **Información detallada**: De cada ubicación del campus
 - **Controles intuitivos**: Navegación con teclado y mouse
 - **Responsive**: Optimizado para móviles
 
+### Sistema de Audio
+
+- **Música de fondo**: Reproducción automática con loop infinito
+- **Efectos de sonido**: Sonidos interactivos para todas las acciones
+- **Controles independientes**: Volumen separado para música y efectos
+- **Auto-reproducción**: La música se inicia automáticamente
+- **Controles en header**: Botón de música de fondo en la interfaz principal
+
 ## Configuración de Desarrollo
 
 ### Variables de Entorno
+
 El proyecto utiliza archivos de configuración para diferentes entornos:
 
 - **config_local.env**: Configuración para desarrollo local
@@ -289,10 +334,12 @@ El proyecto utiliza archivos de configuración para diferentes entornos:
 - **config/security.yaml**: Configuración de seguridad
 
 ### Base de Datos
+
 - **Desarrollo**: SQLite (archivo local)
 - **Producción**: PostgreSQL (configuración en variables de entorno)
 
 ### Cache y Sesiones
+
 - **Desarrollo**: Cache en memoria
 - **Producción**: Redis para cache y sesiones
 
@@ -335,15 +382,26 @@ El proyecto utiliza archivos de configuración para diferentes entornos:
 4. Comprobar conexión a internet
 ```
 
+#### Música de fondo no reproduce
+```bash
+# Solución:
+1. Verificar que el archivo background.mp3 existe en src/frontend/static/audio/
+2. Revisar permisos de audio en el navegador
+3. Verificar que el navegador soporte Web Audio API
+4. Revisar la consola del navegador para errores
+```
+
 ## Contribución
 
 ### Cómo Contribuir
+
 1. Fork del repositorio
 2. Crear rama para nueva funcionalidad
 3. Realizar cambios y pruebas
 4. Crear pull request con descripción detallada
 
 ### Estándares de Código
+
 - **Python**: PEP 8
 - **JavaScript**: ESLint con configuración estándar
 - **CSS**: BEM methodology
@@ -356,6 +414,7 @@ Este proyecto está desarrollado para Duoc UC y su uso está restringido a fines
 ## Contacto y Soporte
 
 Para soporte técnico o consultas sobre el proyecto:
+
 - **Equipo de desarrollo**: DuocPoint Team
 - **Institución**: Duoc UC
 - **Versión actual**: 1.2.0
@@ -375,11 +434,13 @@ Esta carpeta permite que cualquier desarrollador o IA pueda entender rápidament
 
 ## Estado del Proyecto
 
-✅ **Completamente funcional y probado**
+**Completamente funcional y probado**
+
 - Todos los módulos implementados y funcionando
 - PWA optimizada para instalación nativa
 - Sistema de autenticación robusto
 - Interfaz responsive y accesible
+- Sistema de audio completo implementado
 - Documentación completa y actualizada
 - Contexto para IA incluido
 - Desarrollo desde cero documentado
