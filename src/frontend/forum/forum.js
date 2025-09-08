@@ -64,9 +64,13 @@ class ForumManager {
             this.showLoading(true);
             
             const params = new URLSearchParams();
-            const forumFilter = document.getElementById('forumFilter').value;
-            const sortFilter = document.getElementById('sortFilter').value;
-            const statusFilter = document.getElementById('statusFilter').value;
+            const forumFilterElement = document.getElementById('forumFilter');
+            const sortFilterElement = document.getElementById('sortFilter');
+            const statusFilterElement = document.getElementById('statusFilter');
+            
+            const forumFilter = forumFilterElement ? forumFilterElement.value : '';
+            const sortFilter = sortFilterElement ? sortFilterElement.value : '';
+            const statusFilter = statusFilterElement ? statusFilterElement.value : '';
 
             if (forumFilter) params.append('foro_id', forumFilter);
             if (sortFilter) params.append('orden', sortFilter);
@@ -402,9 +406,19 @@ class ForumManager {
 
     setupEventListeners() {
         // Filter changes
-        document.getElementById('forumFilter').addEventListener('change', () => this.loadPosts());
-        document.getElementById('sortFilter').addEventListener('change', () => this.loadPosts());
-        document.getElementById('statusFilter').addEventListener('change', () => this.loadPosts());
+        const forumFilter = document.getElementById('forumFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        
+        if (forumFilter) {
+            forumFilter.addEventListener('change', () => this.loadPosts());
+        }
+        if (sortFilter) {
+            sortFilter.addEventListener('change', () => this.loadPosts());
+        }
+        if (statusFilter) {
+            statusFilter.addEventListener('change', () => this.loadPosts());
+        }
 
         // Modal form resets
         document.getElementById('newPostModal').addEventListener('hidden.bs.modal', () => {

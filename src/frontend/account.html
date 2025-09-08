@@ -273,7 +273,7 @@
 
         async function loadUserProfile() {
             try {
-                const response = await apiRequest('/api/me');
+                const response = await apiRequest('/api/auth/me/');
                 if (response && response.ok) {
                     const user = await response.json();
                     populateUserData(user);
@@ -311,7 +311,7 @@
                 const data = Object.fromEntries(formData.entries());
                 
                 try {
-                    const response = await apiRequest('/api/me/update', {
+                    const response = await apiRequest('/api/auth/me/update/', {
                         method: 'PATCH',
                         body: JSON.stringify(data)
                     });
