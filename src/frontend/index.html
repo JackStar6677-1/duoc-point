@@ -48,11 +48,17 @@
         </div>
         <div class="col-md-6 text-end">
           <div class="d-flex justify-content-end gap-2">
+            <button class="duoc-btn duoc-btn-outline btn-sm" onclick="window.toggleBackgroundMusic()" id="background-music-toggle" title="Música de fondo">
+              <i class="fas fa-music"></i>
+            </button>
             <button class="duoc-btn duoc-btn-outline btn-sm" onclick="window.duocPointPWA?.clearCache()">
               <i class="fas fa-sync-alt"></i> Limpiar Cache
             </button>
             <button class="duoc-btn duoc-btn-outline btn-sm" onclick="window.duocPointPWA?.getVersion()">
               <i class="fas fa-info-circle"></i> Versión
+            </button>
+            <button class="duoc-btn duoc-btn-outline btn-sm" onclick="window.logout()" title="Cerrar sesión">
+              <i class="fas fa-sign-out-alt"></i> Logout
             </button>
           </div>
         </div>
@@ -545,6 +551,9 @@
         }
       }, 1500);
 
+      // Actualizar botón de música de fondo
+      updateBackgroundMusicButton();
+
       // Agregar efectos hover con sonido a las tarjetas de servicio
       const serviceCards = document.querySelectorAll('.service-card');
       serviceCards.forEach((card, index) => {
@@ -665,6 +674,29 @@
         canvas.height = window.innerHeight;
       });
     }
+
+    // Función para actualizar el botón de música de fondo
+    function updateBackgroundMusicButton() {
+      const musicButton = document.getElementById('background-music-toggle');
+      if (musicButton && window.duocPointSounds) {
+        const isEnabled = window.duocPointSounds.backgroundMusicEnabled;
+        const isPlaying = window.duocPointSounds.backgroundMusicPlaying;
+        
+        if (isEnabled && isPlaying) {
+          musicButton.innerHTML = '<i class="fas fa-pause"></i>';
+          musicButton.title = 'Pausar música de fondo';
+        } else if (isEnabled && !isPlaying) {
+          musicButton.innerHTML = '<i class="fas fa-play"></i>';
+          musicButton.title = 'Reproducir música de fondo';
+        } else {
+          musicButton.innerHTML = '<i class="fas fa-music"></i>';
+          musicButton.title = 'Activar música de fondo';
+        }
+      }
+    }
+
+    // Actualizar el botón cada vez que cambie el estado de la música
+    setInterval(updateBackgroundMusicButton, 1000);
   </script>
 </body>
 </html>
