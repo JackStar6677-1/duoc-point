@@ -27,6 +27,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
     volumes:
       - ../../src/backend:/app
+      - ../../src/frontend:/frontend
     ports:
       - "8000:8000"
     depends_on:
