@@ -1,7 +1,9 @@
 from .base import *
 
 DEBUG = True
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*",
+    "192.168.100.2",
+]
 
 # Deshabilitar CSRF para APIs
 CSRF_TRUSTED_ORIGINS = [
@@ -44,14 +46,31 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# Configuración para PWA en red local
+# Configuración para PWA en red local - IPs dinámicas
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
-    "192.168.100.2",
-    "192.168.100.1",
-    "192.168.1.1",
-    "192.168.0.1",
-    "*"
+    # IPs comunes de red local (se agregan automáticamente)
+    "192.168.1.*",
+    "192.168.0.*", 
+    "192.168.100.*",
+    "10.0.0.*",
+    "172.16.*",
+    "172.17.*",
+    "172.18.*",
+    "172.19.*",
+    "172.20.*",
+    "172.21.*",
+    "172.22.*",
+    "172.23.*",
+    "172.24.*",
+    "172.25.*",
+    "172.26.*",
+    "172.27.*",
+    "172.28.*",
+    "172.29.*",
+    "172.30.*",
+    "172.31.*",
+    "*"  # Permitir cualquier host en desarrollo
 ]

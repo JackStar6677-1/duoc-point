@@ -18,6 +18,24 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo [INFO] Limpiando cache del navegador...
+python limpiar_navegador.py
+
+echo [INFO] Detectando configuración de red local...
+python update_django_config.py
+
+:: Capturar la IP detectada
+for /f %%i in ('python get_ip.py') do set LOCAL_IP=%%i
+echo [INFO] IP local detectada: %LOCAL_IP%
+
+:: Generar archivo de URLs
+echo [INFO] Generando archivo de URLs de acceso...
+python generar_urls.py
+
+:: Diagnóstico del servidor
+echo [INFO] Ejecutando diagnóstico del servidor...
+python diagnostico_servidor.py
+
 echo [INFO] Configurando entorno de desarrollo...
 
 :: Crear archivo .env si no existe
@@ -87,17 +105,28 @@ echo [INFO] Iniciando servidor de desarrollo...
 echo.
 echo 🌐 La aplicación estará disponible en:
 echo    - Aplicación: http://127.0.0.1:8000
+echo    - Aplicación (Red): http://%LOCAL_IP%:8000
 echo    - Admin: http://127.0.0.1:8000/admin/
+echo    - Admin (Red): http://%LOCAL_IP%:8000/admin/
 echo    - API: http://127.0.0.1:8000/api/
+echo    - API (Red): http://%LOCAL_IP%:8000/api/
 echo    - Docs: http://127.0.0.1:8000/api/docs/
+echo    - Docs (Red): http://%LOCAL_IP%:8000/api/docs/
 echo.
 echo 📱 También accesible desde otros dispositivos en tu red:
 echo    - http://127.0.0.1:8000 (localhost)
-echo    - http://[tu-ip-local]:8000 (red local)
+echo    - http://%LOCAL_IP%:8000 (red local)
+echo.
+echo 💡 La IP local se detectó automáticamente para esta PC
+echo    Cada PC tendrá su propia configuración independiente
 echo.
 echo 👤 Credenciales por defecto:
 echo    - Email: admin@duocuc.cl
 echo    - Contraseña: admin123
+echo.
+echo 🔗 URLs principales:
+echo    - Local: http://127.0.0.1:8000
+echo    - Red: http://%LOCAL_IP%:8000
 echo.
 echo 🔧 Modo desarrollo activado:
 echo    - DEBUG=True
@@ -133,10 +162,15 @@ python create_test_users.py
 
 cd ..\..
 
-:: Abrir navegador automáticamente después de 3 segundos
-echo [INFO] Abriendo navegador en 3 segundos...
-timeout /t 3 /nobreak >nul
-start http://localhost:8000
+:: Abrir navegador automáticamente después de 5 segundos
+echo [INFO] Abriendo navegador en 5 segundos...
+echo [INFO] URL de acceso: http://%LOCAL_IP%:8000
+echo [INFO] También disponible en: http://127.0.0.1:8000
+timeout /t 5 /nobreak >nul
+
+:: Intentar abrir en modo incógnito
+echo [INFO] Abriendo navegador en modo incógnito...
+start chrome --incognito http://127.0.0.1:8000 2>nul || start msedge --inprivate http://127.0.0.1:8000 2>nul || start http://127.0.0.1:8000
 
 :: Ejecutar con configuración de desarrollo
 set DJANGO_SETTINGS_MODULE=duocpoint.settings.dev

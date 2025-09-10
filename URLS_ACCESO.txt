@@ -1,0 +1,40 @@
+# DuocPoint - URLs de Acceso
+# IP local detectada: 192.168.100.2
+# Generado automáticamente
+
+## 🏠 Acceso Local (Siempre disponible)
+- **Aplicación Principal**: http://127.0.0.1:8000
+- **Panel de Administración**: http://127.0.0.1:8000/admin/
+- **API REST**: http://127.0.0.1:8000/api/
+- **Documentación API**: http://127.0.0.1:8000/api/docs/
+
+## 🌍 Acceso desde Red Local
+- **Aplicación Principal**: http://192.168.100.2:8000
+- **Panel de Administración**: http://192.168.100.2:8000/admin/
+- **API REST**: http://192.168.100.2:8000/api/
+- **Documentación API**: http://192.168.100.2:8000/api/docs/
+
+## 📱 Acceso desde Otros Dispositivos
+Para acceder desde móviles, tablets u otras PCs en la misma red:
+- Usa las URLs de "Red Local" mostradas arriba
+- Asegúrate de estar conectado a la misma red WiFi
+
+## 👤 Credenciales de Acceso
+- **Email**: admin@duocuc.cl
+- **Contraseña**: admin123
+
+## 🔧 Información Técnica
+- **Puerto**: 8000
+- **IP Local**: 192.168.100.2
+- **Modo**: Desarrollo
+- **Base de datos**: SQLite
+- **Servidor**: Django Development Server
+
+## 📝 Notas
+- Las URLs locales (127.0.0.1) solo funcionan en la PC donde está corriendo el servidor
+- Las URLs de red local (192.168.100.2) funcionan desde cualquier dispositivo en la misma red
+- Si cambias de red, la IP puede cambiar automáticamente
+- Para detener el servidor, presiona Ctrl+C en la ventana del terminal
+
+---
+Generado automáticamente por DuocPoint
