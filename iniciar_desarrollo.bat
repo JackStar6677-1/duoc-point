@@ -25,6 +25,10 @@ python update_django_config.py
 for /f %%i in ('python get_ip.py') do set LOCAL_IP=%%i
 echo [INFO] IP local detectada: %LOCAL_IP%
 
+:: Generar archivo de URLs
+echo [INFO] Generando archivo de URLs de acceso...
+python generar_urls.py
+
 echo [INFO] Configurando entorno de desarrollo...
 
 :: Crear archivo .env si no existe
@@ -94,9 +98,13 @@ echo [INFO] Iniciando servidor de desarrollo...
 echo.
 echo 🌐 La aplicación estará disponible en:
 echo    - Aplicación: http://127.0.0.1:8000
+echo    - Aplicación (Red): http://%LOCAL_IP%:8000
 echo    - Admin: http://127.0.0.1:8000/admin/
+echo    - Admin (Red): http://%LOCAL_IP%:8000/admin/
 echo    - API: http://127.0.0.1:8000/api/
+echo    - API (Red): http://%LOCAL_IP%:8000/api/
 echo    - Docs: http://127.0.0.1:8000/api/docs/
+echo    - Docs (Red): http://%LOCAL_IP%:8000/api/docs/
 echo.
 echo 📱 También accesible desde otros dispositivos en tu red:
 echo    - http://127.0.0.1:8000 (localhost)
@@ -108,6 +116,10 @@ echo.
 echo 👤 Credenciales por defecto:
 echo    - Email: admin@duocuc.cl
 echo    - Contraseña: admin123
+echo.
+echo 🔗 URLs principales:
+echo    - Local: http://127.0.0.1:8000
+echo    - Red: http://%LOCAL_IP%:8000
 echo.
 echo 🔧 Modo desarrollo activado:
 echo    - DEBUG=True

@@ -100,10 +100,18 @@ def main():
                 print(f"❌ IP {local_ip} NO configurada en settings/dev.py")
     
     print("\n" + "=" * 60)
-    print("URLs de prueba:")
+    print("URLs de acceso:")
     print("=" * 60)
-    print(f"Local: http://127.0.0.1:8000")
-    print(f"Red local: http://{local_ip}:8000")
+    print(f"🏠 Local:")
+    print(f"   - Aplicación: http://127.0.0.1:8000")
+    print(f"   - Admin: http://127.0.0.1:8000/admin/")
+    print(f"   - API: http://127.0.0.1:8000/api/")
+    print(f"   - Docs: http://127.0.0.1:8000/api/docs/")
+    print(f"🌍 Red local ({local_ip}):")
+    print(f"   - Aplicación: http://{local_ip}:8000")
+    print(f"   - Admin: http://{local_ip}:8000/admin/")
+    print(f"   - API: http://{local_ip}:8000/api/")
+    print(f"   - Docs: http://{local_ip}:8000/api/docs/")
     
     # Probar conexiones
     print("\nProbando conexiones...")
