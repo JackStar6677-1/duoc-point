@@ -1,475 +1,473 @@
-/* Estilos para Street View Personalizado */
+/* Navegación Virtual - DuocPoint */
 
-/* === HEADER === */
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem 0;
-}
-
-.header-nav {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-/* === CONTENEDOR PRINCIPAL === */
 .main-content {
-    display: flex;
-    height: calc(100vh - 80px);
-    gap: 1rem;
+    background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    min-height: calc(100vh - 200px);
+    padding: 2rem 0;
 }
 
-.streetview-container {
-    flex: 1;
-    position: relative;
-    background: #000;
-    border-radius: 8px;
-    overflow: hidden;
-    min-height: 500px;
-}
-
-/* === CANVAS === */
-#streetview-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-    cursor: grab;
-}
-
-#streetview-canvas:active {
-    cursor: grabbing;
-}
-
-/* === LOADING Y ERROR === */
-.loading, .error {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    z-index: 10;
-}
-
-.loading i {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    display: block;
-    animation: spin 1s linear infinite;
-}
-
-.error i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    display: block;
-    color: #dc3545;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* === CONTROLES === */
-.streetview-controls {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    z-index: 10;
-}
-
-.control-group {
-    display: flex;
-    gap: 0.25rem;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 0.5rem;
-    border-radius: 6px;
-    backdrop-filter: blur(10px);
-}
-
-.btn-control {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white;
-    border-radius: 4px;
-    transition: all 0.2s;
-}
-
-.btn-control:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: scale(1.05);
-}
-
-.btn-control:active {
-    transform: scale(0.95);
-}
-
-/* === INFORMACIÓN DEL PUNTO === */
-.point-info {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 1rem;
-    border-radius: 8px;
-    max-width: 300px;
-    backdrop-filter: blur(10px);
-    z-index: 10;
-}
-
-.point-info h3 {
-    margin: 0 0 0.5rem 0;
-    color: #2e004f;
-    font-size: 1.1rem;
-}
-
-.point-info p {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.point-coordinates {
-    font-size: 0.8rem;
-    color: #ccc;
-    font-family: monospace;
-}
-
-/* === PANEL DE NAVEGACIÓN === */
+/* Panel de navegación */
 .navigation-panel {
-    width: 300px;
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+}
+
+.navigation-panel .duoc-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .navigation-panel h3 {
-    margin: 0 0 1rem 0;
-    color: #2e004f;
-    font-size: 1.2rem;
-}
-
-.points-list {
+    color: var(--gold);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 0.5rem;
 }
 
-.point-item {
-    padding: 0.75rem;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: white;
+.route-info {
+    background: rgba(13, 202, 240, 0.1);
+    border: 1px solid rgba(13, 202, 240, 0.2);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
-.point-item:hover {
-    border-color: #2e004f;
-    background: #f8f9fa;
-    transform: translateY(-1px);
-}
-
-.point-item.active {
-    border-color: #2e004f;
-    background: #2e004f;
-    color: white;
-}
-
-.point-item h4 {
-    margin: 0 0 0.25rem 0;
+.route-info p {
+    margin: 0.25rem 0;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 0.9rem;
-    font-weight: 600;
 }
 
-.point-item p {
-    margin: 0;
-    font-size: 0.8rem;
-    opacity: 0.8;
-    line-height: 1.3;
+.progress-container {
+    margin-bottom: 1.5rem;
 }
 
-.point-item .point-order {
+.progress {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--duoc-cyan), var(--duoc-teal));
+    transition: width 0.3s ease;
+}
+
+.points-list h4 {
+    color: var(--gold);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.list-group {
+    background: transparent;
+    border: none;
+}
+
+.list-group-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.list-group-item:hover {
+    background: rgba(13, 202, 240, 0.1);
+    border-color: var(--duoc-cyan);
+    transform: translateX(5px);
+}
+
+.list-group-item.active {
+    background: rgba(13, 202, 240, 0.2);
+    border-color: var(--duoc-cyan);
+    color: var(--gold);
+}
+
+.list-group-item .point-number {
     display: inline-block;
-    background: #6c757d;
+    width: 24px;
+    height: 24px;
+    background: var(--duoc-cyan);
     color: white;
-    width: 20px;
-    height: 20px;
     border-radius: 50%;
     text-align: center;
-    line-height: 20px;
-    font-size: 0.7rem;
-    margin-right: 0.5rem;
+    line-height: 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 0.75rem;
 }
 
-.point-item.active .point-order {
-    background: white;
-    color: #2e004f;
+.list-group-item.active .point-number {
+    background: var(--gold);
+    color: var(--main-purple);
 }
 
-/* === MODAL === */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
+/* Contenedor principal */
+.streetview-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+/* Contenedor de imagen */
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background: #000;
+}
+
+.campus-image {
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    object-fit: cover;
+    transition: opacity 0.5s ease;
 }
 
-.modal-content {
-    background-color: white;
-    margin: 5% auto;
-    padding: 0;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+/* Overlay de información */
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 2rem 1.5rem 1rem;
+    color: white;
 }
 
-.modal-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e9ecef;
+.point-info h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--gold);
+}
+
+.point-info p {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Controles de navegación */
+.navigation-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    padding: 0 1rem;
+    pointer-events: none;
 }
 
-.modal-header h2 {
-    margin: 0;
-    color: #2e004f;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #6c757d;
-    padding: 0;
-    width: 30px;
-    height: 30px;
+.btn-control {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    transition: all 0.2s;
+    font-size: 1.25rem;
+    transition: all var(--transition-medium);
+    pointer-events: all;
+    backdrop-filter: blur(10px);
 }
 
-.modal-close:hover {
-    background: #f8f9fa;
-    color: #2e004f;
+.btn-control:hover:not(:disabled) {
+    background: rgba(13, 202, 240, 0.8);
+    border-color: var(--duoc-cyan);
+    transform: scale(1.1);
 }
 
-.modal-body {
-    padding: 1.5rem;
+.btn-control:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
-.modal-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #e9ecef;
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
+.btn-prev {
+    margin-right: auto;
 }
 
-/* === CONTENIDO DE INFORMACIÓN === */
-.info-content h3 {
-    color: #2e004f;
-    margin: 1.5rem 0 0.5rem 0;
+.btn-next {
+    margin-left: auto;
+}
+
+/* Indicador de posición */
+.position-indicator {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+/* Detalles del punto */
+.point-details {
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.point-details h3 {
+    color: var(--gold);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.point-details p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.point-features h4 {
+    color: var(--duoc-cyan);
     font-size: 1.1rem;
+    margin-bottom: 0.75rem;
 }
 
-.info-content h3:first-child {
-    margin-top: 0;
+.point-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.info-content ul {
-    margin: 0.5rem 0 1rem 0;
+.point-features li {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.25rem 0;
+    position: relative;
     padding-left: 1.5rem;
 }
 
-.info-content li {
+.point-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--duoc-cyan);
+    font-weight: bold;
+}
+
+/* Meta información */
+.point-meta {
+    background: rgba(13, 202, 240, 0.1);
+    border: 1px solid rgba(13, 202, 240, 0.2);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.point-meta h4 {
+    color: var(--gold);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.meta-item {
+    margin-bottom: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.meta-item strong {
+    color: var(--duoc-cyan);
+    display: block;
     margin-bottom: 0.25rem;
-    line-height: 1.4;
 }
 
-.info-content p {
-    line-height: 1.6;
-    color: #495057;
+.meta-item span {
+    font-size: 0.9rem;
 }
 
-/* === RESPONSIVE === */
+/* Modal */
+.modal-content {
+    background: linear-gradient(135deg, var(--main-purple), var(--duoc-blue));
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: var(--border-radius);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.modal-title {
+    color: var(--gold);
+}
+
+.modal-body {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.modal-body h3 {
+    color: var(--gold);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.modal-body ul {
+    margin-bottom: 1.5rem;
+}
+
+.modal-body li {
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.modal-body strong {
+    color: var(--duoc-cyan);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        height: auto;
-    }
-    
-    .streetview-container {
-        height: 400px;
-        min-height: 400px;
-    }
-    
     .navigation-panel {
-        width: 100%;
-        max-height: 300px;
+        position: static;
+        margin-bottom: 2rem;
     }
     
-    .streetview-controls {
-        bottom: 0.5rem;
-        right: 0.5rem;
+    .image-container {
+        height: 250px;
     }
     
-    .control-group {
-        padding: 0.25rem;
+    .point-details {
+        padding: 1rem;
+    }
+    
+    .point-details h3 {
+        font-size: 1.25rem;
     }
     
     .btn-control {
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
     
-    .point-info {
-        top: 0.5rem;
-        left: 0.5rem;
-        right: 0.5rem;
-        max-width: none;
+    .navigation-controls {
+        padding: 0 0.5rem;
+    }
+    
+    .image-overlay {
+        padding: 1rem 0.75rem 0.5rem;
+    }
+    
+    .point-info h2 {
+        font-size: 1.25rem;
+    }
+    
+    .point-info p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-content {
+        padding: 1rem 0;
+    }
+    
+    .image-container {
+        height: 200px;
+    }
+    
+    .point-details {
         padding: 0.75rem;
     }
     
-    .modal-content {
-        margin: 2% auto;
-        width: 95%;
+    .point-meta {
+        padding: 1rem;
+        margin-top: 1rem;
     }
     
-    .modal-header,
-    .modal-body,
-    .modal-footer {
+    .route-info {
+        padding: 0.75rem;
+    }
+    
+    .navigation-panel .duoc-card {
         padding: 1rem;
     }
 }
 
-@media (max-width: 480px) {
-    .header-content {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .header-nav {
-        justify-content: center;
-    }
-    
-    .streetview-container {
-        height: 300px;
-        min-height: 300px;
-    }
-    
-    .navigation-panel {
-        max-height: 250px;
-    }
-    
-    .point-info h3 {
-        font-size: 1rem;
-    }
-    
-    .point-info p {
-        font-size: 0.8rem;
-    }
-}
-
-/* === MODO PANTALLA COMPLETA === */
-.streetview-container.fullscreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9999;
-    border-radius: 0;
-}
-
-.streetview-container.fullscreen .navigation-panel {
-    display: none;
-}
-
-/* === ANIMACIONES === */
-.point-item {
-    animation: fadeInUp 0.3s ease-out;
-}
-
-@keyframes fadeInUp {
+/* Animaciones */
+@keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateX(20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
     }
 }
 
-/* === ESTADOS DE CARGA === */
-.streetview-container.loading {
-    pointer-events: none;
+.campus-image {
+    animation: slideIn 0.5s ease-out;
 }
 
-.streetview-container.loading #streetview-canvas {
-    opacity: 0.3;
+.list-group-item {
+    animation: slideIn 0.3s ease-out;
 }
 
-/* === MEJORAS DE ACCESIBILIDAD === */
-.btn-control:focus,
-.point-item:focus {
-    outline: 2px solid #2e004f;
+/* Estados de carga */
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--gold);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.loading i {
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Efectos hover mejorados */
+.list-group-item:hover {
+    box-shadow: 0 4px 15px rgba(13, 202, 240, 0.2);
+}
+
+.btn-control:hover:not(:disabled) {
+    box-shadow: 0 4px 15px rgba(13, 202, 240, 0.4);
+}
+
+/* Transiciones suaves */
+* {
+    transition: all var(--transition-medium);
+}
+
+/* Mejoras de accesibilidad */
+.btn-control:focus {
+    outline: 2px solid var(--duoc-cyan);
     outline-offset: 2px;
 }
 
-/* === INDICADORES DE ESTADO === */
-.streetview-container::before {
-    content: '';
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #28a745;
-    z-index: 10;
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.3);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
-    }
-    70% {
-        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
-    }
-    100% {
-        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
-    }
+.list-group-item:focus {
+    outline: 2px solid var(--duoc-cyan);
+    outline-offset: 2px;
 }

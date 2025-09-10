@@ -6,8 +6,8 @@
     <title>Iniciar Sesión - DuocPoint</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="manifest" href="/static/manifest.json">
     <meta name="theme-color" content="#0066cc">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="fas fa-graduation-cap me-2"></i>
+                <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="DuocUC Logo" class="duoc-logo-img me-2">
                 DuocPoint
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -43,11 +43,11 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4">
-                <div class="card shadow">
+                <div class="duoc-card shadow animate-zoom-in">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <i class="fas fa-sign-in-alt fa-3x text-primary mb-3"></i>
-                            <h2 class="card-title">Iniciar Sesión</h2>
+                            <i class="fas fa-sign-in-alt fa-3x duoc-icon-hover-sound mb-3 gradient-text" style="color: var(--duoc-blue);"></i>
+                            <h2 class="card-title gradient-text">Iniciar Sesión</h2>
                             <p class="text-muted">Accede a tu cuenta de DuocPoint</p>
                         </div>
 
@@ -56,9 +56,9 @@
                                 <label for="email" class="form-label">Email</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <i class="fas fa-envelope"></i>
+                                        <i class="fas fa-envelope duoc-icon-hover-sound"></i>
                                     </span>
-                                    <input type="email" class="form-control" id="email" name="email" required>
+                                    <input type="email" class="form-control interactive-element" id="email" name="email" required>
                                 </div>
                             </div>
 
@@ -66,23 +66,23 @@
                                 <label for="password" class="form-label">Contraseña</label>
                                 <div class="input-group">
                                     <span class="input-group-text">
-                                        <i class="fas fa-lock"></i>
+                                        <i class="fas fa-lock duoc-icon-hover-sound"></i>
                                     </span>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <input type="password" class="form-control interactive-element" id="password" name="password" required>
+                                    <button class="btn btn-outline-secondary duoc-btn-hover-sound" type="button" id="togglePassword">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
 
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="rememberMe">
+                                <input type="checkbox" class="form-check-input interactive-element" id="rememberMe">
                                 <label class="form-check-label" for="rememberMe">
                                     Recordarme
                                 </label>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <button type="submit" class="btn btn-primary w-100 mb-3 duoc-btn-hover-sound">
                                 <i class="fas fa-sign-in-alt me-2"></i>
                                 Iniciar Sesión
                             </button>
@@ -96,16 +96,24 @@
                         </form>
 
                         <!-- Demo Users -->
-                        <div class="mt-4 p-3 bg-light rounded">
+                        <div class="mt-4 p-3 duoc-card animate-slide-in-left" style="animation-delay: 0.3s;">
                             <h6 class="text-muted mb-2">Usuarios de prueba:</h6>
                             <div class="d-grid gap-2">
-                                <button class="btn btn-outline-secondary btn-sm" onclick="fillDemoUser('student@duocuc.cl', 'student123')">
-                                    <i class="fas fa-user-graduate me-1"></i>
+                                <button class="btn btn-outline-secondary btn-sm duoc-btn-hover-sound" onclick="fillDemoUser('estudiante@gmail.com', 'estudiante123')">
+                                    <i class="fas fa-user-graduate me-1 duoc-icon-hover-sound"></i>
                                     Estudiante
                                 </button>
-                                <button class="btn btn-outline-secondary btn-sm" onclick="fillDemoUser('moderator@duocuc.cl', 'moderator123')">
-                                    <i class="fas fa-user-shield me-1"></i>
+                                <button class="btn btn-outline-secondary btn-sm duoc-btn-hover-sound" onclick="fillDemoUser('moderador@duocuc.cl', 'moderador123')">
+                                    <i class="fas fa-user-shield me-1 duoc-icon-hover-sound"></i>
                                     Moderador
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm duoc-btn-hover-sound" onclick="fillDemoUser('admin@duocuc.cl', 'admin123')">
+                                    <i class="fas fa-user-cog me-1 duoc-icon-hover-sound"></i>
+                                    Administrador
+                                </button>
+                                <button class="btn btn-outline-secondary btn-sm duoc-btn-hover-sound" onclick="fillDemoUser('profesor@duocuc.cl', 'profesor123')">
+                                    <i class="fas fa-chalkboard-teacher me-1 duoc-icon-hover-sound"></i>
+                                    Profesor
                                 </button>
                             </div>
                         </div>
@@ -121,10 +129,56 @@
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="main.js"></script>
-    <script src="pwa.js"></script>
+    <script src="/static/js/sounds.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/pwa.js"></script>
     
     <script>
+        // Inicializar animaciones y sonidos al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reproducir sonido de carga de página
+            setTimeout(() => {
+                if (window.playSound) {
+                    window.playSound('pageLoad');
+                }
+            }, 500);
+
+            // Agregar efectos hover con sonido a todos los elementos interactivos
+            const interactiveElements = document.querySelectorAll('.interactive-element');
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    if (window.playSound) {
+                        window.playSound('hover');
+                    }
+                });
+            });
+
+            // Agregar efectos a los botones
+            const buttons = document.querySelectorAll('.duoc-btn-hover-sound');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    if (window.playSound) {
+                        window.playSound('hover');
+                    }
+                });
+                button.addEventListener('click', () => {
+                    if (window.playSound) {
+                        window.playSound('click');
+                    }
+                });
+            });
+
+            // Agregar efectos a los iconos
+            const icons = document.querySelectorAll('.duoc-icon-hover-sound');
+            icons.forEach(icon => {
+                icon.addEventListener('mouseenter', () => {
+                    if (window.playSound) {
+                        window.playSound('hover');
+                    }
+                });
+            });
+        });
+
         // Toggle password visibility
         document.getElementById('togglePassword').addEventListener('click', function() {
             const password = document.getElementById('password');
@@ -134,10 +188,12 @@
                 password.type = 'text';
                 icon.classList.remove('fa-eye');
                 icon.classList.add('fa-eye-slash');
+                if (window.playSound) window.playSound('toggle');
             } else {
                 password.type = 'password';
                 icon.classList.remove('fa-eye-slash');
                 icon.classList.add('fa-eye');
+                if (window.playSound) window.playSound('toggle');
             }
         });
 
@@ -145,15 +201,43 @@
         function fillDemoUser(email, password) {
             document.getElementById('email').value = email;
             document.getElementById('password').value = password;
+            
+            // Reproducir sonido de formulario completado
+            if (window.playSound) {
+                window.playSound('formComplete');
+            }
+            
+            // Agregar animación de éxito
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            emailInput.classList.add('animate-pulse');
+            passwordInput.classList.add('animate-pulse');
+            
+            setTimeout(() => {
+                emailInput.classList.remove('animate-pulse');
+                passwordInput.classList.remove('animate-pulse');
+            }, 1000);
         }
 
         // Login form submission
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Reproducir sonido de click
+            if (window.playSound) {
+                window.playSound('click');
+            }
+            
             const formData = new FormData(this);
             const email = formData.get('email');
             const password = formData.get('password');
+            
+            // Agregar animación de carga
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Iniciando...';
+            submitButton.disabled = true;
             
             try {
                 const response = await fetch('/api/auth/login/', {
@@ -175,18 +259,56 @@
                     localStorage.setItem('refresh_token', data.refresh);
                     localStorage.setItem('user_email', email);
                     
+                    // Reproducir sonido de éxito
+                    if (window.playSound) {
+                        window.playSound('loginSuccess');
+                    }
+                    
                     showAlert('¡Inicio de sesión exitoso!', 'success');
+                    
+                    // Agregar animación de éxito
+                    submitButton.innerHTML = '<i class="fas fa-check me-2"></i>¡Éxito!';
+                    submitButton.classList.add('animate-pulse');
                     
                     // Redirect to main page
                     setTimeout(() => {
                         window.location.href = '/';
-                    }, 1500);
+                    }, 2000);
                 } else {
+                    // Reproducir sonido de error
+                    if (window.playSound) {
+                        window.playSound('error');
+                    }
+                    
                     showAlert(data.detail || 'Error al iniciar sesión', 'danger');
+                    
+                    // Restaurar botón
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                    submitButton.classList.add('animate-shake');
+                    
+                    setTimeout(() => {
+                        submitButton.classList.remove('animate-shake');
+                    }, 500);
                 }
             } catch (error) {
                 console.error('Error:', error);
+                
+                // Reproducir sonido de error
+                if (window.playSound) {
+                    window.playSound('error');
+                }
+                
                 showAlert('Error de conexión. Intenta nuevamente.', 'danger');
+                
+                // Restaurar botón
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                submitButton.classList.add('animate-shake');
+                
+                setTimeout(() => {
+                    submitButton.classList.remove('animate-shake');
+                }, 500);
             }
         });
 

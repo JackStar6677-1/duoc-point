@@ -3,152 +3,450 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes de Infraestructura - Duoc Point</title>
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="stylesheet" href="/styles.css">
+    <title>Reportes - DuocPoint</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/duoc-theme.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="reportes.css">
     <meta name="theme-color" content="#2e004f">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1><i class="bi bi-exclamation-triangle"></i> Reportes de Infraestructura</h1>
-            <nav class="header-nav">
-                <button id="btnNuevoReporte" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Nuevo Reporte
-                </button>
-                <button id="btnFiltrar" class="btn btn-secondary">
-                    <i class="bi bi-funnel"></i> Filtrar
-                </button>
-            </nav>
+    <!-- Header -->
+    <header class="duoc-header text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="duoc-logo">
+                        <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="DuocUC Logo" class="duoc-logo-img">
+                        <div>
+                            <h1 class="mb-0">Reportes</h1>
+                            <p class="mb-0">Análisis y estadísticas del sistema</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="/" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                        <button id="btnGenerarReporte" class="duoc-btn duoc-btn-primary btn-sm">
+                            <i class="fas fa-file-export"></i> Generar Reporte
+                        </button>
+                        <button id="btnConfigurarReporte" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-cog"></i> Configurar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="main-content">
-        <!-- Filtros -->
-        <section class="filtros-section">
-            <div class="filtros-card">
+    <!-- Main Content -->
+    <main class="reportes-container">
+        <div class="container">
+            <!-- Filters -->
+            <section class="filters-section">
+                <div class="duoc-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="filtroTipo">Tipo de Reporte</label>
+                                <select id="filtroTipo" class="form-control">
+                                    <option value="">Todos</option>
+                                    <option value="usuarios">Usuarios</option>
+                                    <option value="actividad">Actividad</option>
+                                    <option value="rendimiento">Rendimiento</option>
+                                    <option value="satisfaccion">Satisfacción</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="filtroPeriodo">Período</label>
+                                <select id="filtroPeriodo" class="form-control">
+                                    <option value="7">Últimos 7 días</option>
+                                    <option value="30" selected>Últimos 30 días</option>
+                                    <option value="90">Últimos 90 días</option>
+                                    <option value="365">Último año</option>
+                                    <option value="custom">Personalizado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="filtroCampus">Campus</label>
+                                <select id="filtroCampus" class="form-control">
+                                    <option value="">Todos los campus</option>
+                                    <option value="santiago">Santiago</option>
+                                    <option value="valparaiso">Valparaíso</option>
+                                    <option value="concepcion">Concepción</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <div class="d-flex gap-2">
+                                    <button id="btnAplicarFiltros" class="duoc-btn duoc-btn-primary btn-sm">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                    <button id="btnLimpiarFiltros" class="duoc-btn duoc-btn-outline btn-sm">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KPI Cards -->
+            <section class="kpi-section">
                 <div class="row">
-                    <div class="col-md-4">
-                        <label for="sedeSelect" class="form-label">Sede</label>
-                        <select id="sedeSelect" class="form-select">
-                            <option value="">Todas las sedes</option>
-                        </select>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-number" id="totalUsuarios">0</div>
+                                <div class="kpi-label">Usuarios Activos</div>
+                                <div class="kpi-change positive">
+                                    <i class="fas fa-arrow-up"></i> +12%
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label for="estadoSelect" class="form-label">Estado</label>
-                        <select id="estadoSelect" class="form-select">
-                            <option value="">Todos los estados</option>
-                            <option value="abierto">Abierto</option>
-                            <option value="revision">En Revisión</option>
-                            <option value="resuelto">Resuelto</option>
-                        </select>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-number" id="actividadDiaria">0</div>
+                                <div class="kpi-label">Actividad Diaria</div>
+                                <div class="kpi-change positive">
+                                    <i class="fas fa-arrow-up"></i> +8%
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <label for="categoriaSelect" class="form-label">Categoría</label>
-                        <select id="categoriaSelect" class="form-select">
-                            <option value="">Todas las categorías</option>
-                            <option value="Iluminación">Iluminación</option>
-                            <option value="Equipamiento">Equipamiento</option>
-                            <option value="Infraestructura">Infraestructura</option>
-                            <option value="Limpieza">Limpieza</option>
-                            <option value="Seguridad">Seguridad</option>
-                        </select>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-number" id="satisfaccionPromedio">0</div>
+                                <div class="kpi-label">Satisfacción</div>
+                                <div class="kpi-change positive">
+                                    <i class="fas fa-arrow-up"></i> +5%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-number" id="tiempoPromedio">0</div>
+                                <div class="kpi-label">Tiempo Promedio</div>
+                                <div class="kpi-change negative">
+                                    <i class="fas fa-arrow-down"></i> -3%
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Lista de Reportes -->
-        <section class="reportes-section">
-            <div class="row" id="listaReportes">
-                <!-- Se llenará dinámicamente -->
-            </div>
-        </section>
-
-        <!-- Modal para nuevo reporte -->
-        <div class="modal fade" id="nuevoReporteModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Nuevo Reporte de Infraestructura</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Actividad por Día</h3>
+                                <div class="chart-controls">
+                                    <button class="btn btn-sm btn-outline-secondary" data-chart="line">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" data-chart="bar">
+                                        <i class="fas fa-chart-bar"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="actividadChart"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form id="formNuevoReporte">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="sedeReporte" class="form-label">Sede *</label>
-                                    <select id="sedeReporte" class="form-select" required>
-                                        <option value="">Seleccionar sede</option>
+                    <div class="col-md-6">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Distribución por Campus</h3>
+                                <div class="chart-controls">
+                                    <button class="btn btn-sm btn-outline-secondary" data-chart="pie">
+                                        <i class="fas fa-chart-pie"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" data-chart="doughnut">
+                                        <i class="fas fa-circle"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="chart-body">
+                                <canvas id="campusChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-8">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Evolución de Usuarios</h3>
+                                <div class="chart-controls">
+                                    <select class="form-select form-select-sm" id="evolucionPeriodo">
+                                        <option value="7">7 días</option>
+                                        <option value="30" selected>30 días</option>
+                                        <option value="90">90 días</option>
                                     </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="categoriaReporte" class="form-label">Categoría *</label>
-                                    <select id="categoriaReporte" class="form-select" required>
-                                        <option value="">Seleccionar categoría</option>
-                                        <option value="Iluminación">Iluminación</option>
-                                        <option value="Equipamiento">Equipamiento</option>
-                                        <option value="Infraestructura">Infraestructura</option>
-                                        <option value="Limpieza">Limpieza</option>
-                                        <option value="Seguridad">Seguridad</option>
-                                    </select>
-                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="descripcionReporte" class="form-label">Descripción del problema *</label>
-                                <textarea id="descripcionReporte" class="form-control" rows="4" required
-                                    placeholder="Describe detalladamente el problema encontrado..."></textarea>
+                            <div class="chart-body">
+                                <canvas id="evolucionChart"></canvas>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="latitudReporte" class="form-label">Latitud</label>
-                                    <input type="number" id="latitudReporte" class="form-control" step="any" 
-                                        placeholder="Opcional - se detectará automáticamente">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="longitudReporte" class="form-label">Longitud</label>
-                                    <input type="number" id="longitudReporte" class="form-control" step="any" 
-                                        placeholder="Opcional - se detectará automáticamente">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="imagenReporte" class="form-label">Imagen (opcional)</label>
-                                <input type="file" id="imagenReporte" class="form-control" accept="image/*">
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" onclick="enviarReporte()">Enviar Reporte</button>
+                    <div class="col-md-4">
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>Top Funcionalidades</h3>
+                            </div>
+                            <div class="chart-body">
+                                <div class="top-list">
+                                    <div class="top-item">
+                                        <div class="top-rank">1</div>
+                                        <div class="top-content">
+                                            <div class="top-name">Foro</div>
+                                            <div class="top-value">2,543</div>
+                                        </div>
+                                    </div>
+                                    <div class="top-item">
+                                        <div class="top-rank">2</div>
+                                        <div class="top-content">
+                                            <div class="top-name">Mercado</div>
+                                            <div class="top-value">1,876</div>
+                                        </div>
+                                    </div>
+                                    <div class="top-item">
+                                        <div class="top-rank">3</div>
+                                        <div class="top-content">
+                                            <div class="top-name">Portafolio</div>
+                                            <div class="top-value">1,234</div>
+                                        </div>
+                                    </div>
+                                    <div class="top-item">
+                                        <div class="top-rank">4</div>
+                                        <div class="top-content">
+                                            <div class="top-name">Encuestas</div>
+                                            <div class="top-value">987</div>
+                                        </div>
+                                    </div>
+                                    <div class="top-item">
+                                        <div class="top-rank">5</div>
+                                        <div class="top-content">
+                                            <div class="top-name">Reportes</div>
+                                            <div class="top-value">654</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
 
-        <!-- Modal para ver reporte -->
-        <div class="modal fade" id="verReporteModal" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTituloReporte"></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body" id="modalContenidoReporte">
-                        <!-- Contenido del modal -->
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <!-- Detailed Reports -->
+            <section class="reports-section">
+                <div class="section-header">
+                    <h2>Reportes Detallados</h2>
+                    <div class="report-actions">
+                        <button id="btnExportarExcel" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-file-excel"></i> Excel
+                        </button>
+                        <button id="btnExportarPDF" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
                     </div>
                 </div>
-            </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-header">
+                            <h4>Reporte de Usuarios</h4>
+                            <span class="report-badge">Completo</span>
+                        </div>
+                        <div class="report-content">
+                            <p>Análisis detallado de usuarios activos, nuevos registros y patrones de uso.</p>
+                            <div class="report-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Nuevos usuarios:</span>
+                                    <span class="stat-value">+45</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Usuarios activos:</span>
+                                    <span class="stat-value">1,234</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="duoc-btn duoc-btn-primary btn-sm">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                            <button class="duoc-btn duoc-btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-header">
+                            <h4>Reporte de Actividad</h4>
+                            <span class="report-badge">Actualizado</span>
+                        </div>
+                        <div class="report-content">
+                            <p>Métricas de actividad del sistema, sesiones y interacciones de usuarios.</p>
+                            <div class="report-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Sesiones:</span>
+                                    <span class="stat-value">5,678</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Páginas vistas:</span>
+                                    <span class="stat-value">23,456</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="duoc-btn duoc-btn-primary btn-sm">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                            <button class="duoc-btn duoc-btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="report-card">
+                        <div class="report-header">
+                            <h4>Reporte de Satisfacción</h4>
+                            <span class="report-badge">Nuevo</span>
+                        </div>
+                        <div class="report-content">
+                            <p>Análisis de encuestas de satisfacción y feedback de usuarios.</p>
+                            <div class="report-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Calificación:</span>
+                                    <span class="stat-value">4.2/5</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Respuestas:</span>
+                                    <span class="stat-value">89</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="duoc-btn duoc-btn-primary btn-sm">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                            <button class="duoc-btn duoc-btn-outline btn-sm">
+                                <i class="fas fa-download"></i> Descargar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
+    <!-- Modal para Configurar Reporte -->
+    <div id="modalConfigurarReporte" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Configurar Reporte</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <form id="formConfigurarReporte" class="modal-body">
+                <div class="form-group">
+                    <label for="inputTipoReporte">Tipo de Reporte *</label>
+                    <select id="inputTipoReporte" class="form-control" required>
+                        <option value="">Seleccionar tipo</option>
+                        <option value="usuarios">Reporte de Usuarios</option>
+                        <option value="actividad">Reporte de Actividad</option>
+                        <option value="rendimiento">Reporte de Rendimiento</option>
+                        <option value="satisfaccion">Reporte de Satisfacción</option>
+                        <option value="personalizado">Reporte Personalizado</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inputFechaInicio">Fecha de Inicio *</label>
+                        <input type="date" id="inputFechaInicio" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inputFechaFin">Fecha de Fin *</label>
+                        <input type="date" id="inputFechaFin" class="form-control" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputFormato">Formato de Exportación</label>
+                    <select id="inputFormato" class="form-control">
+                        <option value="pdf">PDF</option>
+                        <option value="excel">Excel</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputIncluirGraficos">Incluir Gráficos</label>
+                    <div class="form-check">
+                        <input type="checkbox" id="inputIncluirGraficos" class="form-check-input" checked>
+                        <label for="inputIncluirGraficos" class="form-check-label">Incluir gráficos en el reporte</label>
+                    </div>
+                </div>
+            </form>
+            
+            <div class="modal-footer">
+                <button type="submit" form="formConfigurarReporte" class="duoc-btn duoc-btn-primary">
+                    <i class="fas fa-cog"></i> Configurar
+                </button>
+                <button class="duoc-btn duoc-btn-outline modal-close">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast para notificaciones -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/main.js"></script>
+    <script src="/static/js/sounds.js"></script>
     <script src="reportes.js"></script>
 </body>
 </html>

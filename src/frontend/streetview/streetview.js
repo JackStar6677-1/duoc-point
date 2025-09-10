@@ -1,427 +1,344 @@
 /**
- * Street View Personalizado DuocPoint
- * Sistema de visualización 360° con Three.js
+ * Navegación Virtual - DuocPoint
+ * Sistema de navegación paso a paso por el campus
  */
 
-class StreetViewApp {
+class VirtualNavigation {
     constructor() {
-        this.scene = null;
-        this.camera = null;
-        this.renderer = null;
-        this.sphere = null;
-        this.texture = null;
-        this.controls = {
-            rotationX: 0,
-            rotationY: 0,
-            zoom: 1
-        };
-        this.isDragging = false;
-        this.lastMouseX = 0;
-        this.lastMouseY = 0;
-        this.currentPoint = null;
-        this.points = [];
+        this.currentIndex = 0;
+        this.points = [
+            {
+                id: 1,
+                title: "Entrada Principal",
+                description: "Bienvenido al campus Duoc UC Maipú. Aquí comienza tu recorrido virtual por nuestras instalaciones.",
+                image: "/imagenes/streetviewSalas/entrada.jpg",
+                detailTitle: "Entrada Principal",
+                detailDescription: "La entrada principal del campus Duoc UC Maipú es el punto de acceso principal para estudiantes, profesores y visitantes.",
+                features: [
+                    "Recepción y atención al público",
+                    "Información general del campus",
+                    "Acceso a todas las instalaciones",
+                    "Estacionamiento para visitantes"
+                ],
+                location: "Entrada Principal",
+                hours: "Lunes a Viernes: 8:00 - 20:00",
+                services: "Recepción, Información"
+            },
+            {
+                id: 2,
+                title: "Biblioteca",
+                description: "Centro de recursos académicos con amplia colección de libros, computadores y espacios de estudio.",
+                image: "/imagenes/streetviewSalas/biblioteca.jpg",
+                detailTitle: "Biblioteca Central",
+                detailDescription: "La biblioteca del campus cuenta con una amplia colección de recursos académicos y espacios de estudio.",
+                features: [
+                    "Más de 10,000 libros físicos",
+                    "Acceso a bases de datos académicas",
+                    "Espacios de estudio individual y grupal",
+                    "Computadores con internet"
+                ],
+                location: "Edificio Principal - 2do Piso",
+                hours: "Lunes a Viernes: 8:00 - 21:00",
+                services: "Préstamo de libros, Consultas, Estudio"
+            },
+            {
+                id: 3,
+                title: "Laboratorio de Computación",
+                description: "Laboratorios equipados con tecnología de última generación para el aprendizaje práctico.",
+                image: "/imagenes/streetviewSalas/laboratorio.jpg",
+                detailTitle: "Laboratorios de Computación",
+                detailDescription: "Nuestros laboratorios están equipados con computadores de última generación y software especializado.",
+                features: [
+                    "Computadores de última generación",
+                    "Software especializado por carrera",
+                    "Conexión de alta velocidad",
+                    "Proyectores y pantallas interactivas"
+                ],
+                location: "Edificio Tecnológico - 1er y 2do Piso",
+                hours: "Lunes a Viernes: 8:00 - 22:00",
+                services: "Clases prácticas, Proyectos, Consultas técnicas"
+            },
+            {
+                id: 4,
+                title: "Aula Magna",
+                description: "Espacio principal para eventos, conferencias y presentaciones importantes del campus.",
+                image: "/imagenes/streetviewSalas/aula_magna.jpg",
+                detailTitle: "Aula Magna",
+                detailDescription: "El Aula Magna es nuestro espacio principal para eventos académicos y conferencias.",
+                features: [
+                    "Capacidad para 200 personas",
+                    "Sistema de audio profesional",
+                    "Proyección HD y 4K",
+                    "Iluminación profesional"
+                ],
+                location: "Edificio Principal - 3er Piso",
+                hours: "Según programación de eventos",
+                services: "Eventos, Conferencias, Presentaciones"
+            },
+            {
+                id: 5,
+                title: "Cafetería",
+                description: "Espacio de encuentro estudiantil con variedad de alimentos y bebidas a precios accesibles.",
+                image: "/imagenes/streetviewSalas/cafeteria.jpg",
+                detailTitle: "Cafetería Estudiantil",
+                detailDescription: "La cafetería es el corazón social del campus, donde los estudiantes se reúnen para comer y socializar.",
+                features: [
+                    "Variedad de comidas saludables",
+                    "Precios accesibles para estudiantes",
+                    "Espacios de descanso y socialización",
+                    "WiFi gratuito"
+                ],
+                location: "Edificio Principal - Planta Baja",
+                hours: "Lunes a Viernes: 7:30 - 19:00",
+                services: "Alimentación, Descanso, Socialización"
+            },
+            {
+                id: 6,
+                title: "Laboratorio de Ciencias",
+                description: "Laboratorios especializados para prácticas de ciencias básicas y experimentos.",
+                image: "/imagenes/streetviewSalas/lab_ciencias.jpg",
+                detailTitle: "Laboratorios de Ciencias",
+                detailDescription: "Laboratorios especializados para las carreras que requieren prácticas de ciencias básicas.",
+                features: [
+                    "Instrumentos de laboratorio especializados",
+                    "Materiales para experimentos",
+                    "Medidas de seguridad completas",
+                    "Supervisión de técnicos especializados"
+                ],
+                location: "Edificio de Ciencias - 1er Piso",
+                hours: "Lunes a Viernes: 8:00 - 18:00",
+                services: "Prácticas de laboratorio, Experimentos, Investigación"
+            },
+            {
+                id: 7,
+                title: "Área de Estudio",
+                description: "Espacios tranquilos y cómodos para el estudio individual y grupal de los estudiantes.",
+                image: "/imagenes/streetviewSalas/estudio.jpg",
+                detailTitle: "Áreas de Estudio",
+                detailDescription: "Espacios diseñados específicamente para el estudio, con mobiliario cómodo y ambiente tranquilo.",
+                features: [
+                    "Mobiliario cómodo y ergonómico",
+                    "Iluminación natural y artificial",
+                    "Ambiente silencioso",
+                    "Enchufes para dispositivos"
+                ],
+                location: "Edificio Principal - 2do y 3er Piso",
+                hours: "Lunes a Domingo: 7:00 - 23:00",
+                services: "Estudio individual, Estudio grupal, Consultas"
+            },
+            {
+                id: 8,
+                title: "Patio Central",
+                description: "Espacio al aire libre para el descanso, actividades recreativas y eventos al aire libre.",
+                image: "/imagenes/streetviewSalas/patio.jpg",
+                detailTitle: "Patio Central",
+                detailDescription: "El patio central es un espacio al aire libre que sirve como punto de encuentro para estudiantes.",
+                features: [
+                    "Espacio al aire libre amplio",
+                    "Áreas verdes y jardines",
+                    "Mobiliario para descanso",
+                    "Área para eventos al aire libre"
+                ],
+                location: "Centro del Campus",
+                hours: "Acceso 24/7",
+                services: "Descanso, Recreación, Eventos, Socialización"
+            }
+        ];
         
         this.init();
     }
     
-    async init() {
+    init() {
         this.setupEventListeners();
-        await this.loadPoints();
-        this.initThreeJS();
-        this.render();
-    }
-    
-    // === THREE.JS SETUP ===
-    initThreeJS() {
-        const canvas = document.getElementById('streetview-canvas');
-        const container = document.getElementById('streetview-container');
+        this.renderPointsList();
+        this.updateDisplay();
+        this.updateProgress();
         
-        // Scene
-        this.scene = new THREE.Scene();
-        
-        // Camera
-        this.camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-        this.camera.position.set(0, 0, 0);
-        
-        // Renderer
-        this.renderer = new THREE.WebGLRenderer({ 
-            canvas: canvas, 
-            antialias: true,
-            alpha: true
-        });
-        this.renderer.setSize(container.clientWidth, container.clientHeight);
-        this.renderer.setPixelRatio(window.devicePixelRatio);
-        
-        // Crear esfera para la imagen 360°
-        this.createSphere();
-        
-        // Cargar primera imagen si hay puntos
-        if (this.points.length > 0) {
-            this.loadPointImage(this.points[0]);
-        }
-        
-        this.hideLoading();
-    }
-    
-    createSphere() {
-        const geometry = new THREE.SphereGeometry(500, 60, 40);
-        geometry.scale(-1, 1, 1); // Invertir para ver desde adentro
-        
-        const material = new THREE.MeshBasicMaterial({
-            map: this.texture,
-            side: THREE.DoubleSide
-        });
-        
-        this.sphere = new THREE.Mesh(geometry, material);
-        this.scene.add(this.sphere);
-    }
-    
-    async loadPointImage(point) {
-        if (!point.imagen_360_url) {
-            this.showError('No hay imagen 360° disponible para este punto');
-            return;
-        }
-        
-        this.showLoading();
-        
-        try {
-            const loader = new THREE.TextureLoader();
-            this.texture = await new Promise((resolve, reject) => {
-                loader.load(
-                    point.imagen_360_url,
-                    resolve,
-                    undefined,
-                    reject
-                );
-            });
-            
-            if (this.sphere) {
-                this.sphere.material.map = this.texture;
-                this.sphere.material.needsUpdate = true;
-            }
-            
-            this.currentPoint = point;
-            this.updatePointInfo(point);
-            this.hideLoading();
-            
-        } catch (error) {
-            console.error('Error cargando imagen:', error);
-            this.showError('Error cargando imagen 360°');
+        // Reproducir sonido de carga
+        if (window.playSound) {
+            window.playSound('pageLoad');
         }
     }
     
-    // === RENDER LOOP ===
-    render() {
-        requestAnimationFrame(() => this.render());
-        
-        if (this.sphere) {
-            this.sphere.rotation.y = this.controls.rotationX;
-            this.sphere.rotation.x = this.controls.rotationY;
-        }
-        
-        if (this.camera) {
-            this.camera.zoom = this.controls.zoom;
-            this.camera.updateProjectionMatrix();
-        }
-        
-        if (this.renderer && this.scene && this.camera) {
-            this.renderer.render(this.scene, this.camera);
-        }
-    }
-    
-    // === EVENT LISTENERS ===
     setupEventListeners() {
-        const canvas = document.getElementById('streetview-canvas');
-        
-        // Mouse events
-        canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
-        canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
-        canvas.addEventListener('mouseup', () => this.onMouseUp());
-        canvas.addEventListener('wheel', (e) => this.onWheel(e));
-        
-        // Touch events para móviles
-        canvas.addEventListener('touchstart', (e) => this.onTouchStart(e));
-        canvas.addEventListener('touchmove', (e) => this.onTouchMove(e));
-        canvas.addEventListener('touchend', () => this.onTouchEnd());
-        
-        // Botones de control
-        document.getElementById('btnRotateLeft')?.addEventListener('click', () => this.rotateLeft());
-        document.getElementById('btnRotateRight')?.addEventListener('click', () => this.rotateRight());
-        document.getElementById('btnLookUp')?.addEventListener('click', () => this.lookUp());
-        document.getElementById('btnLookDown')?.addEventListener('click', () => this.lookDown());
-        document.getElementById('btnZoomIn')?.addEventListener('click', () => this.zoomIn());
-        document.getElementById('btnZoomOut')?.addEventListener('click', () => this.zoomOut());
-        
         // Botones de navegación
-        document.getElementById('btnFullscreen')?.addEventListener('click', () => this.toggleFullscreen());
-        document.getElementById('btnInfo')?.addEventListener('click', () => this.showInfo());
-        document.getElementById('btnBack')?.addEventListener('click', () => this.goBack());
-        document.getElementById('btnRetry')?.addEventListener('click', () => this.retry());
+        document.getElementById('btnPrev').addEventListener('click', () => this.previousPoint());
+        document.getElementById('btnNext').addEventListener('click', () => this.nextPoint());
         
-        // Modal
-        document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', () => this.closeModal());
+        // Navegación por teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                this.previousPoint();
+            } else if (e.key === 'ArrowRight') {
+                this.nextPoint();
+            }
         });
         
-        // Resize
-        window.addEventListener('resize', () => this.onResize());
-    }
-    
-    // === MOUSE CONTROLS ===
-    onMouseDown(e) {
-        this.isDragging = true;
-        this.lastMouseX = e.clientX;
-        this.lastMouseY = e.clientY;
-    }
-    
-    onMouseMove(e) {
-        if (!this.isDragging) return;
+        // Botones del header
+        document.getElementById('btnFullscreen').addEventListener('click', () => this.toggleFullscreen());
+        document.getElementById('btnInfo').addEventListener('click', () => this.showInfo());
         
-        const deltaX = e.clientX - this.lastMouseX;
-        const deltaY = e.clientY - this.lastMouseY;
-        
-        this.controls.rotationX += deltaX * 0.01;
-        this.controls.rotationY += deltaY * 0.01;
-        
-        // Limitar rotación vertical
-        this.controls.rotationY = Math.max(-Math.PI/2, Math.min(Math.PI/2, this.controls.rotationY));
-        
-        this.lastMouseX = e.clientX;
-        this.lastMouseY = e.clientY;
+        // Navegación por lista
+        document.getElementById('points-list').addEventListener('click', (e) => {
+            const pointItem = e.target.closest('.list-group-item');
+            if (pointItem) {
+                const index = parseInt(pointItem.dataset.index);
+                this.goToPoint(index);
+            }
+        });
     }
     
-    onMouseUp() {
-        this.isDragging = false;
+    renderPointsList() {
+        const pointsList = document.getElementById('points-list');
+        pointsList.innerHTML = '';
+        
+        this.points.forEach((point, index) => {
+            const listItem = document.createElement('div');
+            listItem.className = `list-group-item ${index === this.currentIndex ? 'active' : ''}`;
+            listItem.dataset.index = index;
+            
+            listItem.innerHTML = `
+                <span class="point-number">${point.id}</span>
+                <div>
+                    <strong>${point.title}</strong>
+                    <br>
+                    <small>${point.description}</small>
+                </div>
+            `;
+            
+            pointsList.appendChild(listItem);
+        });
     }
     
-    onWheel(e) {
-        e.preventDefault();
-        const delta = e.deltaY > 0 ? 0.9 : 1.1;
-        this.controls.zoom *= delta;
-        this.controls.zoom = Math.max(0.5, Math.min(3, this.controls.zoom));
-    }
-    
-    // === TOUCH CONTROLS ===
-    onTouchStart(e) {
-        e.preventDefault();
-        if (e.touches.length === 1) {
-            this.isDragging = true;
-            this.lastMouseX = e.touches[0].clientX;
-            this.lastMouseY = e.touches[0].clientY;
+    updateDisplay() {
+        const point = this.points[this.currentIndex];
+        
+        // Actualizar imagen
+        const image = document.getElementById('current-image');
+        image.src = point.image;
+        image.alt = point.title;
+        
+        // Actualizar información del overlay
+        document.getElementById('point-title').textContent = point.title;
+        document.getElementById('point-description').textContent = point.description;
+        
+        // Actualizar detalles
+        document.getElementById('detail-title').textContent = point.detailTitle;
+        document.getElementById('detail-description').textContent = point.detailDescription;
+        
+        // Actualizar características
+        const featuresList = document.getElementById('detail-features');
+        featuresList.innerHTML = '';
+        point.features.forEach(feature => {
+            const li = document.createElement('li');
+            li.textContent = feature;
+            featuresList.appendChild(li);
+        });
+        
+        // Actualizar meta información
+        document.getElementById('meta-location').textContent = point.location;
+        document.getElementById('meta-hours').textContent = point.hours;
+        document.getElementById('meta-services').textContent = point.services;
+        
+        // Actualizar indicador de posición
+        document.getElementById('current-position').textContent = this.currentIndex + 1;
+        document.getElementById('total-positions').textContent = this.points.length;
+        
+        // Actualizar botones
+        document.getElementById('btnPrev').disabled = this.currentIndex === 0;
+        document.getElementById('btnNext').disabled = this.currentIndex === this.points.length - 1;
+        
+        // Actualizar lista
+        this.renderPointsList();
+        
+        // Reproducir sonido de navegación
+        if (window.playSound) {
+            window.playSound('navigate');
         }
     }
     
-    onTouchMove(e) {
-        e.preventDefault();
-        if (e.touches.length === 1 && this.isDragging) {
-            const deltaX = e.touches[0].clientX - this.lastMouseX;
-            const deltaY = e.touches[0].clientY - this.lastMouseY;
-            
-            this.controls.rotationX += deltaX * 0.01;
-            this.controls.rotationY += deltaY * 0.01;
-            
-            this.controls.rotationY = Math.max(-Math.PI/2, Math.min(Math.PI/2, this.controls.rotationY));
-            
-            this.lastMouseX = e.touches[0].clientX;
-            this.lastMouseY = e.touches[0].clientY;
+    updateProgress() {
+        const progress = ((this.currentIndex + 1) / this.points.length) * 100;
+        document.getElementById('route-progress').style.width = `${progress}%`;
+    }
+    
+    nextPoint() {
+        if (this.currentIndex < this.points.length - 1) {
+            this.currentIndex++;
+            this.updateDisplay();
+            this.updateProgress();
         }
     }
     
-    onTouchEnd() {
-        this.isDragging = false;
+    previousPoint() {
+        if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.updateDisplay();
+            this.updateProgress();
+        }
     }
     
-    // === CONTROL BUTTONS ===
-    rotateLeft() {
-        this.controls.rotationX -= 0.1;
+    goToPoint(index) {
+        if (index >= 0 && index < this.points.length) {
+            this.currentIndex = index;
+            this.updateDisplay();
+            this.updateProgress();
+        }
     }
     
-    rotateRight() {
-        this.controls.rotationX += 0.1;
-    }
-    
-    lookUp() {
-        this.controls.rotationY -= 0.1;
-        this.controls.rotationY = Math.max(-Math.PI/2, this.controls.rotationY);
-    }
-    
-    lookDown() {
-        this.controls.rotationY += 0.1;
-        this.controls.rotationY = Math.min(Math.PI/2, this.controls.rotationY);
-    }
-    
-    zoomIn() {
-        this.controls.zoom *= 1.1;
-        this.controls.zoom = Math.min(3, this.controls.zoom);
-    }
-    
-    zoomOut() {
-        this.controls.zoom *= 0.9;
-        this.controls.zoom = Math.max(0.5, this.controls.zoom);
-    }
-    
-    // === NAVIGATION ===
     toggleFullscreen() {
-        const container = document.getElementById('streetview-container');
-        
         if (!document.fullscreenElement) {
-            container.requestFullscreen().then(() => {
-                container.classList.add('fullscreen');
-                this.onResize();
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log('Error al entrar en pantalla completa:', err);
             });
         } else {
-            document.exitFullscreen().then(() => {
-                container.classList.remove('fullscreen');
-                this.onResize();
-            });
+            document.exitFullscreen();
+        }
+        
+        // Reproducir sonido
+        if (window.playSound) {
+            window.playSound('click');
         }
     }
     
     showInfo() {
-        document.getElementById('modalInfo').style.display = 'block';
-    }
-    
-    goBack() {
-        window.history.back();
-    }
-    
-    retry() {
-        if (this.currentPoint) {
-            this.loadPointImage(this.currentPoint);
+        const modal = new bootstrap.Modal(document.getElementById('modalInfo'));
+        modal.show();
+        
+        // Reproducir sonido
+        if (window.playSound) {
+            window.playSound('click');
         }
-    }
-    
-    closeModal() {
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.style.display = 'none';
-        });
-    }
-    
-    // === POINTS MANAGEMENT ===
-    async loadPoints() {
-        try {
-            // Simular carga de puntos desde la API
-            // En producción, esto vendría de /api/campuses/recorridos/
-            this.points = [
-                {
-                    id: 1,
-                    titulo: "Entrada Principal",
-                    descripcion: "Acceso principal al campus de Duoc UC Maipú",
-                    imagen_360_url: "/images/streetview/entrada_360.jpg",
-                    lat: -33.5118,
-                    lng: -70.7526,
-                    orden: 1
-                },
-                {
-                    id: 2,
-                    titulo: "Biblioteca",
-                    descripcion: "Centro de recursos de aprendizaje y estudio",
-                    imagen_360_url: "/images/streetview/biblioteca_360.jpg",
-                    lat: -33.5115,
-                    lng: -70.7523,
-                    orden: 2
-                },
-                {
-                    id: 3,
-                    titulo: "Laboratorio de Informática",
-                    descripcion: "Laboratorios equipados para clases de programación",
-                    imagen_360_url: "/images/streetview/lab_info_360.jpg",
-                    lat: -33.5112,
-                    lng: -70.7520,
-                    orden: 3
-                }
-            ];
-            
-            this.renderPointsList();
-            
-        } catch (error) {
-            console.error('Error cargando puntos:', error);
-            this.showError('Error cargando puntos de interés');
-        }
-    }
-    
-    renderPointsList() {
-        const container = document.getElementById('points-list');
-        if (!container) return;
-        
-        container.innerHTML = this.points.map(point => `
-            <div class="point-item ${point === this.currentPoint ? 'active' : ''}" 
-                 data-point-id="${point.id}">
-                <span class="point-order">${point.orden}</span>
-                <h4>${point.titulo}</h4>
-                <p>${point.descripcion}</p>
-            </div>
-        `).join('');
-        
-        // Event listeners para los puntos
-        container.querySelectorAll('.point-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const pointId = parseInt(item.dataset.pointId);
-                const point = this.points.find(p => p.id === pointId);
-                if (point) {
-                    this.loadPointImage(point);
-                    this.updateActivePoint(point);
-                }
-            });
-        });
-    }
-    
-    updateActivePoint(point) {
-        document.querySelectorAll('.point-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        
-        const activeItem = document.querySelector(`[data-point-id="${point.id}"]`);
-        if (activeItem) {
-            activeItem.classList.add('active');
-        }
-    }
-    
-    updatePointInfo(point) {
-        document.getElementById('point-title').textContent = point.titulo;
-        document.getElementById('point-description').textContent = point.descripcion;
-        document.getElementById('point-coords').textContent = 
-            `Lat: ${point.lat.toFixed(4)}, Lng: ${point.lng.toFixed(4)}`;
-    }
-    
-    // === UI HELPERS ===
-    showLoading() {
-        document.getElementById('loading').style.display = 'block';
-        document.getElementById('error').style.display = 'none';
-        document.getElementById('streetview-canvas').style.display = 'none';
-    }
-    
-    hideLoading() {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('streetview-canvas').style.display = 'block';
-    }
-    
-    showError(message) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
-        document.getElementById('streetview-canvas').style.display = 'none';
-        
-        const errorText = document.querySelector('#error p');
-        if (errorText) {
-            errorText.textContent = message;
-        }
-    }
-    
-    // === RESIZE ===
-    onResize() {
-        if (!this.camera || !this.renderer) return;
-        
-        const container = document.getElementById('streetview-container');
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(width, height);
     }
 }
 
-// Inicializar cuando se carga la página
+// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    new StreetViewApp();
+    window.virtualNavigation = new VirtualNavigation();
+    
+    // Agregar efectos hover con sonido
+    const interactiveElements = document.querySelectorAll('.btn, .list-group-item');
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            if (window.playSound) {
+                window.playSound('hover');
+            }
+        });
+    });
+    
+    // Animación de entrada
+    const elements = document.querySelectorAll('.duoc-card, .streetview-container');
+    elements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'all 0.6s ease';
+        
+        setTimeout(() => {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }, index * 200);
+    });
 });
+
+// Exportar para uso global
+window.VirtualNavigation = VirtualNavigation;

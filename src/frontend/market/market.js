@@ -26,14 +26,14 @@ class MarketApp {
     
     // === AUTENTICACIÓN ===
     async checkAuth() {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('access_token');
         if (!token) {
             this.redirectToLogin();
             return;
         }
         
         try {
-            const response = await fetch(`${this.apiBaseUrl}/me`, {
+            const response = await fetch(`${this.apiBaseUrl}/auth/me/`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -421,7 +421,7 @@ class MarketApp {
         }
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('access_token');
             const response = await fetch(`${this.apiBaseUrl}/market/productos/`, {
                 method: 'POST',
                 headers: {
@@ -448,7 +448,7 @@ class MarketApp {
     
     async toggleFavorito(id) {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('access_token');
             const response = await fetch(`${this.apiBaseUrl}/market/productos/${id}/toggle_favorito/`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -467,7 +467,7 @@ class MarketApp {
     
     async registrarClick(id) {
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('access_token');
             await fetch(`${this.apiBaseUrl}/market/productos/${id}/registrar_click/`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -487,7 +487,7 @@ class MarketApp {
         };
         
         try {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('access_token');
             const response = await fetch(`${this.apiBaseUrl}/market/reportes/`, {
                 method: 'POST',
                 headers: {

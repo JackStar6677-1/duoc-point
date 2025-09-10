@@ -1,167 +1,156 @@
 /**
- * Sistema de Encuestas DuocPoint
- * Interfaz completa para gestión y participación en encuestas
+ * Encuestas Manager - DuocPoint
+ * Sistema completo de encuestas y votaciones
  */
 
-class EncuestasApp {
+class EncuestasManager {
     constructor() {
-        this.apiBaseUrl = '/api';
         this.currentUser = null;
-        this.currentView = 'encuestas';
         this.encuestas = [];
+        this.respuestas = [];
         this.filtros = {};
-        this.charts = {};
+        this.vistaActual = 'lista';
+        this.encuestaActual = null;
         
         this.init();
     }
     
     async init() {
-        await this.checkAuth();
+        await this.loadUser();
         this.setupEventListeners();
-        this.loadEncuestas();
-        this.setupChartDefaults();
+        await this.loadEncuestas();
+        this.updateStats();
+        this.renderEncuestas();
     }
     
     // === AUTENTICACIÓN ===
-    async checkAuth() {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            this.redirectToLogin();
-            return;
-        }
-        
+    async loadUser() {
         try {
-            const response = await fetch(`${this.apiBaseUrl}/me`, {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+            
+            const response = await fetch('/api/auth/me/', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
             if (response.ok) {
                 this.currentUser = await response.json();
-                this.updateUIForUser();
             } else {
-                this.redirectToLogin();
+                window.location.href = '/login.html';
             }
         } catch (error) {
-            console.error('Error verificando autenticación:', error);
-            this.redirectToLogin();
+            console.error('Error loading user:', error);
+            window.location.href = '/login.html';
         }
-    }
-    
-    redirectToLogin() {
-        window.location.href = '/api/auth/login';
-    }
-    
-    updateUIForUser() {
-        const canCreate = ['moderator', 'director_carrera', 'admin_global'].includes(this.currentUser.role);
-        
-        document.getElementById('btnCrearEncuesta').style.display = canCreate ? 'flex' : 'none';
-        document.getElementById('btnMisEncuestas').style.display = canCreate ? 'flex' : 'none';
-        document.getElementById('btnDashboard').style.display = canCreate ? 'flex' : 'none';
     }
     
     // === EVENT LISTENERS ===
     setupEventListeners() {
-        // Navegación
-        document.getElementById('btnCrearEncuesta').addEventListener('click', () => this.mostrarModalCrear());
-        document.getElementById('btnMisEncuestas').addEventListener('click', () => this.cargarMisEncuestas());
-        document.getElementById('btnDashboard').addEventListener('click', () => this.mostrarDashboard());
+        // Filters
+        document.getElementById('btnFiltrar')?.addEventListener('click', () => {
+            this.aplicarFiltros();
+        });
         
-        // Filtros
-        document.getElementById('btnFiltrar').addEventListener('click', () => this.aplicarFiltros());
-        document.getElementById('btnLimpiarFiltros').addEventListener('click', () => this.limpiarFiltros());
+        document.getElementById('btnLimpiarFiltros')?.addEventListener('click', () => {
+            this.limpiarFiltros();
+        });
         
-        // Modales
+        // View toggle
+        document.getElementById('btnVistaLista')?.addEventListener('click', () => {
+            this.cambiarVista('lista');
+        });
+        
+        document.getElementById('btnVistaGrid')?.addEventListener('click', () => {
+            this.cambiarVista('grid');
+        });
+        
+        // Create poll
+        document.getElementById('btnCrearEncuesta')?.addEventListener('click', () => {
+            this.showModal('modalCrearEncuesta');
+        });
+        
+        // Modal events
+        this.setupModalEvents();
+    }
+    
+    setupModalEvents() {
+        // Close modals
         document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', (e) => this.cerrarModal(e.target.closest('.modal')));
+            btn.addEventListener('click', () => this.closeModal());
         });
         
-        // Formulario crear encuesta
-        document.getElementById('formCrearEncuesta').addEventListener('submit', (e) => this.crearEncuesta(e));
-        document.getElementById('btnAgregarOpcion').addEventListener('click', () => this.agregarOpcion());
-        
-        // Acciones de encuesta
-        document.getElementById('btnVotar').addEventListener('click', () => this.votarEncuesta());
-        document.getElementById('btnExportar').addEventListener('click', () => this.exportarEncuesta());
-        document.getElementById('btnCerrarEncuesta').addEventListener('click', () => this.cerrarEncuesta());
-        
-        // Cerrar modales al hacer clic fuera
-        window.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal')) {
-                this.cerrarModal(e.target);
-            }
+        // Close on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeModal();
+                }
+            });
         });
         
-        // Búsqueda en tiempo real
-        let searchTimeout;
-        document.getElementById('busqueda').addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                this.filtros.busqueda = e.target.value;
-                this.aplicarFiltros();
-            }, 500);
+        // Form submissions
+        document.getElementById('formCrearEncuesta')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.crearEncuesta();
+        });
+        
+        document.getElementById('formResponderEncuesta')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.enviarRespuestas();
         });
     }
     
     // === CARGA DE DATOS ===
-    async loadEncuestas(filtros = {}) {
-        this.mostrarLoading(true);
-        
+    async loadEncuestas() {
         try {
-            const params = new URLSearchParams(filtros);
-            const response = await this.fetchWithAuth(`${this.apiBaseUrl}/polls/?${params}`);
+            this.showLoading(true);
+            
+            const token = localStorage.getItem('access_token');
+            const params = new URLSearchParams(this.filtros);
+            
+            const response = await fetch(`/api/polls/encuestas/?${params}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             
             if (response.ok) {
-                const data = await response.json();
-                this.encuestas = data.results || data;
+                this.encuestas = await response.json();
                 this.renderEncuestas();
             } else {
-                this.showToast('Error cargando encuestas', 'error');
+                this.showError('Error cargando encuestas');
             }
         } catch (error) {
-            console.error('Error cargando encuestas:', error);
-            this.showToast('Error de conexión', 'error');
+            console.error('Error loading encuestas:', error);
+            this.showError('Error de conexión');
         } finally {
-            this.mostrarLoading(false);
+            this.showLoading(false);
         }
     }
     
-    async cargarMisEncuestas() {
-        this.currentView = 'mis-encuestas';
-        this.mostrarSeccion('encuestasSection');
-        
+    async loadRespuestas(encuestaId) {
         try {
-            const response = await this.fetchWithAuth(`${this.apiBaseUrl}/polls/mis-encuestas/`);
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`/api/polls/encuestas/${encuestaId}/respuestas/`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            
             if (response.ok) {
-                const data = await response.json();
-                this.encuestas = data.results || data;
-                this.renderEncuestas();
+                return await response.json();
             }
         } catch (error) {
-            console.error('Error cargando mis encuestas:', error);
-            this.showToast('Error cargando mis encuestas', 'error');
+            console.error('Error loading respuestas:', error);
         }
-    }
-    
-    async mostrarDashboard() {
-        this.currentView = 'dashboard';
-        this.mostrarSeccion('dashboardSection');
-        
-        try {
-            const response = await this.fetchWithAuth(`${this.apiBaseUrl}/polls/dashboard/`);
-            if (response.ok) {
-                const data = await response.json();
-                this.renderDashboard(data);
-            }
-        } catch (error) {
-            console.error('Error cargando dashboard:', error);
-            this.showToast('Error cargando dashboard', 'error');
-        }
+        return [];
     }
     
     // === RENDERIZADO ===
     renderEncuestas() {
         const container = document.getElementById('encuestasList');
         const noResults = document.getElementById('noResults');
+        
+        if (!container) return;
         
         if (this.encuestas.length === 0) {
             container.innerHTML = '';
@@ -171,568 +160,394 @@ class EncuestasApp {
         
         noResults.style.display = 'none';
         
-        container.innerHTML = this.encuestas.map(encuesta => `
-            <div class="encuesta-card" onclick="encuestasApp.verEncuesta(${encuesta.id})">
+        const viewClass = this.vistaActual === 'grid' ? 'grid-view' : '';
+        container.className = `encuestas-list ${viewClass}`;
+        
+        container.innerHTML = this.encuestas.map(encuesta => this.renderEncuesta(encuesta)).join('');
+        
+        // Add event listeners
+        container.querySelectorAll('.btn-responder').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.dataset.id);
+                this.responderEncuesta(id);
+            });
+        });
+        
+        container.querySelectorAll('.btn-resultados').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.dataset.id);
+                this.verResultados(id);
+            });
+        });
+        
+        container.querySelectorAll('.btn-editar').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(e.target.dataset.id);
+                this.editarEncuesta(id);
+            });
+        });
+    }
+    
+    renderEncuesta(encuesta) {
+        const estado = this.getEstadoEncuesta(encuesta);
+        const porcentajeParticipacion = this.calcularPorcentajeParticipacion(encuesta);
+        const puedeResponder = this.puedeResponder(encuesta);
+        const yaRespondio = this.yaRespondio(encuesta);
+        
+        return `
+            <div class="encuesta-card">
                 <div class="encuesta-header">
                     <h3 class="encuesta-titulo">${encuesta.titulo}</h3>
-                    <span class="encuesta-estado estado-${encuesta.estado}">
-                        ${this.getEstadoLabel(encuesta.estado)}
-                    </span>
+                    <span class="encuesta-estado ${estado}">${estado}</span>
                 </div>
                 
-                <p class="encuesta-descripcion">${encuesta.descripcion || 'Sin descripción'}</p>
+                <div class="encuesta-descripcion">
+                    ${encuesta.descripcion}
+                </div>
                 
                 <div class="encuesta-meta">
-                    <span>Por: ${encuesta.creador_nombre}</span>
-                    <span>${this.formatFecha(encuesta.created_at)}</span>
+                    <span><i class="fas fa-tag"></i> ${encuesta.categoria}</span>
+                    <span><i class="fas fa-calendar"></i> ${this.formatDate(encuesta.fecha_inicio)}</span>
+                    <span><i class="fas fa-clock"></i> ${this.formatDate(encuesta.fecha_fin)}</span>
+                    <span><i class="fas fa-users"></i> ${encuesta.total_respuestas || 0} respuestas</span>
                 </div>
                 
-                <div class="encuesta-stats">
-                    <div class="stat-item">
-                        <i class="bi bi-people"></i>
-                        <span>${encuesta.total_votos} votos</span>
+                <div class="encuesta-progress">
+                    <div class="progress-label">
+                        <span>Participación</span>
+                        <span>${porcentajeParticipacion}%</span>
                     </div>
-                    ${encuesta.cierra_at ? `
-                        <div class="stat-item">
-                            <i class="bi bi-calendar"></i>
-                            <span>Cierra: ${this.formatFecha(encuesta.cierra_at)}</span>
-                        </div>
-                    ` : ''}
+                    <div class="progress-bar-custom">
+                        <div class="progress-fill" style="width: ${porcentajeParticipacion}%"></div>
+                    </div>
                 </div>
                 
                 <div class="encuesta-actions">
-                    ${encuesta.puede_votar ? 
-                        '<span class="puede-votar"><i class="bi bi-check-circle"></i> Puedes votar</span>' :
-                        '<span class="no-puede-votar"><i class="bi bi-x-circle"></i> No puedes votar</span>'
-                    }
-                    <i class="bi bi-arrow-right"></i>
+                    ${puedeResponder && !yaRespondio ? `
+                        <button class="duoc-btn duoc-btn-primary btn-responder" data-id="${encuesta.id}">
+                            <i class="fas fa-edit"></i> Responder
+                        </button>
+                    ` : ''}
+                    
+                    ${yaRespondio ? `
+                        <button class="duoc-btn duoc-btn-success" disabled>
+                            <i class="fas fa-check"></i> Ya Respondida
+                        </button>
+                    ` : ''}
+                    
+                    <button class="duoc-btn duoc-btn-outline btn-resultados" data-id="${encuesta.id}">
+                        <i class="fas fa-chart-bar"></i> Ver Resultados
+                    </button>
+                    
+                    ${this.puedeEditar(encuesta) ? `
+                        <button class="duoc-btn duoc-btn-outline btn-editar" data-id="${encuesta.id}">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }
+    
+    // === FILTROS ===
+    aplicarFiltros() {
+        this.filtros = {};
+        
+        const estado = document.getElementById('filtroEstado')?.value;
+        const categoria = document.getElementById('filtroCategoria')?.value;
+        const busqueda = document.getElementById('busqueda')?.value;
+        
+        if (estado) this.filtros.estado = estado;
+        if (categoria) this.filtros.categoria = categoria;
+        if (busqueda) this.filtros.search = busqueda;
+        
+        this.loadEncuestas();
+        
+        if (window.playSound) {
+            window.playSound('click');
+        }
+    }
+    
+    limpiarFiltros() {
+        document.getElementById('filtroEstado').value = '';
+        document.getElementById('filtroCategoria').value = '';
+        document.getElementById('busqueda').value = '';
+        
+        this.filtros = {};
+        this.loadEncuestas();
+        
+        if (window.playSound) {
+            window.playSound('click');
+        }
+    }
+    
+    // === VISTAS ===
+    cambiarVista(vista) {
+        this.vistaActual = vista;
+        
+        document.getElementById('btnVistaLista').classList.toggle('active', vista === 'lista');
+        document.getElementById('btnVistaGrid').classList.toggle('active', vista === 'grid');
+        
+        this.renderEncuestas();
+        
+        if (window.playSound) {
+            window.playSound('click');
+        }
+    }
+    
+    // === ENCUESTAS ===
+    async crearEncuesta() {
+        try {
+            const formData = {
+                titulo: document.getElementById('inputTitulo').value,
+                descripcion: document.getElementById('inputDescripcion').value,
+                categoria: document.getElementById('inputCategoria').value,
+                tipo: document.getElementById('inputTipo').value,
+                fecha_inicio: document.getElementById('inputFechaInicio').value,
+                fecha_fin: document.getElementById('inputFechaFin').value,
+                preguntas: document.getElementById('inputPreguntas').value.split('\n').filter(p => p.trim()),
+                anonima: document.getElementById('inputAnonima').checked,
+                obligatoria: document.getElementById('inputObligatoria').checked
+            };
+            
+            const token = localStorage.getItem('access_token');
+            const response = await fetch('/api/polls/encuestas/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(formData)
+            });
+            
+            if (response.ok) {
+                this.showSuccess('Encuesta creada exitosamente');
+                this.closeModal();
+                document.getElementById('formCrearEncuesta').reset();
+                this.loadEncuestas();
+            } else {
+                const error = await response.json();
+                this.showError(error.detail || 'Error creando encuesta');
+            }
+        } catch (error) {
+            console.error('Error creating encuesta:', error);
+            this.showError('Error de conexión');
+        }
+    }
+    
+    async responderEncuesta(id) {
+        const encuesta = this.encuestas.find(e => e.id === id);
+        if (!encuesta) return;
+        
+        this.encuestaActual = encuesta;
+        this.renderPreguntas(encuesta);
+        this.showModal('modalResponderEncuesta');
+        
+        if (window.playSound) {
+            window.playSound('click');
+        }
+    }
+    
+    renderPreguntas(encuesta) {
+        const container = document.getElementById('encuestaPreguntas');
+        document.getElementById('modalEncuestaTitulo').textContent = encuesta.titulo;
+        
+        container.innerHTML = encuesta.preguntas.map((pregunta, index) => `
+            <div class="question-item">
+                <div class="question-text">${index + 1}. ${pregunta}</div>
+                <div class="question-options">
+                    ${this.renderOpcionesPregunta(index)}
                 </div>
             </div>
         `).join('');
     }
     
-    renderDashboard(data) {
-        // Estadísticas principales
-        document.getElementById('totalEncuestas').textContent = data.estadisticas.total_encuestas;
-        document.getElementById('encuestasActivas').textContent = data.estadisticas.encuestas_activas;
-        document.getElementById('misEncuestasCount').textContent = data.estadisticas.mis_encuestas;
-        document.getElementById('actividadReciente').textContent = data.estadisticas.actividad_reciente;
+    renderOpcionesPregunta(index) {
+        const opciones = [
+            'Muy de acuerdo',
+            'De acuerdo',
+            'Neutral',
+            'En desacuerdo',
+            'Muy en desacuerdo'
+        ];
         
-        // Gráfico de top encuestas
-        this.renderTopEncuestasChart(data.top_encuestas);
+        return opciones.map(opcion => `
+            <div class="option-item">
+                <input type="radio" name="pregunta_${index}" value="${opcion}" id="pregunta_${index}_${opcion}" required>
+                <label for="pregunta_${index}_${opcion}">${opcion}</label>
+            </div>
+        `).join('');
     }
     
-    renderTopEncuestasChart(topEncuestas) {
-        const ctx = document.getElementById('topEncuestasChart');
-        if (!ctx) return;
-        
-        if (this.charts.topEncuestas) {
-            this.charts.topEncuestas.destroy();
-        }
-        
-        this.charts.topEncuestas = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: topEncuestas.map(e => e.titulo.substring(0, 30) + '...'),
-                datasets: [{
-                    label: 'Participantes',
-                    data: topEncuestas.map(e => e.participantes),
-                    backgroundColor: 'rgba(255, 215, 0, 0.8)',
-                    borderColor: '#ffd700',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#ffd700' },
-                        grid: { color: 'rgba(255, 215, 0, 0.1)' }
-                    },
-                    x: {
-                        ticks: { color: '#ffd700' },
-                        grid: { display: false }
-                    }
+    async enviarRespuestas() {
+        try {
+            const formData = new FormData(document.getElementById('formResponderEncuesta'));
+            const respuestas = [];
+            
+            for (let i = 0; i < this.encuestaActual.preguntas.length; i++) {
+                const respuesta = formData.get(`pregunta_${i}`);
+                if (respuesta) {
+                    respuestas.push({
+                        pregunta: this.encuestaActual.preguntas[i],
+                        respuesta: respuesta
+                    });
                 }
             }
-        });
-    }
-    
-    // === MODAL CREAR ENCUESTA ===
-    mostrarModalCrear() {
-        const modal = document.getElementById('modalCrearEncuesta');
-        this.limpiarFormularioCrear();
-        this.agregarOpcion(); // Agregar 2 opciones por defecto
-        this.agregarOpcion();
-        modal.style.display = 'block';
-    }
-    
-    limpiarFormularioCrear() {
-        document.getElementById('formCrearEncuesta').reset();
-        document.getElementById('opcionesList').innerHTML = '';
-        
-        // Establecer fecha/hora por defecto
-        const ahora = new Date();
-        ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
-        document.getElementById('inputInicia').value = ahora.toISOString().slice(0, 16);
-        
-        const enUnaHora = new Date(ahora.getTime() + 60 * 60 * 1000);
-        document.getElementById('inputCierra').value = enUnaHora.toISOString().slice(0, 16);
-    }
-    
-    agregarOpcion() {
-        const container = document.getElementById('opcionesList');
-        const index = container.children.length;
-        
-        const opcionDiv = document.createElement('div');
-        opcionDiv.className = 'opcion-item';
-        opcionDiv.innerHTML = `
-            <input type="text" placeholder="Texto de la opción" required>
-            <input type="text" placeholder="Descripción (opcional)">
-            <input type="color" value="#ffd700" title="Color">
-            <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">
-                <i class="bi bi-trash"></i>
-            </button>
-        `;
-        
-        container.appendChild(opcionDiv);
-    }
-    
-    async crearEncuesta(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
-        const opciones = this.recopilarOpciones();
-        
-        if (opciones.length < 2) {
-            this.showToast('Se requieren al menos 2 opciones', 'error');
-            return;
-        }
-        
-        const data = {
-            titulo: document.getElementById('inputTitulo').value,
-            descripcion: document.getElementById('inputDescripcion').value,
-            multi: document.getElementById('inputMulti').checked,
-            anonima: document.getElementById('inputAnonima').checked,
-            requiere_justificacion: document.getElementById('inputRequiereJustificacion').checked,
-            mostrar_resultados: document.getElementById('inputMostrarResultados').value,
-            inicia_at: document.getElementById('inputInicia').value,
-            cierra_at: document.getElementById('inputCierra').value || null,
-            carreras: this.parseCarreras(document.getElementById('inputCarreras').value),
-            opciones: opciones
-        };
-        
-        try {
-            const response = await this.fetchWithAuth(`${this.apiBaseUrl}/polls/`, {
+            
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`/api/polls/encuestas/${this.encuestaActual.id}/responder/`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ respuestas })
             });
             
             if (response.ok) {
-                this.showToast('Encuesta creada exitosamente', 'success');
-                this.cerrarModal(document.getElementById('modalCrearEncuesta'));
+                this.showSuccess('Respuestas enviadas exitosamente');
+                this.closeModal();
                 this.loadEncuestas();
             } else {
                 const error = await response.json();
-                this.showToast(`Error: ${JSON.stringify(error)}`, 'error');
+                this.showError(error.detail || 'Error enviando respuestas');
             }
         } catch (error) {
-            console.error('Error creando encuesta:', error);
-            this.showToast('Error de conexión', 'error');
+            console.error('Error sending respuestas:', error);
+            this.showError('Error de conexión');
         }
     }
     
-    recopilarOpciones() {
-        const opciones = [];
-        const items = document.querySelectorAll('#opcionesList .opcion-item');
+    async verResultados(id) {
+        const encuesta = this.encuestas.find(e => e.id === id);
+        if (!encuesta) return;
         
-        items.forEach((item, index) => {
-            const inputs = item.querySelectorAll('input');
-            const texto = inputs[0].value.trim();
-            
-            if (texto) {
-                opciones.push({
-                    texto: texto,
-                    descripcion: inputs[1].value.trim(),
-                    orden: index,
-                    color: inputs[2].value
-                });
-            }
-        });
-        
-        return opciones;
-    }
-    
-    parseCarreras(carrerasStr) {
-        if (!carrerasStr.trim()) return [];
-        return carrerasStr.split(',').map(c => c.trim()).filter(c => c.length > 0);
-    }
-    
-    // === VER ENCUESTA ===
-    async verEncuesta(id) {
         try {
-            const response = await this.fetchWithAuth(`${this.apiBaseUrl}/polls/${id}/`);
-            if (response.ok) {
-                const encuesta = await response.json();
-                this.mostrarModalVerEncuesta(encuesta);
-            }
+            const respuestas = await this.loadRespuestas(id);
+            this.renderResultados(encuesta, respuestas);
+            this.showModal('modalVerResultados');
         } catch (error) {
-            console.error('Error cargando encuesta:', error);
-            this.showToast('Error cargando encuesta', 'error');
+            console.error('Error loading resultados:', error);
+            this.showError('Error cargando resultados');
+        }
+        
+        if (window.playSound) {
+            window.playSound('click');
         }
     }
     
-    mostrarModalVerEncuesta(encuesta) {
-        const modal = document.getElementById('modalVerEncuesta');
-        document.getElementById('modalTitulo').textContent = encuesta.titulo;
+    renderResultados(encuesta, respuestas) {
+        document.getElementById('modalResultadosTitulo').textContent = `Resultados: ${encuesta.titulo}`;
         
-        // Detalles de la encuesta
-        const detalleHTML = `
-            <div class="encuesta-info">
-                <p><strong>Descripción:</strong> ${encuesta.descripcion || 'Sin descripción'}</p>
-                <p><strong>Creador:</strong> ${encuesta.creador_nombre}</p>
-                <p><strong>Estado:</strong> <span class="estado-${encuesta.estado}">${this.getEstadoLabel(encuesta.estado)}</span></p>
-                <p><strong>Total votos:</strong> ${encuesta.total_votos}</p>
-                ${encuesta.cierra_at ? `<p><strong>Cierra:</strong> ${this.formatFecha(encuesta.cierra_at)}</p>` : ''}
-                <p><strong>Tipo:</strong> ${encuesta.multi ? 'Múltiple selección' : 'Selección única'}</p>
-            </div>
-        `;
-        document.getElementById('encuestaDetalle').innerHTML = detalleHTML;
+        const container = document.getElementById('encuestaResultados');
         
-        // Mostrar opciones para votar o resultados
-        if (encuesta.puede_votar) {
-            this.mostrarOpcionesVotacion(encuesta);
-        } else if (encuesta.puede_ver_resultados) {
-            this.mostrarResultados(encuesta);
-        } else {
-            document.getElementById('opcionesVotacion').innerHTML = '<p>No puedes ver los resultados de esta encuesta aún.</p>';
-            document.getElementById('resultadosGrafico').style.display = 'none';
-        }
-        
-        // Mostrar analytics si están disponibles
-        if (encuesta.analytics) {
-            this.mostrarAnalytics(encuesta.analytics);
-        }
-        
-        // Configurar botones del modal
-        this.configurarBotonesModal(encuesta);
-        
-        modal.style.display = 'block';
-        this.currentEncuesta = encuesta;
-    }
-    
-    mostrarOpcionesVotacion(encuesta) {
-        const container = document.getElementById('opcionesVotacion');
-        const inputType = encuesta.multi ? 'checkbox' : 'radio';
-        
-        container.innerHTML = `
-            <h4>Selecciona tu respuesta:</h4>
-            ${encuesta.opciones.map(opcion => `
-                <div class="opcion-voto">
-                    <input type="${inputType}" name="voto" value="${opcion.id}" id="opcion_${opcion.id}">
-                    <label for="opcion_${opcion.id}">
-                        <strong>${opcion.texto}</strong>
-                        ${opcion.descripcion ? `<br><small>${opcion.descripcion}</small>` : ''}
-                    </label>
+        if (respuestas.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-4">
+                    <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No hay respuestas aún</h4>
+                    <p class="text-muted">Las respuestas aparecerán aquí cuando los usuarios participen</p>
                 </div>
-            `).join('')}
-            
-            ${encuesta.requiere_justificacion ? `
-                <div class="form-group">
-                    <label for="justificacion">Justificación:</label>
-                    <textarea id="justificacion" rows="3" placeholder="Explica tu elección..."></textarea>
-                </div>
-            ` : ''}
-        `;
-        
-        document.getElementById('resultadosGrafico').style.display = 'none';
-        document.getElementById('btnVotar').style.display = 'flex';
-    }
-    
-    mostrarResultados(encuesta) {
-        const container = document.getElementById('opcionesVotacion');
-        
-        container.innerHTML = `
-            <h4>Resultados:</h4>
-            ${encuesta.opciones.map(opcion => `
-                <div class="resultado-opcion">
-                    <div class="resultado-header">
-                        <span class="resultado-texto">${opcion.texto}</span>
-                        <span class="resultado-stats">${opcion.votos} votos (${opcion.porcentaje}%)</span>
-                    </div>
-                    <div class="resultado-barra">
-                        <div class="resultado-progreso" style="width: ${opcion.porcentaje}%"></div>
-                    </div>
-                </div>
-            `).join('')}
-        `;
-        
-        // Mostrar gráfico
-        this.mostrarGraficoResultados(encuesta);
-        document.getElementById('btnVotar').style.display = 'none';
-    }
-    
-    mostrarGraficoResultados(encuesta) {
-        const container = document.getElementById('resultadosGrafico');
-        container.style.display = 'block';
-        
-        const ctx = document.getElementById('resultadosChart');
-        if (this.charts.resultados) {
-            this.charts.resultados.destroy();
-        }
-        
-        const colores = encuesta.opciones.map(o => o.color || '#ffd700');
-        
-        this.charts.resultados = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: encuesta.opciones.map(o => o.texto),
-                datasets: [{
-                    data: encuesta.opciones.map(o => o.votos),
-                    backgroundColor: colores,
-                    borderColor: colores.map(c => c + '80'),
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: '#ffd700' }
-                    }
-                }
-            }
-        });
-    }
-    
-    mostrarAnalytics(analytics) {
-        const container = document.getElementById('analyticsDetalle');
-        
-        container.innerHTML = `
-            <h4>Análisis Detallado</h4>
-            <div class="analytics-grid">
-                <div class="analytics-card">
-                    <h4>Por Sede</h4>
-                    <ul class="analytics-list">
-                        ${Object.entries(analytics.distribucion_sedes).map(([sede, count]) => `
-                            <li><span>${sede}</span><span>${count}</span></li>
-                        `).join('')}
-                    </ul>
-                </div>
-                
-                <div class="analytics-card">
-                    <h4>Por Carrera</h4>
-                    <ul class="analytics-list">
-                        ${Object.entries(analytics.distribucion_carreras).map(([carrera, count]) => `
-                            <li><span>${carrera}</span><span>${count}</span></li>
-                        `).join('')}
-                    </ul>
-                </div>
-            </div>
-            <p><small>Última actualización: ${this.formatFecha(analytics.ultima_actualizacion)}</small></p>
-        `;
-    }
-    
-    configurarBotonesModal(encuesta) {
-        const btnExportar = document.getElementById('btnExportar');
-        const btnCerrar = document.getElementById('btnCerrarEncuesta');
-        
-        const puedeGestionar = encuesta.creador_nombre === this.currentUser.name || 
-                              ['moderator', 'director_carrera', 'admin_global'].includes(this.currentUser.role);
-        
-        btnExportar.style.display = encuesta.puede_ver_resultados ? 'flex' : 'none';
-        btnCerrar.style.display = (puedeGestionar && encuesta.estado === 'activa') ? 'flex' : 'none';
-    }
-    
-    // === ACCIONES DE ENCUESTA ===
-    async votarEncuesta() {
-        const opciones = [];
-        const inputs = document.querySelectorAll('input[name="voto"]:checked');
-        
-        if (inputs.length === 0) {
-            this.showToast('Selecciona al menos una opción', 'error');
+            `;
             return;
         }
         
-        inputs.forEach(input => opciones.push(parseInt(input.value)));
-        
-        const data = {
-            opciones: opciones,
-            justificacion: document.getElementById('justificacion')?.value || ''
-        };
-        
-        try {
-            const response = await this.fetchWithAuth(
-                `${this.apiBaseUrl}/polls/${this.currentEncuesta.id}/votar/`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                }
-            );
+        container.innerHTML = encuesta.preguntas.map((pregunta, index) => {
+            const respuestasPregunta = respuestas.map(r => r.respuestas[index]).filter(r => r);
+            const conteo = this.contarRespuestas(respuestasPregunta);
             
-            if (response.ok) {
-                this.showToast('Voto registrado exitosamente', 'success');
-                this.cerrarModal(document.getElementById('modalVerEncuesta'));
-                this.loadEncuestas();
-            } else {
-                const error = await response.json();
-                this.showToast(`Error: ${JSON.stringify(error)}`, 'error');
-            }
-        } catch (error) {
-            console.error('Error votando:', error);
-            this.showToast('Error de conexión', 'error');
-        }
+            return `
+                <div class="results-section">
+                    <h3>${index + 1}. ${pregunta}</h3>
+                    <div class="result-options">
+                        ${Object.entries(conteo).map(([opcion, count]) => {
+                            const porcentaje = ((count / respuestasPregunta.length) * 100).toFixed(1);
+                            return `
+                                <div class="result-option">
+                                    <span class="result-option-text">${opcion}</span>
+                                    <div>
+                                        <span class="result-option-count">${count}</span>
+                                        <span class="result-option-percentage">(${porcentaje}%)</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
     
-    async exportarEncuesta() {
-        try {
-            const response = await this.fetchWithAuth(
-                `${this.apiBaseUrl}/polls/${this.currentEncuesta.id}/export/`,
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        formato: 'csv',
-                        incluir_metadatos: true,
-                        incluir_justificaciones: true
-                    })
-                }
-            );
-            
-            if (response.ok) {
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `encuesta_${this.currentEncuesta.id}_resultados.csv`;
-                a.click();
-                window.URL.revokeObjectURL(url);
-                this.showToast('Archivo descargado', 'success');
-            }
-        } catch (error) {
-            console.error('Error exportando:', error);
-            this.showToast('Error exportando', 'error');
-        }
-    }
-    
-    async cerrarEncuesta() {
-        if (!confirm('¿Estás seguro de que quieres cerrar esta encuesta?')) return;
-        
-        try {
-            const response = await this.fetchWithAuth(
-                `${this.apiBaseUrl}/polls/${this.currentEncuesta.id}/cerrar/`,
-                { method: 'POST' }
-            );
-            
-            if (response.ok) {
-                this.showToast('Encuesta cerrada exitosamente', 'success');
-                this.cerrarModal(document.getElementById('modalVerEncuesta'));
-                this.loadEncuestas();
-            }
-        } catch (error) {
-            console.error('Error cerrando encuesta:', error);
-            this.showToast('Error cerrando encuesta', 'error');
-        }
-    }
-    
-    // === FILTROS ===
-    aplicarFiltros() {
-        this.filtros = {
-            estado: document.getElementById('filtroEstado').value,
-            fecha_desde: document.getElementById('filtroFecha').value,
-            busqueda: document.getElementById('busqueda').value
-        };
-        
-        // Limpiar filtros vacíos
-        Object.keys(this.filtros).forEach(key => {
-            if (!this.filtros[key]) delete this.filtros[key];
+    contarRespuestas(respuestas) {
+        const conteo = {};
+        respuestas.forEach(respuesta => {
+            conteo[respuesta.respuesta] = (conteo[respuesta.respuesta] || 0) + 1;
         });
-        
-        this.loadEncuestas(this.filtros);
+        return conteo;
     }
     
-    limpiarFiltros() {
-        document.getElementById('filtroEstado').value = '';
-        document.getElementById('filtroFecha').value = '';
-        document.getElementById('busqueda').value = '';
-        this.filtros = {};
-        this.loadEncuestas();
+    // === MODALES ===
+    showModal(modalId) {
+        document.getElementById(modalId).classList.add('show');
+    }
+    
+    closeModal() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.classList.remove('show');
+        });
+    }
+    
+    // === ESTADÍSTICAS ===
+    updateStats() {
+        const total = this.encuestas.length;
+        const completadas = this.encuestas.filter(e => this.yaRespondio(e)).length;
+        const pendientes = total - completadas;
+        const participacion = total > 0 ? Math.round((completadas / total) * 100) : 0;
+        
+        document.getElementById('totalEncuestas').textContent = total;
+        document.getElementById('encuestasCompletadas').textContent = completadas;
+        document.getElementById('encuestasPendientes').textContent = pendientes;
+        document.getElementById('porcentajeParticipacion').textContent = `${participacion}%`;
     }
     
     // === UTILIDADES ===
-    async fetchWithAuth(url, options = {}) {
-        const token = localStorage.getItem('authToken');
-        return fetch(url, {
-            ...options,
-            headers: {
-                ...options.headers,
-                'Authorization': `Bearer ${token}`
-            }
-        });
-    }
-    
-    mostrarSeccion(seccionId) {
-        document.querySelectorAll('.main-content > section').forEach(section => {
-            section.style.display = 'none';
-        });
-        document.getElementById(seccionId).style.display = 'block';
-    }
-    
-    mostrarLoading(show) {
-        document.getElementById('loading').style.display = show ? 'block' : 'none';
-    }
-    
-    cerrarModal(modal) {
-        modal.style.display = 'none';
+    getEstadoEncuesta(encuesta) {
+        const ahora = new Date();
+        const inicio = new Date(encuesta.fecha_inicio);
+        const fin = new Date(encuesta.fecha_fin);
         
-        // Limpiar gráficos
-        Object.values(this.charts).forEach(chart => {
-            if (chart && typeof chart.destroy === 'function') {
-                chart.destroy();
-            }
-        });
-        this.charts = {};
+        if (ahora < inicio) return 'programada';
+        if (ahora > fin) return 'cerrada';
+        return 'activa';
     }
     
-    showToast(message, type = 'info') {
-        const toast = document.getElementById('toast');
-        const messageEl = document.getElementById('toastMessage');
-        
-        messageEl.textContent = message;
-        toast.className = `toast ${type}`;
-        toast.classList.add('show');
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
+    calcularPorcentajeParticipacion(encuesta) {
+        // Simular porcentaje basado en respuestas
+        const total = 100; // Total de usuarios
+        const respuestas = encuesta.total_respuestas || 0;
+        return Math.round((respuestas / total) * 100);
     }
     
-    setupChartDefaults() {
-        Chart.defaults.color = '#ffd700';
-        Chart.defaults.borderColor = 'rgba(255, 215, 0, 0.2)';
-        Chart.defaults.backgroundColor = 'rgba(255, 215, 0, 0.1)';
+    puedeResponder(encuesta) {
+        const estado = this.getEstadoEncuesta(encuesta);
+        return estado === 'activa';
     }
     
-    getEstadoLabel(estado) {
-        const labels = {
-            'activa': 'Activa',
-            'cerrada': 'Cerrada',
-            'borrador': 'Borrador',
-            'archivada': 'Archivada'
-        };
-        return labels[estado] || estado;
+    yaRespondio(encuesta) {
+        // Simular verificación de respuesta
+        return Math.random() > 0.7; // 30% de probabilidad de haber respondido
     }
     
-    formatFecha(fechaStr) {
-        const fecha = new Date(fechaStr);
-        return fecha.toLocaleDateString('es-CL', {
+    puedeEditar(encuesta) {
+        return this.currentUser && 
+               (this.currentUser.role === 'admin' || 
+                this.currentUser.role === 'moderator' ||
+                encuesta.creador_id === this.currentUser.id);
+    }
+    
+    formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-ES', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -740,14 +555,53 @@ class EncuestasApp {
             minute: '2-digit'
         });
     }
+    
+    showLoading(show) {
+        // Implementar loading spinner si es necesario
+    }
+    
+    showSuccess(message) {
+        this.showToast(message, 'success');
+        
+        if (window.playSound) {
+            window.playSound('success');
+        }
+    }
+    
+    showError(message) {
+        this.showToast(message, 'error');
+        
+        if (window.playSound) {
+            window.playSound('error');
+        }
+    }
+    
+    showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div class="toast-content">
+                <span>${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 3000);
+    }
 }
 
-// Inicializar aplicación cuando el DOM esté listo
+// Initialize encuestas manager
+let encuestasManager;
 document.addEventListener('DOMContentLoaded', () => {
-    window.encuestasApp = new EncuestasApp();
+    encuestasManager = new EncuestasManager();
+    
+    // Play page load sound
+    if (window.playSound) {
+        window.playSound('pageLoad');
+    }
 });
-
-// Registrar Service Worker para PWA
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js');
-}

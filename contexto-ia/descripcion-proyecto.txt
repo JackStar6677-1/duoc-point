@@ -1,0 +1,42 @@
+DUOCPOINT - PLATAFORMA INTEGRAL DUOC UC
+==========================================
+
+DESCRIPCIÓN GENERAL:
+DuocPoint es una aplicación web progresiva (PWA) desarrollada desde cero para la comunidad estudiantil de Duoc UC. Es una plataforma integral que integra múltiples módulos funcionales para facilitar la vida académica y social de los estudiantes.
+
+OBJETIVO:
+Crear una plataforma unificada que conecte a la comunidad estudiantil de Duoc UC, proporcionando herramientas para comunicación, comercio, desarrollo profesional, navegación del campus y bienestar estudiantil.
+
+CONTEXTO ACADÉMICO:
+- Proyecto desarrollado como parte del programa Capstone de Duoc UC
+- Equipo de desarrollo: Estudiantes de diferentes carreras
+- Institución: Duoc UC (Universidad Católica de Chile)
+- Campus principal: Duoc UC Maipú
+
+MÓDULOS PRINCIPALES:
+1. Foros de Discusión - Sistema de comunicación por carrera y sede
+2. Mercado Estudiantil - Plataforma de compra/venta de productos
+3. Portafolio Profesional - Gestión de perfil académico y profesional
+4. Navegación Virtual - Recorrido paso a paso por el campus
+5. Bienestar Estudiantil - Rutinas de salud y bienestar
+6. Sistema de Reportes - Gestión de tickets y reportes
+7. Cursos OTEC - Cursos abiertos y capacitaciones
+8. Encuestas - Sistema de votación y encuestas
+9. Horarios - Gestión de horarios académicos
+10. Notificaciones - Sistema de alertas y comunicaciones
+
+CARACTERÍSTICAS TÉCNICAS:
+- Aplicación Web Progresiva (PWA) instalable
+- Funcionamiento offline con cache inteligente
+- Diseño responsive para móviles y desktop
+- Sistema de autenticación JWT
+- API REST completa
+- Notificaciones push
+- Navegación virtual del campus
+
+ESTADO ACTUAL:
+- Completamente funcional y probado
+- Todos los módulos implementados
+- PWA optimizada para instalación nativa
+- Documentación completa
+- Listo para uso en desarrollo y producción

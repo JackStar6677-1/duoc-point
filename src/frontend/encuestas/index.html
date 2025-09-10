@@ -3,264 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuestas - Duoc Point</title>
-    <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="stylesheet" href="/styles.css">
+    <title>Encuestas - DuocPoint</title>
+    <link rel="manifest" href="/static/manifest.json">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/duoc-theme.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="encuestas.css">
     <meta name="theme-color" content="#2e004f">
-    <!-- Chart.js para gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1><i class="bi bi-pie-chart"></i> Encuestas DuocPoint</h1>
-            <nav class="header-nav">
-                <button id="btnCrearEncuesta" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Nueva Encuesta
-                </button>
-                <button id="btnMisEncuestas" class="btn btn-secondary">
-                    <i class="bi bi-person-check"></i> Mis Encuestas
-                </button>
-                <button id="btnDashboard" class="btn btn-secondary">
-                    <i class="bi bi-graph-up"></i> Dashboard
-                </button>
-            </nav>
+    <!-- Header -->
+    <header class="duoc-header text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="duoc-logo">
+                        <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="DuocUC Logo" class="duoc-logo-img">
+                        <div>
+                            <h1 class="mb-0">Encuestas</h1>
+                            <p class="mb-0">Participa en encuestas y da tu opinión</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="/" class="duoc-btn duoc-btn-outline btn-sm">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                        <button id="btnCrearEncuesta" class="duoc-btn duoc-btn-primary btn-sm">
+                            <i class="fas fa-plus"></i> Crear Encuesta
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="main-content">
-        <!-- Filtros -->
-        <section class="filtros-section">
-            <div class="filtros-container">
-                <div class="filtro-grupo">
-                    <label for="filtroEstado">Estado:</label>
-                    <select id="filtroEstado">
-                        <option value="">Todos</option>
-                        <option value="activa">Activas</option>
-                        <option value="cerrada">Cerradas</option>
-                        <option value="borrador">Borradores</option>
-                    </select>
+    <!-- Main Content -->
+    <main class="encuestas-container">
+        <div class="container">
+            <!-- Filters -->
+            <section class="filters-section">
+                <div class="duoc-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="filtroEstado">Estado</label>
+                                <select id="filtroEstado" class="form-control">
+                                    <option value="">Todas</option>
+                                    <option value="activa">Activas</option>
+                                    <option value="cerrada">Cerradas</option>
+                                    <option value="programada">Programadas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="filtroCategoria">Categoría</label>
+                                <select id="filtroCategoria" class="form-control">
+                                    <option value="">Todas</option>
+                                    <option value="academica">Académica</option>
+                                    <option value="servicios">Servicios</option>
+                                    <option value="infraestructura">Infraestructura</option>
+                                    <option value="eventos">Eventos</option>
+                                    <option value="general">General</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="busqueda">Buscar</label>
+                                <input type="text" id="busqueda" class="form-control" placeholder="Buscar encuestas...">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <div class="d-flex gap-2">
+                                    <button id="btnFiltrar" class="duoc-btn duoc-btn-primary btn-sm">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button id="btnLimpiarFiltros" class="duoc-btn duoc-btn-outline btn-sm">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="filtro-grupo">
-                    <label for="filtroFecha">Desde:</label>
-                    <input type="date" id="filtroFecha">
-                </div>
-                
-                <div class="filtro-grupo">
-                    <label for="busqueda">Buscar:</label>
-                    <input type="text" id="busqueda" placeholder="Título o descripción...">
-                </div>
-                
-                <button id="btnFiltrar" class="btn btn-outline">
-                    <i class="bi bi-funnel"></i> Filtrar
-                </button>
-                
-                <button id="btnLimpiarFiltros" class="btn btn-outline">
-                    <i class="bi bi-x-circle"></i> Limpiar
-                </button>
-            </div>
-        </section>
+            </section>
 
-        <!-- Lista de Encuestas -->
-        <section id="encuestasSection" class="encuestas-section">
-            <div id="encuestasList" class="encuestas-grid">
-                <!-- Las encuestas se cargarán dinámicamente -->
-            </div>
-            
-            <div id="loading" class="loading" style="display: none;">
-                <i class="bi bi-hourglass-split"></i> Cargando encuestas...
-            </div>
-            
-            <div id="noResults" class="no-results" style="display: none;">
-                <i class="bi bi-search"></i>
-                <p>No se encontraron encuestas con los criterios seleccionados.</p>
-            </div>
-        </section>
+            <!-- Stats -->
+            <section class="stats-section">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-poll"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="totalEncuestas">0</div>
+                                <div class="stat-label">Total Encuestas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="encuestasCompletadas">0</div>
+                                <div class="stat-label">Completadas</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="encuestasPendientes">0</div>
+                                <div class="stat-label">Pendientes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="porcentajeParticipacion">0%</div>
+                                <div class="stat-label">Participación</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Dashboard -->
-        <section id="dashboardSection" class="dashboard-section" style="display: none;">
-            <div class="dashboard-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-list-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="totalEncuestas">-</h3>
-                        <p>Total Encuestas</p>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-play-circle"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="encuestasActivas">-</h3>
-                        <p>Activas</p>
+            <!-- Encuestas List -->
+            <section class="encuestas-section">
+                <div class="section-header">
+                    <h2>Encuestas Disponibles</h2>
+                    <div class="view-toggle">
+                        <button id="btnVistaLista" class="btn btn-sm btn-outline-secondary active">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button id="btnVistaGrid" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-th"></i>
+                        </button>
                     </div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-person-check"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="misEncuestasCount">-</h3>
-                        <p>Mis Encuestas</p>
+
+                <div id="encuestasList" class="encuestas-list">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+
+                <div id="noResults" class="no-results" style="display: none;">
+                    <div class="text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">No se encontraron encuestas</h4>
+                        <p class="text-muted">Intenta ajustar los filtros de búsqueda</p>
                     </div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="bi bi-calendar-week"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="actividadReciente">-</h3>
-                        <p>Este Mes</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="dashboard-charts">
-                <div class="chart-container">
-                    <h3>Top Encuestas por Participación</h3>
-                    <canvas id="topEncuestasChart"></canvas>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </main>
 
-    <!-- Modal para Ver Encuesta -->
-    <div id="modalVerEncuesta" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitulo"></h2>
-                <button class="modal-close">&times;</button>
-            </div>
-            
-            <div class="modal-body">
-                <div id="encuestaDetalle">
-                    <!-- Contenido dinámico -->
-                </div>
-                
-                <div id="opcionesVotacion" class="opciones-votacion">
-                    <!-- Opciones para votar -->
-                </div>
-                
-                <div id="resultadosGrafico" class="resultados-grafico">
-                    <canvas id="resultadosChart"></canvas>
-                </div>
-                
-                <div id="analyticsDetalle" class="analytics-detalle">
-                    <!-- Analytics detallados -->
-                </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button id="btnVotar" class="btn btn-primary" style="display: none;">
-                    <i class="bi bi-check-circle"></i> Votar
-                </button>
-                <button id="btnExportar" class="btn btn-outline" style="display: none;">
-                    <i class="bi bi-download"></i> Exportar CSV
-                </button>
-                <button id="btnCerrarEncuesta" class="btn btn-danger" style="display: none;">
-                    <i class="bi bi-stop-circle"></i> Cerrar Encuesta
-                </button>
-                <button class="btn btn-secondary modal-close">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para Crear/Editar Encuesta -->
+    <!-- Modal para Crear Encuesta -->
     <div id="modalCrearEncuesta" class="modal">
         <div class="modal-content modal-large">
             <div class="modal-header">
-                <h2>Nueva Encuesta</h2>
+                <h2 class="modal-title">Crear Nueva Encuesta</h2>
                 <button class="modal-close">&times;</button>
             </div>
             
             <form id="formCrearEncuesta" class="modal-body">
                 <div class="form-group">
-                    <label for="inputTitulo">Título *</label>
-                    <input type="text" id="inputTitulo" required minlength="5" maxlength="200">
+                    <label for="inputTitulo">Título de la Encuesta *</label>
+                    <input type="text" id="inputTitulo" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="inputDescripcion">Descripción</label>
-                    <textarea id="inputDescripcion" rows="3"></textarea>
+                    <label for="inputDescripcion">Descripción *</label>
+                    <textarea id="inputDescripcion" class="form-control" rows="3" required></textarea>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="inputInicia">Fecha de Inicio</label>
-                        <input type="datetime-local" id="inputInicia">
+                        <label for="inputCategoria">Categoría *</label>
+                        <select id="inputCategoria" class="form-control" required>
+                            <option value="">Seleccionar categoría</option>
+                            <option value="academica">Académica</option>
+                            <option value="servicios">Servicios</option>
+                            <option value="infraestructura">Infraestructura</option>
+                            <option value="eventos">Eventos</option>
+                            <option value="general">General</option>
+                        </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="inputCierra">Fecha de Cierre</label>
-                        <input type="datetime-local" id="inputCierra">
+                        <label for="inputTipo">Tipo de Encuesta *</label>
+                        <select id="inputTipo" class="form-control" required>
+                            <option value="">Seleccionar tipo</option>
+                            <option value="multiple_choice">Opción Múltiple</option>
+                            <option value="rating">Calificación</option>
+                            <option value="text">Texto Libre</option>
+                            <option value="mixta">Mixta</option>
+                        </select>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="inputMulti">
-                            Permitir múltiples opciones
-                        </label>
+                        <label for="inputFechaInicio">Fecha de Inicio *</label>
+                        <input type="datetime-local" id="inputFechaInicio" class="form-control" required>
                     </div>
                     
                     <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="inputAnonima">
-                            Votos anónimos
-                        </label>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" id="inputRequiereJustificacion">
-                            Requiere justificación
-                        </label>
+                        <label for="inputFechaFin">Fecha de Fin *</label>
+                        <input type="datetime-local" id="inputFechaFin" class="form-control" required>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="inputMostrarResultados">Mostrar Resultados</label>
-                    <select id="inputMostrarResultados">
-                        <option value="tiempo_real">En Tiempo Real</option>
-                        <option value="al_cierre">Al Cierre</option>
-                        <option value="solo_moderador">Solo Moderadores</option>
-                    </select>
+                    <label for="inputPreguntas">Preguntas (una por línea) *</label>
+                    <textarea id="inputPreguntas" class="form-control" rows="5" placeholder="¿Cuál es tu opinión sobre...?&#10;¿Cómo calificarías...?&#10;¿Qué sugerencias tienes...?" required></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="inputCarreras">Carreras (opcional)</label>
-                    <input type="text" id="inputCarreras" placeholder="Ej: Informática, Arquitectura (separadas por comas)">
-                    <small>Dejar vacío para permitir todas las carreras</small>
+                <div class="form-check">
+                    <input type="checkbox" id="inputAnonima" class="form-check-input" checked>
+                    <label for="inputAnonima" class="form-check-label">Encuesta anónima</label>
                 </div>
                 
-                <!-- Opciones -->
-                <div class="opciones-section">
-                    <h3>Opciones de Respuesta</h3>
-                    <div id="opcionesList" class="opciones-list">
-                        <!-- Se generarán dinámicamente -->
-                    </div>
-                    <button type="button" id="btnAgregarOpcion" class="btn btn-outline">
-                        <i class="bi bi-plus"></i> Agregar Opción
-                    </button>
+                <div class="form-check">
+                    <input type="checkbox" id="inputObligatoria" class="form-check-input">
+                    <label for="inputObligatoria" class="form-check-label">Encuesta obligatoria</label>
                 </div>
             </form>
             
             <div class="modal-footer">
-                <button type="submit" form="formCrearEncuesta" class="btn btn-primary">
-                    <i class="bi bi-check-circle"></i> Crear Encuesta
+                <button type="submit" form="formCrearEncuesta" class="duoc-btn duoc-btn-primary">
+                    <i class="fas fa-save"></i> Crear Encuesta
                 </button>
-                <button class="btn btn-secondary modal-close">Cancelar</button>
+                <button class="duoc-btn duoc-btn-outline modal-close">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Responder Encuesta -->
+    <div id="modalResponderEncuesta" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalEncuestaTitulo">Responder Encuesta</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <form id="formResponderEncuesta" class="modal-body">
+                <div id="encuestaPreguntas">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+            </form>
+            
+            <div class="modal-footer">
+                <button type="submit" form="formResponderEncuesta" class="duoc-btn duoc-btn-primary">
+                    <i class="fas fa-paper-plane"></i> Enviar Respuestas
+                </button>
+                <button class="duoc-btn duoc-btn-outline modal-close">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Ver Resultados -->
+    <div id="modalVerResultados" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalResultadosTitulo">Resultados de la Encuesta</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <div id="encuestaResultados">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="duoc-btn duoc-btn-outline modal-close">Cerrar</button>
             </div>
         </div>
     </div>
@@ -272,6 +304,9 @@
         </div>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/sounds.js"></script>
     <script src="encuestas.js"></script>
 </body>
 </html>

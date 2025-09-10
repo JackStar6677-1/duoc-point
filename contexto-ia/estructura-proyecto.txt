@@ -1,0 +1,116 @@
+ESTRUCTURA DEL PROYECTO DUOCPOINT
+==================================
+
+ESTRUCTURA GENERAL:
+duoc-point/
+├── config/                          # Configuración del sistema
+├── src/                            # Código fuente
+│   ├── backend/                    # Backend Django
+│   └── frontend/                   # Frontend PWA
+├── imagenes/                       # Imágenes del proyecto
+├── Documentacion/                  # Documentación académica
+├── contexto-ia/                    # Contexto para IA
+├── iniciar_desarrollo.bat          # Script de desarrollo
+├── iniciar_produccion.bat          # Script de producción
+└── README.md                       # Documentación principal
+
+BACKEND (src/backend/):
+├── duocpoint/                      # Configuración principal Django
+│   ├── apps/                       # Aplicaciones del sistema
+│   │   ├── accounts/               # Gestión de usuarios
+│   │   ├── forum/                  # Sistema de foros
+│   │   ├── market/                 # Mercado estudiantil
+│   │   ├── portfolio/              # Portafolio profesional
+│   │   ├── polls/                  # Sistema de encuestas
+│   │   ├── reports/                # Sistema de reportes
+│   │   ├── schedules/              # Gestión de horarios
+│   │   ├── otec/                   # Cursos OTEC
+│   │   ├── wellbeing/              # Bienestar estudiantil
+│   │   ├── campuses/               # Gestión de sedes
+│   │   └── notifications/          # Sistema de notificaciones
+│   ├── settings/                   # Configuraciones Django
+│   │   ├── base.py                 # Configuración base
+│   │   ├── dev.py                  # Configuración desarrollo
+│   │   └── prod.py                 # Configuración producción
+│   ├── urls.py                     # URLs principales
+│   └── wsgi.py                     # WSGI configuration
+├── manage.py                       # Comando de Django
+├── requirements.txt                # Dependencias Python
+├── create_test_users.py            # Script usuarios de prueba
+└── test_login.py                   # Script de testing
+
+FRONTEND (src/frontend/):
+├── static/                         # Archivos estáticos organizados
+│   ├── css/                        # Hojas de estilo
+│   │   ├── styles.css              # Estilos principales
+│   │   └── duoc-theme.css          # Tema personalizado
+│   ├── js/                         # Scripts JavaScript
+│   │   ├── main.js                 # Script principal
+│   │   ├── pwa.js                  # Gestor de PWA
+│   │   ├── sounds.js               # Sistema de sonidos
+│   │   └── sw.js                   # Service Worker
+│   ├── images/                     # Imágenes e iconos
+│   │   └── icons/                  # Iconos PWA
+│   ├── manifest.json               # Manifest de PWA
+│   └── pwa-config.js               # Configuración PWA
+├── index.html                      # Página principal
+├── login.html                      # Página de login
+├── register.html                   # Página de registro
+├── forum/                          # Módulo de foros
+├── market/                         # Módulo de mercado
+├── portfolio/                      # Módulo de portafolio
+├── streetview/                     # Navegación virtual
+├── bienestar/                      # Bienestar estudiantil
+├── encuestas/                      # Sistema de encuestas
+├── reportes/                       # Sistema de reportes
+├── cursos/                         # Cursos OTEC
+└── horarios/                       # Gestión de horarios
+
+CONFIGURACIÓN (config/):
+├── push.yaml                       # Configuración notificaciones
+└── security.yaml                   # Configuración seguridad
+
+IMÁGENES (imagenes/):
+├── logos-iconos/                   # Logos e iconos
+│   └── Logo_DuocUC.svg.png         # Logo principal
+└── streetviewSalas/                # Imágenes navegación virtual
+
+DOCUMENTACIÓN (Documentacion/):
+├── FASE 1/                         # Documentación Fase 1
+├── FASE 2/                         # Documentación Fase 2
+├── FASE 3/                         # Documentación Fase 3
+└── Otros/                          # Documentación adicional
+
+CONTEXTO IA (contexto-ia/):
+├── descripcion-proyecto.txt        # Descripción general
+├── desarrollo-desde-cero.txt       # Desarrollo desde cero
+├── herramientas-utilizadas.txt     # Herramientas y tecnologías
+└── estructura-proyecto.txt         # Este archivo
+
+ARCHIVOS PRINCIPALES:
+├── iniciar_desarrollo.bat          # Script de desarrollo
+├── iniciar_produccion.bat          # Script de producción
+├── README.md                       # Documentación principal
+├── LICENSE                         # Licencia del proyecto
+└── start.py                        # Script de inicio Python
+
+CARACTERÍSTICAS DE LA ESTRUCTURA:
+- Organización modular por funcionalidad
+- Separación clara entre frontend y backend
+- Archivos estáticos organizados en carpetas
+- Configuración separada por entorno
+- Documentación estructurada por fases
+- Contexto para IA en carpeta dedicada
+- Scripts de automatización en raíz
+- Imágenes organizadas por tipo
+- Configuración centralizada
+
+VENTAJAS DE LA ESTRUCTURA:
+- Fácil navegación y mantenimiento
+- Escalabilidad para nuevos módulos
+- Separación de responsabilidades
+- Configuración flexible por entorno
+- Documentación accesible
+- Contexto claro para desarrolladores
+- Automatización simplificada
+- Organización profesional
