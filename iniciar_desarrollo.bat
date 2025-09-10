@@ -146,15 +146,7 @@ python manage.py migrate --run-syncdb
 
 :: Crear superusuario si no existe
 echo [INFO] Verificando superusuario...
-python manage.py shell -c "
-from django.contrib.auth import get_user_model
-User = get_user_model()
-if not User.objects.filter(email='admin@duocuc.cl').exists():
-    User.objects.create_superuser('admin', 'admin@duocuc.cl', 'admin123')
-    print('Superusuario creado: admin@duocuc.cl / admin123')
-else:
-    print('Superusuario ya existe')
-"
+python ..\..\src\backend\ensure_superuser.py
 
 :: Crear usuarios de prueba
 echo [INFO] Creando usuarios de prueba...

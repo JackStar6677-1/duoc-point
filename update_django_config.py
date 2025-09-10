@@ -37,13 +37,17 @@ def update_django_settings(ip):
         if csrf_match:
             current_origins = csrf_match.group(1)
             new_origin = f'    "http://{ip}:8000",'
-            
+
             # Verificar si la IP ya está en la lista
             if f'http://{ip}:8000' not in current_origins:
-                # Agregar la nueva IP a los orígenes
-                updated_origins = current_origins.rstrip() + f',\n{new_origin}'
-                content = content.replace(csrf_match.group(0), 
-                                        f'CSRF_TRUSTED_ORIGINS = [{updated_origins}\n]')
+                # Evitar comas duplicadas si la lista ya termina con coma
+                trimmed = current_origins.rstrip()
+                sep = '\n' if trimmed.endswith(',') else ',\n'
+                updated_origins = trimmed + f'{sep}{new_origin}'
+                content = content.replace(
+                    csrf_match.group(0),
+                    f'CSRF_TRUSTED_ORIGINS = [{updated_origins}\n]'
+                )
                 print(f"[INFO] Agregada IP {ip} a CSRF_TRUSTED_ORIGINS")
         
         # Actualizar ALLOWED_HOSTS - agregar IP específica si no está
@@ -53,13 +57,17 @@ def update_django_settings(ip):
         if allowed_hosts_match:
             current_hosts = allowed_hosts_match.group(1)
             new_host = f'    "{ip}",'
-            
+
             # Verificar si la IP ya está en la lista
             if f'"{ip}"' not in current_hosts:
-                # Agregar la nueva IP a los hosts permitidos
-                updated_hosts = current_hosts.rstrip() + f',\n{new_host}'
-                content = content.replace(allowed_hosts_match.group(0), 
-                                        f'ALLOWED_HOSTS = [{updated_hosts}\n]')
+                # Evitar comas duplicadas si la lista ya termina con coma
+                trimmed = current_hosts.rstrip()
+                sep = '\n' if trimmed.endswith(',') else ',\n'
+                updated_hosts = trimmed + f'{sep}{new_host}'
+                content = content.replace(
+                    allowed_hosts_match.group(0),
+                    f'ALLOWED_HOSTS = [{updated_hosts}\n]'
+                )
                 print(f"[INFO] Agregada IP {ip} a ALLOWED_HOSTS")
         
         # Escribir el archivo actualizado
