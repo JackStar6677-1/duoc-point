@@ -213,8 +213,8 @@ server/.env
 # sqlite en dev
 server/db.sqlite3
 # compilados/estáticos
-staticfiles/
-static/
+# staticfiles/  # Comentado: Los archivos estáticos SÍ deben estar en el repo
+# static/       # Comentado: Los archivos estáticos SÍ deben estar en el repo
 web/dist/
 node_modules/
 __pycache__/
