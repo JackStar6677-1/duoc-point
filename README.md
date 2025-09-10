@@ -4,6 +4,29 @@
 
 DuocPoint es una **aplicación web progresiva (PWA)** completa para la comunidad estudiantil de Duoc UC, con diseño impresionante y funcionalidades avanzadas.
 
+## 🌿 **BRANCHES DISPONIBLES**
+
+### 📋 **main** - Branch Principal (Desarrollo)
+- **Base de datos**: SQLite (para desarrollo)
+- **Configuración**: Modo desarrollo
+- **Uso**: Desarrollo local y pruebas
+- **Archivo de inicio**: `iniciar_desarrollo.bat`
+
+### 🚀 **production** - Branch de Producción
+- **Base de datos**: PostgreSQL (para producción)
+- **Configuración**: Modo producción optimizado
+- **Uso**: Despliegue en servidor
+- **Archivos de inicio**: `iniciar_produccion.bat`, `instalar_postgresql.bat`
+
+### 🔄 **Cambiar entre branches**
+```bash
+# Para desarrollo
+git checkout main
+
+# Para producción
+git checkout production
+```
+
 ## 🎯 **INSTRUCCIONES PARA INICIAR LA APLICACIÓN (SIN CONOCIMIENTO PREVIO)**
 
 ### 📋 **PASO 1: Verificar que tienes Python instalado**
@@ -24,30 +47,18 @@ DuocPoint es una **aplicación web progresiva (PWA)** completa para la comunidad
 
 ### 📋 **PASO 3: Iniciar la aplicación (MUY FÁCIL)**
 
-#### 🟢 **OPCIÓN A: Iniciar Aplicación Completa (RECOMENDADO)**
-1. **Busca el archivo** `iniciar_app.bat` en la carpeta del proyecto
-2. **Haz doble clic** en `iniciar_app.bat`
+#### 🟢 **OPCIÓN A: Desarrollo Local (RECOMENDADO)**
+1. **Busca el archivo** `iniciar_desarrollo.bat` en la carpeta del proyecto
+2. **Haz doble clic** en `iniciar_desarrollo.bat`
 3. **Espera** a que se instalen las dependencias automáticamente (puede tomar 2-3 minutos la primera vez)
 4. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
 
-#### 🟡 **OPCIÓN B: Inicio Fácil (Para principiantes con guía paso a paso)**
-1. **Busca el archivo** `iniciar_facil.bat` en la carpeta del proyecto
-2. **Haz doble clic** en `iniciar_facil.bat`
-3. **Sigue las instrucciones** que aparecen en pantalla
-4. **Espera** a que se instalen las dependencias automáticamente
-5. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
-
-#### 🟡 **OPCIÓN C: Desarrollo Local (Para usuarios con experiencia)**
-1. **Busca el archivo** `iniciar_desarrollo.bat` en la carpeta del proyecto
-2. **Haz doble clic** en `iniciar_desarrollo.bat`
-3. **Espera** a que se instalen las dependencias automáticamente
-4. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
-
-#### 🔴 **OPCIÓN D: Producción (Para usuarios avanzados)**
-1. **Busca el archivo** `iniciar_produccion.bat` en la carpeta del proyecto
-2. **Haz doble clic** en `iniciar_produccion.bat`
-3. **Espera** a que se configure todo automáticamente
-4. **¡Listo!** La aplicación estará disponible
+#### 🔴 **OPCIÓN B: Producción con PostgreSQL (Para usuarios avanzados)**
+1. **Cambia a la branch de producción**: `git checkout production`
+2. **Instala PostgreSQL**: Ejecuta `instalar_postgresql.bat`
+3. **Configura variables de entorno**: Copia `env.production.example` como `.env` y edítalo
+4. **Inicia producción**: Ejecuta `iniciar_produccion.bat`
+5. **¡Listo!** La aplicación estará disponible con base de datos PostgreSQL
 
 ### 📋 **PASO 4: Acceder a la aplicación**
 
