@@ -4,61 +4,236 @@
 
 DuocPoint es una **aplicación web progresiva (PWA)** completa para la comunidad estudiantil de Duoc UC, con diseño impresionante y funcionalidades avanzadas.
 
-## 🌿 **BRANCHES DISPONIBLES**
+## 🎯 **INSTRUCCIONES PARA INICIAR LA APLICACIÓN**
 
-### 📋 **main** - Branch Principal (Desarrollo)
-- **Base de datos**: SQLite (para desarrollo)
-- **Configuración**: Modo desarrollo
-- **Uso**: Desarrollo local y pruebas
-- **Archivo de inicio**: `iniciar_desarrollo.bat`
+### 📋 **OPCIÓN 1: Instalación Automática (RECOMENDADO)**
 
-### 🚀 **production** - Branch de Producción
-- **Base de datos**: PostgreSQL (para producción)
-- **Configuración**: Modo producción optimizado
-- **Uso**: Despliegue en servidor
-- **Archivos de inicio**: `iniciar_produccion.bat`, `instalar_postgresql.bat`
+#### 🟢 **Para usuarios sin experiencia técnica:**
+1. **Descarga el proyecto** desde el repositorio
+2. **Extrae la carpeta** en tu escritorio
+3. **Haz doble clic** en `iniciar_desarrollo.bat`
+4. **Espera** a que se instale todo automáticamente
+5. **¡Listo!** La aplicación se abrirá en tu navegador
 
-### 🔄 **Cambiar entre branches**
+### 📋 **OPCIÓN 2: Instalación Manual desde Consola**
+
+#### 🔧 **PASO 1: Instalar Python**
 ```bash
-# Para desarrollo
-git checkout main
+# Windows (PowerShell como Administrador)
+# Descargar Python desde https://python.org
+# O usar winget:
+winget install Python.Python.3.11
 
-# Para producción
-git checkout production
+# Verificar instalación
+python --version
+pip --version
 ```
 
-## 🎯 **INSTRUCCIONES PARA INICIAR LA APLICACIÓN (SIN CONOCIMIENTO PREVIO)**
+#### 🔧 **PASO 2: Instalar Git**
+```bash
+# Windows (PowerShell como Administrador)
+winget install Git.Git
 
-### 📋 **PASO 1: Verificar que tienes Python instalado**
+# Verificar instalación
+git --version
+```
 
-1. **Abre la terminal de Windows** (presiona `Windows + R`, escribe `cmd` y presiona Enter)
-2. **Escribe el comando**: `python --version`
-3. **Si aparece un error** que dice "python no se reconoce como comando":
-   - Ve a https://python.org
-   - Descarga Python (versión 3.8 o superior)
-   - **IMPORTANTE**: Durante la instalación, marca la casilla "Add Python to PATH"
-   - Reinicia tu computadora después de instalar
+#### 🔧 **PASO 3: Clonar el proyecto**
+```bash
+# Clonar repositorio
+git clone https://github.com/JackStar6677-1/duoc-point.git
+cd duoc-point
 
-### 📋 **PASO 2: Descargar el proyecto**
+# Cambiar a branch de desarrollo
+git checkout main
+```
 
-1. **Descarga el proyecto** desde el repositorio
-2. **Extrae la carpeta** en tu escritorio o donde prefieras
-3. **Abre la carpeta** del proyecto
+#### 🔧 **PASO 4: Instalar dependencias**
+```bash
+# Actualizar pip
+python -m pip install --upgrade pip
 
-### 📋 **PASO 3: Iniciar la aplicación (MUY FÁCIL)**
+# Instalar dependencias
+pip install -r src/backend/requirements.txt
+```
 
-#### 🟢 **OPCIÓN A: Desarrollo Local (RECOMENDADO)**
-1. **Busca el archivo** `iniciar_desarrollo.bat` en la carpeta del proyecto
-2. **Haz doble clic** en `iniciar_desarrollo.bat`
-3. **Espera** a que se instalen las dependencias automáticamente (puede tomar 2-3 minutos la primera vez)
-4. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
+#### 🔧 **PASO 5: Configurar base de datos**
+```bash
+# Ir al directorio del backend
+cd src/backend
 
-#### 🔴 **OPCIÓN B: Producción con PostgreSQL (Para usuarios avanzados)**
-1. **Cambia a la branch de producción**: `git checkout production`
-2. **Instala PostgreSQL**: Ejecuta `instalar_postgresql.bat`
-3. **Configura variables de entorno**: Copia `env.production.example` como `.env` y edítalo
-4. **Inicia producción**: Ejecuta `iniciar_produccion.bat`
-5. **¡Listo!** La aplicación estará disponible con base de datos PostgreSQL
+# Aplicar migraciones
+python manage.py migrate
+
+# Crear superusuario
+python manage.py createsuperuser
+
+# Crear usuarios de prueba
+python create_test_users.py
+```
+
+#### 🔧 **PASO 6: Iniciar servidor**
+```bash
+# Iniciar servidor de desarrollo
+python manage.py runserver 0.0.0.0:8000
+
+# O usar el script de inicio
+cd ../..
+python start.py
+```
+
+### 📋 **OPCIÓN 3: Instalación en AMP (CubeCoders)**
+
+#### 🚀 **Para servidores con AMP:**
+```bash
+# 1. Crear nueva instancia en AMP
+# 2. Configurar como aplicación web
+# 3. Subir archivos del proyecto
+# 4. Configurar variables de entorno
+
+# Variables de entorno en AMP:
+DEBUG=False
+SECRET_KEY=tu_secret_key_muy_segura
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=duocpoint_prod
+DB_USER=postgres
+DB_PASSWORD=tu_password
+DB_HOST=localhost
+DB_PORT=5432
+ALLOWED_HOSTS=tu-dominio.com,localhost
+
+# 5. Instalar dependencias
+pip install -r src/backend/requirements.txt
+
+# 6. Configurar base de datos
+python src/backend/manage.py migrate --settings=duocpoint.settings.production
+python src/backend/manage.py collectstatic --settings=duocpoint.settings.production
+
+# 7. Iniciar con Gunicorn
+gunicorn --bind 0.0.0.0:8000 duocpoint.wsgi:application
+```
+
+### 📋 **OPCIÓN 5: Despliegue en AMP (CubeCoders)**
+
+#### 🚀 **Configuración completa para AMP:**
+```bash
+# 1. Crear nueva instancia en AMP
+# 2. Configurar como aplicación web
+# 3. Subir archivos del proyecto
+# 4. Configurar variables de entorno
+
+# Variables de entorno en AMP:
+DEBUG=False
+SECRET_KEY=tu_secret_key_muy_segura
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=duocpoint_prod
+DB_USER=postgres
+DB_PASSWORD=tu_password
+DB_HOST=localhost
+DB_PORT=5432
+ALLOWED_HOSTS=tu-dominio.com,localhost
+
+# 5. Crear script de inicio (startup.sh)
+cat > startup.sh << 'EOF'
+#!/bin/bash
+pip install -r src/backend/requirements.txt
+python src/backend/manage.py migrate --settings=duocpoint.settings.production
+python src/backend/manage.py collectstatic --settings=duocpoint.settings.production --noinput
+cd src/backend
+gunicorn --bind 0.0.0.0:8000 --workers 4 duocpoint.wsgi:application
+EOF
+
+chmod +x startup.sh
+
+# 6. Configurar Nginx (opcional)
+# Usar el archivo nginx.conf incluido en el proyecto
+```
+
+### 📋 **Guía Completa para AMP (CubeCoders)**
+
+#### 🔧 **PASO 1: Preparar la Instancia**
+1. **Crear nueva instancia** en tu panel de AMP
+2. **Configurar como aplicación web** (no como juego)
+3. **Asignar recursos**: Mínimo 2GB RAM, 1 CPU core
+4. **Configurar puerto**: 8000 (o el que prefieras)
+
+#### 🔧 **PASO 2: Subir Archivos**
+```bash
+# Subir archivos del proyecto a la instancia
+# Usar el cliente FTP/SFTP de AMP o subir como ZIP
+```
+
+#### 🔧 **PASO 3: Configurar Variables de Entorno**
+En el panel de AMP, configurar estas variables:
+```env
+DEBUG=False
+SECRET_KEY=tu_secret_key_muy_segura_de_50_caracteres
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=duocpoint_prod
+DB_USER=postgres
+DB_PASSWORD=tu_password_postgres
+DB_HOST=localhost
+DB_PORT=5432
+ALLOWED_HOSTS=tu-dominio.com,localhost,127.0.0.1
+STATIC_URL=/static/
+STATIC_ROOT=/home/container/staticfiles/
+MEDIA_URL=/media/
+MEDIA_ROOT=/home/container/media/
+```
+
+#### 🔧 **PASO 4: Configurar Base de Datos**
+```bash
+# En AMP, instalar PostgreSQL
+# O usar base de datos externa
+```
+
+#### 🔧 **PASO 5: Configurar Script de Inicio**
+```bash
+# Usar el archivo startup.sh incluido
+# O configurar en AMP:
+chmod +x startup.sh
+./startup.sh
+```
+
+#### 🔧 **PASO 6: Configurar Nginx (Opcional)**
+```bash
+# Usar el archivo nginx.conf incluido
+# Configurar proxy para mejor rendimiento
+```
+
+### 📋 **OPCIÓN 4: Inicio Rápido con Scripts**
+
+#### 🟢 **Desarrollo Local (SQLite)**
+```bash
+# Ejecutar script de desarrollo
+./iniciar_desarrollo.bat
+
+# O manualmente:
+cd src/backend
+python manage.py runserver 0.0.0.0:8000
+```
+
+#### 🔴 **Producción (PostgreSQL)**
+```bash
+# Cambiar a branch de producción
+git checkout production
+
+# Instalar PostgreSQL
+./instalar_postgresql.bat
+
+# Configurar variables de entorno
+cp env.production.example .env
+# Editar .env con tus configuraciones
+
+# Iniciar producción
+./iniciar_produccion.bat
+```
+
+#### 🔴 **OPCIÓN D: Producción (Para usuarios avanzados)**
+1. **Busca el archivo** `iniciar_produccion.bat` en la carpeta del proyecto
+2. **Haz doble clic** en `iniciar_produccion.bat`
+3. **Espera** a que se configure todo automáticamente
+4. **¡Listo!** La aplicación estará disponible
 
 ### 📋 **PASO 4: Acceder a la aplicación**
 
