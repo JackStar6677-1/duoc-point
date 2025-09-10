@@ -77,3 +77,11 @@ ALLOWED_HOSTS = [
     "172.31.*",
     "*"  # Permitir cualquier host en desarrollo
 ]
+
+# Configuración de archivos estáticos para desarrollo
+STATICFILES_DIRS = [
+    BASE_DIR.parent / "frontend/static",
+]
+
+# Configuración para servir archivos estáticos en desarrollo
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
