@@ -150,6 +150,9 @@ def main():
     if not args.no_data:
         load_initial_data()
     
+    # Detectar IP local para mostrar URLs de acceso
+    local_ip = get_local_ip()
+    
     print("\nSistema listo para usar")
     print("Acceso:")
     print(f"  - Aplicación (Local): http://127.0.0.1:{args.port}")
