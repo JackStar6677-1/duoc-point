@@ -3,6 +3,7 @@ from .base import *
 DEBUG = True
 ALLOWED_HOSTS = ["*",
     "192.168.100.2",
+    "192.168.100.6",
 ]
 
 # Deshabilitar CSRF para APIs
@@ -14,6 +15,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://192.168.100.1:8000",
     "http://192.168.1.1:8000",
     "http://192.168.0.1:8000",
+    "http://192.168.100.6:8000",
 ]
 
 # Deshabilitar CSRF para APIs REST
@@ -29,6 +31,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://192.168.100.1:8000",
     "http://192.168.1.1:8000",
     "http://192.168.0.1:8000",
+    "http://192.168.100.6:8000",
 ]
 
 # Permitir CORS para desarrollo
