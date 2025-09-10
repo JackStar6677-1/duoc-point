@@ -18,6 +18,9 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo [INFO] Limpiando cache del navegador...
+python limpiar_navegador.py
+
 echo [INFO] Detectando configuración de red local...
 python update_django_config.py
 
@@ -28,6 +31,10 @@ echo [INFO] IP local detectada: %LOCAL_IP%
 :: Generar archivo de URLs
 echo [INFO] Generando archivo de URLs de acceso...
 python generar_urls.py
+
+:: Diagnóstico del servidor
+echo [INFO] Ejecutando diagnóstico del servidor...
+python diagnostico_servidor.py
 
 echo [INFO] Configurando entorno de desarrollo...
 
@@ -155,11 +162,15 @@ python create_test_users.py
 
 cd ..\..
 
-:: Abrir navegador automáticamente después de 3 segundos
-echo [INFO] Abriendo navegador en 3 segundos...
+:: Abrir navegador automáticamente después de 5 segundos
+echo [INFO] Abriendo navegador en 5 segundos...
 echo [INFO] URL de acceso: http://%LOCAL_IP%:8000
-timeout /t 3 /nobreak >nul
-start http://localhost:8000
+echo [INFO] También disponible en: http://127.0.0.1:8000
+timeout /t 5 /nobreak >nul
+
+:: Intentar abrir en modo incógnito
+echo [INFO] Abriendo navegador en modo incógnito...
+start chrome --incognito http://127.0.0.1:8000 2>nul || start msedge --inprivate http://127.0.0.1:8000 2>nul || start http://127.0.0.1:8000
 
 :: Ejecutar con configuración de desarrollo
 set DJANGO_SETTINGS_MODULE=duocpoint.settings.dev

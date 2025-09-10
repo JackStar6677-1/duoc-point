@@ -16,3 +16,4 @@ def get_local_ip():
 
 if __name__ == "__main__":
     print(get_local_ip())
+
