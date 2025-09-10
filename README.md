@@ -4,6 +4,29 @@
 
 DuocPoint es una **aplicación web progresiva (PWA)** completa para la comunidad estudiantil de Duoc UC, con diseño impresionante y funcionalidades avanzadas.
 
+## 🌿 **BRANCHES DISPONIBLES**
+
+### 📋 **main** - Branch Principal (Desarrollo)
+- **Base de datos**: SQLite (para desarrollo)
+- **Configuración**: Modo desarrollo
+- **Uso**: Desarrollo local y pruebas
+- **Archivo de inicio**: `iniciar_desarrollo.bat`
+
+### 🚀 **production** - Branch de Producción
+- **Base de datos**: PostgreSQL (para producción)
+- **Configuración**: Modo producción optimizado
+- **Uso**: Despliegue en servidor
+- **Archivos de inicio**: `iniciar_produccion.bat`, `instalar_postgresql.bat`
+
+### 🔄 **Cambiar entre branches**
+```bash
+# Para desarrollo
+git checkout main
+
+# Para producción
+git checkout production
+```
+
 ## 🎯 **INSTRUCCIONES PARA INICIAR LA APLICACIÓN**
 
 ### 📋 **OPCIÓN 1: Instalación Automática (RECOMENDADO)**
@@ -229,17 +252,12 @@ cp env.production.example .env
 ./iniciar_produccion.bat
 ```
 
-#### 🔴 **OPCIÓN D: Producción (Para usuarios avanzados)**
-1. **Busca el archivo** `iniciar_produccion.bat` en la carpeta del proyecto
-2. **Haz doble clic** en `iniciar_produccion.bat`
-3. **Espera** a que se configure todo automáticamente
-4. **¡Listo!** La aplicación estará disponible
 
 ### 📋 **PASO 4: Acceder a la aplicación**
 
 Una vez que el archivo .bat termine de ejecutarse, verás que se abre automáticamente tu navegador en:
-- **http://localhost:8000** (página principal)
-- **http://localhost:8000/login-duoc.html** (página de login mejorada)
+- **http://127.0.0.1:8000** (página principal)
+- **http://127.0.0.1:8000/login.html** (página de login)
 
 ### 📋 **PASO 5: Iniciar sesión**
 
