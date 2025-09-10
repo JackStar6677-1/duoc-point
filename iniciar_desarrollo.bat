@@ -86,10 +86,14 @@ echo [INFO] Dependencias instaladas correctamente
 echo [INFO] Iniciando servidor de desarrollo...
 echo.
 echo 🌐 La aplicación estará disponible en:
-echo    - Aplicación: http://localhost:8000
-echo    - Admin: http://localhost:8000/admin/
-echo    - API: http://localhost:8000/api/
-echo    - Docs: http://localhost:8000/api/docs/
+echo    - Aplicación: http://127.0.0.1:8000
+echo    - Admin: http://127.0.0.1:8000/admin/
+echo    - API: http://127.0.0.1:8000/api/
+echo    - Docs: http://127.0.0.1:8000/api/docs/
+echo.
+echo 📱 También accesible desde otros dispositivos en tu red:
+echo    - http://127.0.0.1:8000 (localhost)
+echo    - http://[tu-ip-local]:8000 (red local)
 echo.
 echo 👤 Credenciales por defecto:
 echo    - Email: admin@duocuc.cl
