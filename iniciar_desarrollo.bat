@@ -56,14 +56,32 @@ if not exist "config\security.yaml" (
     echo   lockout_duration: 900 >> "config\security.yaml"
 )
 
-echo [INFO] Instalando dependencias...
-pip install -r src/backend/requirements.txt --quiet
+echo [INFO] Instalando dependencias de Python...
+echo [INFO] Esto puede tomar varios minutos la primera vez...
+echo [INFO] Por favor, espera y no cierres esta ventana...
+echo.
+
+:: Actualizar pip primero
+python -m pip install --upgrade pip --quiet
+
+:: Instalar dependencias con más información
+pip install -r src/backend/requirements.txt --no-cache-dir
 
 if errorlevel 1 (
+    echo.
     echo ERROR: No se pudieron instalar las dependencias
+    echo.
+    echo Posibles soluciones:
+    echo 1. Verifica tu conexión a internet
+    echo 2. Cierra temporalmente tu antivirus
+    echo 3. Ejecuta este archivo como administrador
+    echo 4. Reinicia tu computadora e intenta de nuevo
+    echo.
     pause
     exit /b 1
 )
+
+echo [INFO] Dependencias instaladas correctamente
 
 echo [INFO] Iniciando servidor de desarrollo...
 echo.
@@ -85,11 +103,36 @@ echo.
 echo Presiona Ctrl+C para detener el servidor
 echo.
 
+:: Configurar base de datos y crear usuarios de prueba
+echo [INFO] Configurando base de datos...
+cd src\backend
+
+:: Ejecutar migraciones
+echo [INFO] Aplicando migraciones de base de datos...
+python manage.py migrate --run-syncdb
+
+:: Crear superusuario si no existe
+echo [INFO] Verificando superusuario...
+python manage.py shell -c "
+from django.contrib.auth import get_user_model
+User = get_user_model()
+if not User.objects.filter(email='admin@duocuc.cl').exists():
+    User.objects.create_superuser('admin', 'admin@duocuc.cl', 'admin123')
+    print('Superusuario creado: admin@duocuc.cl / admin123')
+else:
+    print('Superusuario ya existe')
+"
+
 :: Crear usuarios de prueba
 echo [INFO] Creando usuarios de prueba...
-cd src\backend
 python create_test_users.py
+
 cd ..\..
+
+:: Abrir navegador automáticamente después de 3 segundos
+echo [INFO] Abriendo navegador en 3 segundos...
+timeout /t 3 /nobreak >nul
+start http://localhost:8000
 
 :: Ejecutar con configuración de desarrollo
 set DJANGO_SETTINGS_MODULE=duocpoint.settings.dev
