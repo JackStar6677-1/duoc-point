@@ -25,11 +25,15 @@ He creado un archivo especial para principiantes que:
 4. **IMPORTANTE**: Marca "Add Python to PATH" durante la instalación
 
 #### **PASO 2: Iniciar la Aplicación**
+1. Busca el archivo `iniciar_app.bat` en la carpeta del proyecto
+2. Haz doble clic en `iniciar_app.bat`
+3. Espera a que se instalen las dependencias (2-3 minutos la primera vez)
+4. ¡Listo! Se abrirá automáticamente en tu navegador
+
+**Alternativa con guía paso a paso:**
 1. Busca el archivo `iniciar_facil.bat` en la carpeta del proyecto
 2. Haz doble clic en `iniciar_facil.bat`
 3. Sigue las instrucciones que aparecen en pantalla
-4. Espera a que se instalen las dependencias (2-3 minutos la primera vez)
-5. ¡Listo! Se abrirá automáticamente en tu navegador
 
 #### **PASO 3: Iniciar Sesión**
 - Email: `admin@duocuc.cl`
@@ -70,10 +74,11 @@ DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/duocpoint_db
 
 ## 📞 **Si Tienes Problemas**
 
-1. **Ejecuta `iniciar_facil.bat`** - Este archivo te guiará paso a paso
-2. **Lee los mensajes** que aparecen en la ventana negra
-3. **Sigue las instrucciones** que te da el archivo
-4. **Si algo falla**, el archivo te dirá exactamente qué hacer
+1. **Ejecuta `iniciar_app.bat`** - Este archivo iniciará todo automáticamente
+2. **O ejecuta `iniciar_facil.bat`** - Este archivo te guiará paso a paso
+3. **Lee los mensajes** que aparecen en la ventana negra
+4. **Sigue las instrucciones** que te da el archivo
+5. **Si algo falla**, el archivo te dirá exactamente qué hacer
 
 ## 🎉 **¡Ya Está Todo Listo!**
 
@@ -83,4 +88,4 @@ Ahora deberías poder:
 - ✅ Iniciar sesión con las credenciales de prueba
 - ✅ Usar todas las funcionalidades
 
-**Solo haz doble clic en `iniciar_facil.bat` y sigue las instrucciones.**
+**Solo haz doble clic en `iniciar_app.bat` y tendrás todo funcionando automáticamente.**

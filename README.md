@@ -24,20 +24,26 @@ DuocPoint es una **aplicación web progresiva (PWA)** completa para la comunidad
 
 ### 📋 **PASO 3: Iniciar la aplicación (MUY FÁCIL)**
 
-#### 🟢 **OPCIÓN A: Inicio Fácil (RECOMENDADO para principiantes)**
+#### 🟢 **OPCIÓN A: Iniciar Aplicación Completa (RECOMENDADO)**
+1. **Busca el archivo** `iniciar_app.bat` en la carpeta del proyecto
+2. **Haz doble clic** en `iniciar_app.bat`
+3. **Espera** a que se instalen las dependencias automáticamente (puede tomar 2-3 minutos la primera vez)
+4. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
+
+#### 🟡 **OPCIÓN B: Inicio Fácil (Para principiantes con guía paso a paso)**
 1. **Busca el archivo** `iniciar_facil.bat` en la carpeta del proyecto
 2. **Haz doble clic** en `iniciar_facil.bat`
 3. **Sigue las instrucciones** que aparecen en pantalla
-4. **Espera** a que se instalen las dependencias automáticamente (puede tomar 2-3 minutos la primera vez)
+4. **Espera** a que se instalen las dependencias automáticamente
 5. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
 
-#### 🟡 **OPCIÓN B: Desarrollo Local (Para usuarios con experiencia)**
+#### 🟡 **OPCIÓN C: Desarrollo Local (Para usuarios con experiencia)**
 1. **Busca el archivo** `iniciar_desarrollo.bat` en la carpeta del proyecto
 2. **Haz doble clic** en `iniciar_desarrollo.bat`
 3. **Espera** a que se instalen las dependencias automáticamente
 4. **¡Listo!** La aplicación se abrirá automáticamente en tu navegador
 
-#### 🔴 **OPCIÓN C: Producción (Para usuarios avanzados)**
+#### 🔴 **OPCIÓN D: Producción (Para usuarios avanzados)**
 1. **Busca el archivo** `iniciar_produccion.bat` en la carpeta del proyecto
 2. **Haz doble clic** en `iniciar_produccion.bat`
 3. **Espera** a que se configure todo automáticamente
@@ -76,13 +82,23 @@ Para detener la aplicación:
 
 ## 🎯 **Inicio Rápido (Para usuarios con experiencia)**
 
-### 🟢 **Para Principiantes (RECOMENDADO)**
+### 🟢 **Iniciar Aplicación Completa (RECOMENDADO)**
+```bash
+# Doble clic en:
+iniciar_app.bat
+```
+
+### 🟡 **Para Principiantes (Con guía paso a paso)**
 ```bash
 # Doble clic en:
 iniciar_facil.bat
 ```
 
 ### 📱 **Para Desarrollo Local**
+```bash
+# Doble clic en:
+iniciar_desarrollo.bat
+```
 
 ### Aplicación Web Progresiva (PWA)
 
@@ -262,7 +278,8 @@ Si ninguno de estos pasos funciona:
 
 ```
 duoc-point/
-├── iniciar_facil.bat                # ← Archivo para principiantes (RECOMENDADO)
+├── iniciar_app.bat                  # ← Archivo principal para iniciar la app (RECOMENDADO)
+├── iniciar_facil.bat                # ← Archivo para principiantes con guía paso a paso
 ├── iniciar_desarrollo.bat           # ← Archivo para desarrollo
 ├── iniciar_produccion.bat           # ← Archivo para producción
 ├── setup-pwa-complete.bat           # ← Configuración PWA completa
@@ -374,7 +391,7 @@ duoc-point/
 - **Web Audio API**: Sistema de sonidos interactivos
 - **Service Worker API**: PWA con cache inteligente
 
-**Solo necesitas hacer doble clic en `iniciar_facil.bat` y tendrás todo funcionando en segundos.**
+**Solo necesitas hacer doble clic en `iniciar_app.bat` y tendrás todo funcionando en segundos.**
 ### Backend (Desarrollado Desde Cero)
 
 - **Django 5.2.6**: Framework web configurado desde cero
