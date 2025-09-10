@@ -18,6 +18,9 @@ if errorlevel 1 (
     exit /b 1
 )
 
+echo [INFO] Detectando configuración de red local...
+python update_django_config.py
+
 echo [INFO] Configurando entorno de desarrollo...
 
 :: Crear archivo .env si no existe
@@ -93,7 +96,10 @@ echo    - Docs: http://127.0.0.1:8000/api/docs/
 echo.
 echo 📱 También accesible desde otros dispositivos en tu red:
 echo    - http://127.0.0.1:8000 (localhost)
-echo    - http://[tu-ip-local]:8000 (red local)
+echo    - http://[IP-DETECTADA]:8000 (red local - ver arriba)
+echo.
+echo 💡 La IP local se detectó automáticamente para esta PC
+echo    Cada PC tendrá su propia configuración independiente
 echo.
 echo 👤 Credenciales por defecto:
 echo    - Email: admin@duocuc.cl

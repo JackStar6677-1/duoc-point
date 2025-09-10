@@ -38,6 +38,12 @@ git checkout production
 4. **Espera** a que se instale todo automáticamente
 5. **¡Listo!** La aplicación se abrirá en tu navegador
 
+#### 🔧 **NUEVA FUNCIONALIDAD: Configuración Automática de Red**
+- **Detección automática de IP**: El sistema detecta automáticamente la IP local de tu PC
+- **Configuración independiente**: Cada PC tendrá su propia configuración de red
+- **Acceso desde otros dispositivos**: La app será accesible desde otros dispositivos en tu red local
+- **Sin configuración manual**: No necesitas configurar nada, todo es automático
+
 ### 📋 **OPCIÓN 2: Instalación Manual desde Consola**
 
 #### 🔧 **PASO 1: Instalar Python**
@@ -354,10 +360,27 @@ DuocPoint está implementado como una PWA completa con las siguientes caracterí
 
 ## 🌐 **Acceso a la Aplicación**
 
-- **🏠 Aplicación Principal**: http://localhost:8000
-- **🔐 Login Mejorado**: http://localhost:8000/login-duoc.html
-- **⚙️ Panel de Administración**: http://localhost:8000/admin/
-- **🔌 API REST**: http://localhost:8000/api/
+### 🏠 **Acceso Local (Siempre disponible)**
+- **Aplicación Principal**: http://localhost:8000
+- **Login Mejorado**: http://localhost:8000/login-duoc.html
+- **Panel de Administración**: http://localhost:8000/admin/
+- **API REST**: http://localhost:8000/api/
+
+### 🌍 **Acceso desde Red Local (Nuevo)**
+- **IP detectada automáticamente**: http://[TU-IP-LOCAL]:8000
+- **Acceso desde otros dispositivos**: Móviles, tablets, otras PCs en la misma red
+- **Configuración independiente**: Cada PC detecta su propia IP automáticamente
+
+### 📱 **Ejemplo de URLs de Acceso**
+```
+PC 1 (IP: 192.168.1.100):
+- Local: http://127.0.0.1:8000
+- Red: http://192.168.1.100:8000
+
+PC 2 (IP: 192.168.1.101):
+- Local: http://127.0.0.1:8000  
+- Red: http://192.168.1.101:8000
+```
 
 ## 👤 **Credenciales de Prueba**
 
@@ -398,6 +421,28 @@ El sistema incluye notificaciones push configuradas:
 ### Sistema de Audio
 
 DuocPoint incluye un sistema de audio completo:
+
+## 🔧 **Nuevos Scripts de Configuración Automática**
+
+### 📡 **detect_ip.py**
+- **Función**: Detecta automáticamente la IP local de la PC
+- **Uso**: Se ejecuta automáticamente al iniciar la aplicación
+- **Beneficio**: No necesitas configurar manualmente la IP
+
+### ⚙️ **update_django_config.py**
+- **Función**: Actualiza la configuración de Django con la IP detectada
+- **Uso**: Se ejecuta automáticamente al iniciar la aplicación
+- **Beneficio**: Configura automáticamente ALLOWED_HOSTS y CSRF_TRUSTED_ORIGINS
+
+### 🧪 **test_config.py**
+- **Función**: Prueba que la configuración funcione correctamente
+- **Uso**: `python test_config.py`
+- **Beneficio**: Verifica que todo esté configurado correctamente
+
+### 🚀 **start.py (Actualizado)**
+- **Función**: Inicia el servidor con detección automática de IP
+- **Uso**: Se ejecuta automáticamente desde el script .bat
+- **Beneficio**: Muestra las URLs de acceso local y de red
 
 ## 🛠️ **Solución de Problemas Comunes**
 
@@ -482,12 +527,12 @@ Si ninguno de estos pasos funciona:
 
 ```
 duoc-point/
-├── iniciar_app.bat                  # ← Archivo principal para iniciar la app (RECOMENDADO)
-├── iniciar_facil.bat                # ← Archivo para principiantes con guía paso a paso
-├── iniciar_desarrollo.bat           # ← Archivo para desarrollo
+├── iniciar_desarrollo.bat           # ← Archivo principal para desarrollo (ACTUALIZADO)
 ├── iniciar_produccion.bat           # ← Archivo para producción
-├── setup-pwa-complete.bat           # ← Configuración PWA completa
-├── build-pwa.bat                    # ← Build de PWA
+├── detect_ip.py                     # ← Detector automático de IP local (NUEVO)
+├── update_django_config.py          # ← Actualizador de configuración Django (NUEVO)
+├── test_config.py                   # ← Script de prueba de configuración (NUEVO)
+├── start.py                         # ← Iniciador del servidor (ACTUALIZADO)
 ├── config/
 │   ├── push.yaml                    # ← Configuración de notificaciones
 │   └── security.yaml                # ← Configuración de seguridad

@@ -83,14 +83,31 @@ def load_initial_data():
     except subprocess.CalledProcessError:
         print("No se encontraron datos iniciales (opcional)")
 
+def get_local_ip():
+    """Obtener la IP local de la PC."""
+    try:
+        import socket
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            return s.getsockname()[0]
+    except:
+        return '127.0.0.1'
+
 def start_server(host='127.0.0.1', port=8000, debug=True):
     """Iniciar el servidor de desarrollo."""
-    print(f"Iniciando servidor en http://{host}:{port}")
+    # Detectar IP local automáticamente
+    local_ip = get_local_ip()
+    
+    print(f"Iniciando servidor en:")
+    print(f"  - Local: http://{host}:{port}")
+    if local_ip != host:
+        print(f"  - Red local: http://{local_ip}:{port}")
     print("Presione Ctrl+C para detener el servidor")
     
     try:
+        # Usar 0.0.0.0 para permitir acceso desde la red local
         subprocess.run([
-            sys.executable, 'manage.py', 'runserver', f'{host}:{port}'
+            sys.executable, 'manage.py', 'runserver', f'0.0.0.0:{port}'
         ], cwd='src/backend')
     except KeyboardInterrupt:
         print("\nServidor detenido")
