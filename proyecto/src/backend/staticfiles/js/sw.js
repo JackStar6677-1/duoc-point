@@ -1,11 +1,11 @@
 /**
- * Service Worker para DuocPoint
+ * Service Worker para StudentsPoint
  * Versión: 1.0.0
  */
 
-const CACHE_NAME = 'duocpoint-v1.2.0';
-const STATIC_CACHE = 'duocpoint-static-v1.2.0';
-const DYNAMIC_CACHE = 'duocpoint-dynamic-v1.2.0';
+const CACHE_NAME = 'StudentsPoint-v1.2.0';
+const STATIC_CACHE = 'StudentsPoint-static-v1.2.0';
+const DYNAMIC_CACHE = 'StudentsPoint-dynamic-v1.2.0';
 
 // Archivos estáticos para cache
 const STATIC_FILES = [
@@ -17,7 +17,7 @@ const STATIC_FILES = [
   '/teachers.html',
   '/campuses.html',
   '/static/css/styles.css',
-  '/static/css/duoc-theme.css',
+  '/static/css/students-theme.css',
   '/static/js/main.js',
   '/static/js/pwa.js',
   '/static/js/sounds.js',
@@ -194,7 +194,7 @@ self.addEventListener('push', (event) => {
   console.log('Service Worker: Notificación push recibida');
   
   const options = {
-    body: 'Tienes una nueva notificación de DuocPoint',
+    body: 'Tienes una nueva notificación de StudentsPoint',
     icon: '/static/images/icon-192x192.png',
     badge: '/static/images/icon-72x72.png',
     vibrate: [100, 50, 100],
@@ -223,7 +223,7 @@ self.addEventListener('push', (event) => {
   }
   
   event.waitUntil(
-    self.registration.showNotification('DuocPoint', options)
+    self.registration.showNotification('StudentsPoint', options)
   );
 });
 

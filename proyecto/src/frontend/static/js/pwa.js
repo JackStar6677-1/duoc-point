@@ -1,9 +1,9 @@
 /**
- * PWA (Progressive Web App) - DuocPoint
+ * PWA (Progressive Web App) - StudentsPoint
  * Script para registrar Service Worker y manejar instalación
  */
 
-class DuocPointPWA {
+class StudentsPointPWA {
   constructor() {
     this.deferredPrompt = null;
     this.isInstalled = false;
@@ -211,7 +211,7 @@ class DuocPointPWA {
    * Mostrar notificación de instalación exitosa
    */
   showInstallationSuccess() {
-    this.showNotification('¡DuocPoint instalado exitosamente!', 'success');
+    this.showNotification('¡StudentsPoint instalado exitosamente!', 'success');
   }
   
   /**
@@ -287,8 +287,8 @@ class DuocPointPWA {
 
 // Inicializar PWA cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-  window.duocPointPWA = new DuocPointPWA();
+  window.StudentsPointPWA = new StudentsPointPWA();
 });
 
 // Exportar para uso global
-window.DuocPointPWA = DuocPointPWA;
+window.StudentsPointPWA = StudentsPointPWA;

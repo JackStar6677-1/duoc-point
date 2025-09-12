@@ -1,29 +1,29 @@
-/* DuocPoint - Tema Personalizado Duoc UC */
+/* StudentsPoint - Tema Personalizado StudentsPoint */
 /* Colores oficiales: Dorado, Morado Oscuro, Azul Oscuro */
 
 :root {
-  /* Colores principales Duoc UC */
-  --duoc-gold: #D4AF37;
-  --duoc-gold-light: #E6C547;
-  --duoc-gold-dark: #B8941F;
-  --duoc-purple: #4A148C;
-  --duoc-purple-light: #6A1B9A;
-  --duoc-purple-dark: #2E0A4A;
-  --duoc-blue: #1565C0;
-  --duoc-blue-light: #1976D2;
-  --duoc-blue-dark: #0D47A1;
+  /* Colores principales StudentsPoint */
+  --students-gold: #D4AF37;
+  --students-gold-light: #E6C547;
+  --students-gold-dark: #B8941F;
+  --students-purple: #4A148C;
+  --students-purple-light: #6A1B9A;
+  --students-purple-dark: #2E0A4A;
+  --students-blue: #1565C0;
+  --students-blue-light: #1976D2;
+  --students-blue-dark: #0D47A1;
   
   /* Colores adicionales */
-  --duoc-white: #FFFFFF;
-  --duoc-gray-light: #F5F5F5;
-  --duoc-gray: #9E9E9E;
-  --duoc-gray-dark: #424242;
-  --duoc-black: #212121;
+  --students-white: #FFFFFF;
+  --students-gray-light: #F5F5F5;
+  --students-gray: #9E9E9E;
+  --students-gray-dark: #424242;
+  --students-black: #212121;
   
   /* Gradientes */
-  --gradient-primary: linear-gradient(135deg, var(--duoc-purple) 0%, var(--duoc-blue) 100%);
-  --gradient-gold: linear-gradient(135deg, var(--duoc-gold) 0%, var(--duoc-gold-light) 100%);
-  --gradient-hero: linear-gradient(135deg, var(--duoc-purple-dark) 0%, var(--duoc-blue-dark) 50%, var(--duoc-purple) 100%);
+  --gradient-primary: linear-gradient(135deg, var(--students-purple) 0%, var(--students-blue) 100%);
+  --gradient-gold: linear-gradient(135deg, var(--students-gold) 0%, var(--students-gold-light) 100%);
+  --gradient-hero: linear-gradient(135deg, var(--students-purple-dark) 0%, var(--students-blue-dark) 50%, var(--students-purple) 100%);
   
   /* Sombras */
   --shadow-soft: 0 4px 20px rgba(74, 20, 140, 0.15);
@@ -46,7 +46,7 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: var(--gradient-hero);
-  color: var(--duoc-black);
+  color: var(--students-black);
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -116,14 +116,14 @@ body {
 }
 
 /* Header personalizado */
-.duoc-header {
+.students-header {
   background: var(--gradient-primary);
   box-shadow: var(--shadow-medium);
   position: relative;
   overflow: hidden;
 }
 
-.duoc-header::before {
+.students-header::before {
   content: '';
   position: absolute;
   top: 0;
@@ -135,34 +135,34 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
-.duoc-header .container {
+.students-header .container {
   position: relative;
   z-index: 2;
 }
 
-.duoc-logo {
+.students-logo {
   display: flex;
   align-items: center;
   gap: 15px;
   animation: slideInLeft 1s ease-out;
 }
 
-.duoc-logo i {
+.students-logo i {
   font-size: 2.5rem;
-  color: var(--duoc-gold);
+  color: var(--students-gold);
   text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
   animation: glow 2s ease-in-out infinite;
 }
 
-.duoc-logo h1 {
+.students-logo h1 {
   font-size: 2.2rem;
   font-weight: 700;
-  color: var(--duoc-white);
+  color: var(--students-white);
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   margin: 0;
 }
 
-.duoc-logo p {
+.students-logo p {
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   margin: 0;
@@ -170,15 +170,15 @@ body {
 }
 
 /* Navegación personalizada */
-.duoc-nav {
+.students-nav {
   background: rgba(74, 20, 140, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 2px solid var(--duoc-gold);
+  border-bottom: 2px solid var(--students-gold);
   box-shadow: var(--shadow-soft);
 }
 
-.duoc-nav .navbar-nav .nav-link {
-  color: var(--duoc-white) !important;
+.students-nav .navbar-nav .nav-link {
+  color: var(--students-white) !important;
   font-weight: 500;
   padding: 12px 20px !important;
   border-radius: 8px;
@@ -188,7 +188,7 @@ body {
   overflow: hidden;
 }
 
-.duoc-nav .navbar-nav .nav-link::before {
+.students-nav .navbar-nav .nav-link::before {
   content: '';
   position: absolute;
   top: 0;
@@ -200,41 +200,41 @@ body {
   z-index: -1;
 }
 
-.duoc-nav .navbar-nav .nav-link:hover::before {
+.students-nav .navbar-nav .nav-link:hover::before {
   left: 0;
 }
 
-.duoc-nav .navbar-nav .nav-link:hover {
-  color: var(--duoc-black) !important;
+.students-nav .navbar-nav .nav-link:hover {
+  color: var(--students-black) !important;
   transform: translateY(-2px);
   box-shadow: var(--shadow-soft);
 }
 
-.duoc-nav .dropdown-menu {
+.students-nav .dropdown-menu {
   background: rgba(74, 20, 140, 0.98);
   backdrop-filter: blur(15px);
-  border: 1px solid var(--duoc-gold);
+  border: 1px solid var(--students-gold);
   border-radius: 12px;
   box-shadow: var(--shadow-medium);
   padding: 10px 0;
 }
 
-.duoc-nav .dropdown-item {
-  color: var(--duoc-white);
+.students-nav .dropdown-item {
+  color: var(--students-white);
   padding: 12px 20px;
   transition: var(--transition-fast);
   border-radius: 8px;
   margin: 2px 10px;
 }
 
-.duoc-nav .dropdown-item:hover {
+.students-nav .dropdown-item:hover {
   background: var(--gradient-gold);
-  color: var(--duoc-black);
+  color: var(--students-black);
   transform: translateX(5px);
 }
 
 /* Cards personalizadas */
-.duoc-card {
+.students-card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -245,7 +245,7 @@ body {
   position: relative;
 }
 
-.duoc-card::before {
+.students-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -255,34 +255,34 @@ body {
   background: var(--gradient-gold);
 }
 
-.duoc-card:hover {
+.students-card:hover {
   transform: translateY(-10px) scale(1.02);
   box-shadow: var(--shadow-strong);
 }
 
-.duoc-card .card-header {
+.students-card .card-header {
   background: var(--gradient-primary);
-  color: var(--duoc-white);
+  color: var(--students-white);
   border: none;
   padding: 20px;
   position: relative;
 }
 
-.duoc-card .card-header h2 {
+.students-card .card-header h2 {
   margin: 0;
   font-weight: 600;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.duoc-card .card-body {
+.students-card .card-body {
   padding: 30px;
 }
 
 /* Botones personalizados */
-.duoc-btn {
+.students-btn {
   background: var(--gradient-gold);
   border: none;
-  color: var(--duoc-black);
+  color: var(--students-black);
   font-weight: 600;
   padding: 12px 30px;
   border-radius: 25px;
@@ -294,7 +294,7 @@ body {
   box-shadow: var(--shadow-soft);
 }
 
-.duoc-btn::before {
+.students-btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -305,48 +305,48 @@ body {
   transition: var(--transition-fast);
 }
 
-.duoc-btn:hover::before {
+.students-btn:hover::before {
   left: 100%;
 }
 
-.duoc-btn:hover {
+.students-btn:hover {
   transform: translateY(-3px) scale(1.05);
   box-shadow: var(--shadow-medium);
-  color: var(--duoc-black);
+  color: var(--students-black);
 }
 
-.duoc-btn:active {
+.students-btn:active {
   transform: translateY(-1px) scale(1.02);
 }
 
-.duoc-btn-primary {
+.students-btn-primary {
   background: var(--gradient-primary);
-  color: var(--duoc-white);
+  color: var(--students-white);
 }
 
-.duoc-btn-secondary {
+.students-btn-secondary {
   background: var(--gradient-gold);
-  color: var(--duoc-black);
+  color: var(--students-black);
 }
 
-.duoc-btn-outline {
+.students-btn-outline {
   background: transparent;
-  border: 2px solid var(--duoc-gold);
-  color: var(--duoc-gold);
+  border: 2px solid var(--students-gold);
+  color: var(--students-gold);
 }
 
-.duoc-btn-outline:hover {
+.students-btn-outline:hover {
   background: var(--gradient-gold);
-  color: var(--duoc-black);
+  color: var(--students-black);
 }
 
 /* Formularios personalizados */
-.duoc-form-group {
+.students-form-group {
   margin-bottom: 25px;
   position: relative;
 }
 
-.duoc-form-control {
+.students-form-control {
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid rgba(212, 175, 55, 0.3);
   border-radius: 12px;
@@ -357,15 +357,15 @@ body {
   backdrop-filter: blur(5px);
 }
 
-.duoc-form-control:focus {
+.students-form-control:focus {
   outline: none;
-  border-color: var(--duoc-gold);
+  border-color: var(--students-gold);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-  background: var(--duoc-white);
+  background: var(--students-white);
 }
 
-.duoc-form-label {
-  color: var(--duoc-purple);
+.students-form-label {
+  color: var(--students-purple);
   font-weight: 600;
   margin-bottom: 8px;
   display: block;
@@ -375,14 +375,14 @@ body {
 }
 
 /* Iconos animados */
-.duoc-icon {
+.students-icon {
   display: inline-block;
   transition: var(--transition-bounce);
 }
 
-.duoc-icon:hover {
+.students-icon:hover {
   transform: scale(1.2) rotate(5deg);
-  color: var(--duoc-gold);
+  color: var(--students-gold);
 }
 
 /* Estados de conexión */
@@ -409,16 +409,16 @@ body {
 }
 
 /* Footer personalizado */
-.duoc-footer {
+.students-footer {
   background: var(--gradient-primary);
-  color: var(--duoc-white);
+  color: var(--students-white);
   padding: 40px 0;
   margin-top: 60px;
   position: relative;
   overflow: hidden;
 }
 
-.duoc-footer::before {
+.students-footer::before {
   content: '';
   position: absolute;
   top: 0;
@@ -429,7 +429,7 @@ body {
   opacity: 0.3;
 }
 
-.duoc-footer .container {
+.students-footer .container {
   position: relative;
   z-index: 2;
 }
@@ -448,21 +448,21 @@ body {
 }
 
 /* Efectos de hover para cards */
-.duoc-card-hover {
+.students-card-hover {
   transition: var(--transition-smooth);
 }
 
-.duoc-card-hover:hover {
+.students-card-hover:hover {
   transform: translateY(-15px) rotateX(5deg);
   box-shadow: var(--shadow-strong);
 }
 
 /* Loading spinner personalizado */
-.duoc-spinner {
+.students-spinner {
   width: 40px;
   height: 40px;
   border: 4px solid rgba(212, 175, 55, 0.3);
-  border-top: 4px solid var(--duoc-gold);
+  border-top: 4px solid var(--students-gold);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -680,35 +680,35 @@ body {
 .animate-swing { animation: swing 1s ease-in-out; }
 
 /* Efectos hover con sonido */
-.duoc-card-hover-sound:hover {
+.students-card-hover-sound:hover {
     transform: translateY(-5px) scale(1.02);
     box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
     animation: pulse 0.6s ease-in-out;
 }
 
-.duoc-btn-hover-sound:hover {
+.students-btn-hover-sound:hover {
     transform: translateY(-2px) scale(1.05);
     animation: rubberBand 0.6s ease-in-out;
 }
 
-.duoc-icon-hover-sound:hover {
+.students-icon-hover-sound:hover {
     animation: tada 0.6s ease-in-out;
 }
 
 @media (max-width: 768px) {
-  .duoc-logo h1 {
+  .students-logo h1 {
     font-size: 1.8rem;
   }
   
-  .duoc-logo i {
+  .students-logo i {
     font-size: 2rem;
   }
   
-  .duoc-card {
+  .students-card {
     margin-bottom: 20px;
   }
   
-  .duoc-btn {
+  .students-btn {
     padding: 10px 25px;
     font-size: 0.9rem;
   }
@@ -730,18 +730,18 @@ body {
 }
 
 /* Notificaciones personalizadas */
-.duoc-notification {
+.students-notification {
   background: var(--gradient-primary);
-  color: var(--duoc-white);
+  color: var(--students-white);
   padding: 15px 20px;
   border-radius: 12px;
   box-shadow: var(--shadow-medium);
-  border-left: 4px solid var(--duoc-gold);
+  border-left: 4px solid var(--students-gold);
   animation: slideInRight 0.5s ease-out;
 }
 
 /* Modales personalizados */
-.duoc-modal .modal-content {
+.students-modal .modal-content {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(15px);
   border-radius: 20px;
@@ -749,14 +749,14 @@ body {
   box-shadow: var(--shadow-strong);
 }
 
-.duoc-modal .modal-header {
+.students-modal .modal-header {
   background: var(--gradient-primary);
-  color: var(--duoc-white);
+  color: var(--students-white);
   border-radius: 20px 20px 0 0;
   border: none;
 }
 
-.duoc-modal .modal-footer {
+.students-modal .modal-footer {
   border: none;
   padding: 20px 30px;
 }
@@ -776,5 +776,5 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--duoc-gold-dark);
+  background: var(--students-gold-dark);
 }

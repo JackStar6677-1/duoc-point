@@ -8,14 +8,14 @@ const PWA_CONFIG = {
     // URLs base para diferentes entornos
     baseUrls: {
         development: 'http://localhost:8000',
-        production: 'https://duocpoint.duocuc.cl'
+        production: 'https://StudentsPoint.duocuc.cl'
     },
     
     // Configuración de cache
     cacheConfig: {
         version: '1.2.0',
-        staticCache: 'duocpoint-static-v1.2.0',
-        dynamicCache: 'duocpoint-dynamic-v1.2.0',
+        staticCache: 'StudentsPoint-static-v1.2.0',
+        dynamicCache: 'StudentsPoint-dynamic-v1.2.0',
         maxAge: 86400000, // 24 horas
         maxEntries: 50
     },
@@ -92,8 +92,8 @@ const PROD_CONFIG = {
     logLevel: 'error',
     
     // URLs de producción
-    apiUrl: 'https://duocpoint.duocuc.cl/api',
-    staticUrl: 'https://duocpoint.duocuc.cl/static',
+    apiUrl: 'https://StudentsPoint.duocuc.cl/api',
+    staticUrl: 'https://StudentsPoint.duocuc.cl/static',
     
     // Configuración de cache para producción
     cacheStrategy: 'cacheFirst',

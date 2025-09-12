@@ -1,4 +1,4 @@
-/* DuocPoint - Tema Oscuro Compacto */
+/* StudentsPoint - Tema Oscuro Compacto */
 :root {
   /* Colores principales */
   --bg-primary: #1a1a1a;
@@ -75,7 +75,7 @@ body {
 }
 
 /* Header */
-.duoc-header {
+.students-header {
   background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   border-bottom: 1px solid var(--border-color);
   padding: 0.75rem 0;
@@ -83,33 +83,33 @@ body {
   z-index: 10;
 }
 
-.duoc-logo {
+.students-logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.duoc-logo-img {
+.students-logo-img {
   height: 45px;
   width: auto;
   filter: brightness(1.1);
 }
 
-.duoc-logo h1 {
+.students-logo h1 {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
   color: var(--text-primary);
 }
 
-.duoc-logo p {
+.students-logo p {
   font-size: 0.8rem;
   margin: 0;
   color: var(--text-secondary);
 }
 
 /* Navegación */
-.duoc-nav {
+.students-nav {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   padding: 0.5rem 0;
@@ -375,7 +375,7 @@ body {
 }
 
 /* Footer */
-.duoc-footer {
+.students-footer {
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
   padding: 1rem 0;
@@ -384,13 +384,13 @@ body {
   z-index: 10;
 }
 
-.duoc-footer h5 {
+.students-footer h5 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
 
-.duoc-footer p {
+.students-footer p {
   font-size: 0.8rem;
   color: var(--text-secondary);
   margin: 0;
@@ -462,17 +462,17 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .duoc-logo {
+  .students-logo {
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
   
-  .duoc-logo-img {
+  .students-logo-img {
     height: 40px;
   }
   
-  .duoc-logo h1 {
+  .students-logo h1 {
     font-size: 1.3rem;
   }
 }

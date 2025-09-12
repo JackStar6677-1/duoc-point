@@ -1,5 +1,5 @@
 /**
- * Encuestas Manager - DuocPoint
+ * Encuestas Manager - StudentsPoint
  * Sistema completo de encuestas y votaciones
  */
 
@@ -224,23 +224,23 @@ class EncuestasManager {
                 
                 <div class="encuesta-actions">
                     ${puedeResponder && !yaRespondio ? `
-                        <button class="duoc-btn duoc-btn-primary btn-responder" data-id="${encuesta.id}">
+                        <button class="students-btn students-btn-primary btn-responder" data-id="${encuesta.id}">
                             <i class="fas fa-edit"></i> Responder
                         </button>
                     ` : ''}
                     
                     ${yaRespondio ? `
-                        <button class="duoc-btn duoc-btn-success" disabled>
+                        <button class="students-btn students-btn-success" disabled>
                             <i class="fas fa-check"></i> Ya Respondida
                         </button>
                     ` : ''}
                     
-                    <button class="duoc-btn duoc-btn-outline btn-resultados" data-id="${encuesta.id}">
+                    <button class="students-btn students-btn-outline btn-resultados" data-id="${encuesta.id}">
                         <i class="fas fa-chart-bar"></i> Ver Resultados
                     </button>
                     
                     ${this.puedeEditar(encuesta) ? `
-                        <button class="duoc-btn duoc-btn-outline btn-editar" data-id="${encuesta.id}">
+                        <button class="students-btn students-btn-outline btn-editar" data-id="${encuesta.id}">
                             <i class="fas fa-edit"></i> Editar
                         </button>
                     ` : ''}

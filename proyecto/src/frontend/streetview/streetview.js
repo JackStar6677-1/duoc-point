@@ -1,5 +1,5 @@
 /**
- * Navegación Virtual - DuocPoint
+ * Navegación Virtual - StudentsPoint
  * Sistema de navegación paso a paso por el campus
  */
 
@@ -10,10 +10,10 @@ class VirtualNavigation {
             {
                 id: 1,
                 title: "Entrada Principal",
-                description: "Bienvenido al campus Duoc UC Maipú. Aquí comienza tu recorrido virtual por nuestras instalaciones.",
+                description: "Bienvenido al campus StudentsPoint Maipú. Aquí comienza tu recorrido virtual por nuestras instalaciones.",
                 image: "/imagenes/streetviewSalas/entrada.jpg",
                 detailTitle: "Entrada Principal",
-                detailDescription: "La entrada principal del campus Duoc UC Maipú es el punto de acceso principal para estudiantes, profesores y visitantes.",
+                detailDescription: "La entrada principal del campus StudentsPoint Maipú es el punto de acceso principal para estudiantes, profesores y visitantes.",
                 features: [
                     "Recepción y atención al público",
                     "Información general del campus",
@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Animación de entrada
-    const elements = document.querySelectorAll('.duoc-card, .streetview-container');
+    const elements = document.querySelectorAll('.students-card, .streetview-container');
     elements.forEach((element, index) => {
         element.style.opacity = '0';
         element.style.transform = 'translateY(30px)';

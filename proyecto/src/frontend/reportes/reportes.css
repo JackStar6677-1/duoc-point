@@ -1,4 +1,4 @@
-/* Reportes Styles - DuocPoint */
+/* Reportes Styles - StudentsPoint */
 .reportes-container {
     background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
     min-height: 100vh;
@@ -10,7 +10,7 @@
     margin-bottom: 2rem;
 }
 
-.filters-section .duoc-card {
+.filters-section .students-card {
     padding: 1.5rem;
 }
 
@@ -35,7 +35,7 @@
 
 .filters-section .form-control:focus {
     outline: none;
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.2);
     background: rgba(255, 255, 255, 0.15);
 }
@@ -61,14 +61,14 @@
 .kpi-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .kpi-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(135deg, var(--students-cyan), var(--students-teal));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,11 +106,11 @@
 }
 
 .kpi-change.positive {
-    color: var(--duoc-green);
+    color: var(--students-green);
 }
 
 .kpi-change.negative {
-    color: var(--duoc-red);
+    color: var(--students-red);
 }
 
 /* Charts Section */
@@ -184,14 +184,14 @@
 
 .top-item:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .top-rank {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(135deg, var(--students-cyan), var(--students-teal));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -255,7 +255,7 @@
 .report-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .report-header {
@@ -282,17 +282,17 @@
 }
 
 .report-badge.completo {
-    background: var(--duoc-green);
+    background: var(--students-green);
     color: white;
 }
 
 .report-badge.actualizado {
-    background: var(--duoc-cyan);
+    background: var(--students-cyan);
     color: white;
 }
 
 .report-badge.nuevo {
-    background: var(--duoc-orange);
+    background: var(--students-orange);
     color: white;
 }
 
@@ -324,7 +324,7 @@
 }
 
 .stat-value {
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
     font-weight: 600;
 }
 
@@ -394,7 +394,7 @@
 }
 
 .modal-close:hover {
-    color: var(--duoc-red);
+    color: var(--students-red);
 }
 
 .modal-body {
@@ -433,7 +433,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.2);
     background: rgba(255, 255, 255, 0.15);
 }
@@ -458,7 +458,7 @@
 .form-check input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: var(--duoc-cyan);
+    accent-color: var(--students-cyan);
 }
 
 .form-check label {
@@ -472,7 +472,7 @@
     position: fixed;
     top: 2rem;
     right: 2rem;
-    background: var(--duoc-green);
+    background: var(--students-green);
     color: white;
     padding: 1rem 1.5rem;
     border-radius: var(--border-radius);
@@ -482,15 +482,15 @@
 }
 
 .toast.error {
-    background: var(--duoc-red);
+    background: var(--students-red);
 }
 
 .toast.warning {
-    background: var(--duoc-orange);
+    background: var(--students-orange);
 }
 
 .toast.info {
-    background: var(--duoc-cyan);
+    background: var(--students-cyan);
 }
 
 /* Responsive */

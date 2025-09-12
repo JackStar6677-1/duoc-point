@@ -31,7 +31,7 @@
 .progress-percentage {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
 }
 
 .progress-bar-custom {
@@ -44,7 +44,7 @@
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(90deg, var(--students-cyan), var(--students-teal));
     border-radius: 10px;
     transition: width 0.5s ease;
     position: relative;
@@ -93,7 +93,7 @@
 }
 
 .tab-btn.active {
-    background: var(--duoc-purple);
+    background: var(--students-purple);
     color: white;
 }
 
@@ -158,7 +158,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.2);
     background: rgba(255, 255, 255, 0.15);
 }
@@ -183,7 +183,7 @@
 .form-check input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: var(--duoc-cyan);
+    accent-color: var(--students-cyan);
 }
 
 .form-check label {
@@ -207,7 +207,7 @@
 }
 
 .btn-primary-portfolio {
-    background: linear-gradient(135deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(135deg, var(--students-cyan), var(--students-teal));
     color: white;
 }
 
@@ -228,7 +228,7 @@
 }
 
 .btn-danger-portfolio {
-    background: var(--duoc-red);
+    background: var(--students-red);
     color: white;
 }
 
@@ -255,7 +255,7 @@
 .item-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .item-header {
@@ -323,7 +323,7 @@
 
 .skill-item:hover {
     transform: translateY(-3px);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .skill-name {
@@ -340,7 +340,7 @@
 }
 
 .skill-star {
-    color: var(--duoc-yellow);
+    color: var(--students-yellow);
     font-size: 1.2rem;
 }
 
@@ -410,7 +410,7 @@
 }
 
 .modal-close:hover {
-    color: var(--duoc-red);
+    color: var(--students-red);
 }
 
 .modal-body {
@@ -430,7 +430,7 @@
     position: fixed;
     top: 2rem;
     right: 2rem;
-    background: var(--duoc-green);
+    background: var(--students-green);
     color: white;
     padding: 1rem 1.5rem;
     border-radius: var(--border-radius);
@@ -440,11 +440,11 @@
 }
 
 .toast.error {
-    background: var(--duoc-red);
+    background: var(--students-red);
 }
 
 .toast.warning {
-    background: var(--duoc-orange);
+    background: var(--students-orange);
 }
 
 /* PDF Preview */
@@ -478,7 +478,7 @@
 
 .pdf-preview-header {
     padding: 1rem;
-    background: var(--duoc-purple);
+    background: var(--students-purple);
     color: white;
     display: flex;
     justify-content: space-between;

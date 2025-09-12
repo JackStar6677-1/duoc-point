@@ -1,4 +1,4 @@
-/* Encuestas Styles - DuocPoint */
+/* Encuestas Styles - StudentsPoint */
 .encuestas-container {
     background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
     min-height: 100vh;
@@ -10,7 +10,7 @@
     margin-bottom: 2rem;
 }
 
-.filters-section .duoc-card {
+.filters-section .students-card {
     padding: 1.5rem;
 }
 
@@ -35,7 +35,7 @@
 
 .filters-section .form-control:focus {
     outline: none;
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.2);
     background: rgba(255, 255, 255, 0.15);
 }
@@ -62,14 +62,14 @@
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .stat-card .stat-icon {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(135deg, var(--students-cyan), var(--students-teal));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -146,7 +146,7 @@
 .encuesta-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .encuesta-card::before {
@@ -156,7 +156,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(90deg, var(--students-cyan), var(--students-teal));
 }
 
 .encuesta-header {
@@ -184,17 +184,17 @@
 }
 
 .encuesta-estado.activa {
-    background: var(--duoc-green);
+    background: var(--students-green);
     color: white;
 }
 
 .encuesta-estado.cerrada {
-    background: var(--duoc-red);
+    background: var(--students-red);
     color: white;
 }
 
 .encuesta-estado.programada {
-    background: var(--duoc-orange);
+    background: var(--students-orange);
     color: white;
 }
 
@@ -246,7 +246,7 @@
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(90deg, var(--students-cyan), var(--students-teal));
     border-radius: 4px;
     transition: width 0.5s ease;
 }
@@ -321,7 +321,7 @@
 }
 
 .modal-close:hover {
-    color: var(--duoc-red);
+    color: var(--students-red);
 }
 
 .modal-body {
@@ -360,7 +360,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     box-shadow: 0 0 0 3px rgba(13, 202, 240, 0.2);
     background: rgba(255, 255, 255, 0.15);
 }
@@ -385,7 +385,7 @@
 .form-check input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: var(--duoc-cyan);
+    accent-color: var(--students-cyan);
 }
 
 .form-check label {
@@ -430,14 +430,14 @@
 
 .option-item:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
 }
 
 .option-item input[type="radio"],
 .option-item input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: var(--duoc-cyan);
+    accent-color: var(--students-cyan);
 }
 
 .option-item label {
@@ -491,7 +491,7 @@
 }
 
 .result-option-count {
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
     font-weight: 600;
 }
 
@@ -506,7 +506,7 @@
     position: fixed;
     top: 2rem;
     right: 2rem;
-    background: var(--duoc-green);
+    background: var(--students-green);
     color: white;
     padding: 1rem 1.5rem;
     border-radius: var(--border-radius);
@@ -516,15 +516,15 @@
 }
 
 .toast.error {
-    background: var(--duoc-red);
+    background: var(--students-red);
 }
 
 .toast.warning {
-    background: var(--duoc-orange);
+    background: var(--students-orange);
 }
 
 .toast.info {
-    background: var(--duoc-cyan);
+    background: var(--students-cyan);
 }
 
 /* Loading */

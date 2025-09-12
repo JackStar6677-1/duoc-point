@@ -1,5 +1,5 @@
-// DuocPoint - Sistema de Sonidos Simplificado
-class DuocPointSounds {
+// StudentsPoint - Sistema de Sonidos Simplificado
+class StudentsPointSounds {
     constructor() {
         this.sounds = {};
         this.enabled = true;
@@ -185,16 +185,16 @@ class DuocPointSounds {
         
         // Manejar eventos de la música de fondo
         this.backgroundMusic.addEventListener('loadstart', () => {
-            console.log('DuocPoint: Cargando música de ambiente...');
+            console.log('StudentsPoint: Cargando música de ambiente...');
         });
         
         this.backgroundMusic.addEventListener('canplaythrough', () => {
-            console.log('DuocPoint: Música de ambiente lista');
+            console.log('StudentsPoint: Música de ambiente lista');
             // No auto-reproducir hasta que el usuario interactúe
         });
         
         this.backgroundMusic.addEventListener('error', (e) => {
-            console.warn('DuocPoint: Error cargando música de ambiente:', e);
+            console.warn('StudentsPoint: Error cargando música de ambiente:', e);
             this.backgroundMusicEnabled = false;
         });
         
@@ -203,7 +203,7 @@ class DuocPointSounds {
             if (this.backgroundMusicEnabled && this.backgroundMusicPlaying) {
                 this.backgroundMusic.currentTime = 0;
                 this.backgroundMusic.play().catch(e => {
-                    console.log('DuocPoint: Error reiniciando música de ambiente:', e);
+                    console.log('StudentsPoint: Error reiniciando música de ambiente:', e);
                 });
             }
         });
@@ -214,9 +214,9 @@ class DuocPointSounds {
         
         this.backgroundMusic.play().then(() => {
             this.backgroundMusicPlaying = true;
-            console.log('DuocPoint: Música de ambiente iniciada');
+            console.log('StudentsPoint: Música de ambiente iniciada');
         }).catch(e => {
-            console.log('DuocPoint: No se pudo reproducir música de ambiente:', e);
+            console.log('StudentsPoint: No se pudo reproducir música de ambiente:', e);
             this.backgroundMusicEnabled = false;
         });
     }
@@ -226,7 +226,7 @@ class DuocPointSounds {
         
         this.backgroundMusic.pause();
         this.backgroundMusicPlaying = false;
-        console.log('DuocPoint: Música de ambiente pausada');
+        console.log('StudentsPoint: Música de ambiente pausada');
     }
 
     stopBackgroundMusic() {
@@ -235,7 +235,7 @@ class DuocPointSounds {
         this.backgroundMusic.pause();
         this.backgroundMusic.currentTime = 0;
         this.backgroundMusicPlaying = false;
-        console.log('DuocPoint: Música de ambiente detenida');
+        console.log('StudentsPoint: Música de ambiente detenida');
     }
 
     toggleBackgroundMusic() {
@@ -252,13 +252,13 @@ class DuocPointSounds {
             // Activar contexto de audio
             if (this.audioContext && this.audioContext.state === 'suspended') {
                 this.audioContext.resume().then(() => {
-                    console.log('DuocPoint: Audio activado por interacción del usuario');
+                    console.log('StudentsPoint: Audio activado por interacción del usuario');
                     // Iniciar música de fondo después de la activación
                     if (this.backgroundMusicEnabled) {
                         this.playBackgroundMusic();
                     }
                 }).catch(e => {
-                    console.log('DuocPoint: Error activando audio:', e);
+                    console.log('StudentsPoint: Error activando audio:', e);
                 });
             }
             
@@ -309,50 +309,50 @@ class DuocPointSounds {
 }
 
 // Inicializar sistema de sonidos
-window.duocPointSounds = new DuocPointSounds();
+window.StudentsPointSounds = new StudentsPointSounds();
 
 // Función global para reproducir sonidos
 window.playSound = (soundName) => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.play(soundName);
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.play(soundName);
     }
 };
 
 // Función global para reproducir sonidos con delay
 window.playSoundDelayed = (soundName, delay = 0) => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.playDelayed(soundName, delay);
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.playDelayed(soundName, delay);
     }
 };
 
 // Función global para reproducir secuencias de sonidos
 window.playSoundSequence = (soundNames, delays = []) => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.playSequence(soundNames, delays);
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.playSequence(soundNames, delays);
     }
 };
 
 // Funciones globales para controlar la música de fondo
 window.playBackgroundMusic = () => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.playBackgroundMusic();
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.playBackgroundMusic();
     }
 };
 
 window.pauseBackgroundMusic = () => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.pauseBackgroundMusic();
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.pauseBackgroundMusic();
     }
 };
 
 window.stopBackgroundMusic = () => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.stopBackgroundMusic();
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.stopBackgroundMusic();
     }
 };
 
 window.toggleBackgroundMusic = () => {
-    if (window.duocPointSounds) {
-        window.duocPointSounds.toggleBackgroundMusic();
+    if (window.StudentsPointSounds) {
+        window.StudentsPointSounds.toggleBackgroundMusic();
     }
 };

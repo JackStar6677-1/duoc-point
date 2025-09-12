@@ -1,4 +1,4 @@
-/* Navegación Virtual - DuocPoint */
+/* Navegación Virtual - StudentsPoint */
 
 .main-content {
     background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
@@ -13,7 +13,7 @@
     height: fit-content;
 }
 
-.navigation-panel .duoc-card {
+.navigation-panel .students-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -57,7 +57,7 @@
 }
 
 .progress-bar {
-    background: linear-gradient(90deg, var(--duoc-cyan), var(--duoc-teal));
+    background: linear-gradient(90deg, var(--students-cyan), var(--students-teal));
     transition: width 0.3s ease;
 }
 
@@ -85,13 +85,13 @@
 
 .list-group-item:hover {
     background: rgba(13, 202, 240, 0.1);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     transform: translateX(5px);
 }
 
 .list-group-item.active {
     background: rgba(13, 202, 240, 0.2);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     color: var(--gold);
 }
 
@@ -99,7 +99,7 @@
     display: inline-block;
     width: 24px;
     height: 24px;
-    background: var(--duoc-cyan);
+    background: var(--students-cyan);
     color: white;
     border-radius: 50%;
     text-align: center;
@@ -195,7 +195,7 @@
 
 .btn-control:hover:not(:disabled) {
     background: rgba(13, 202, 240, 0.8);
-    border-color: var(--duoc-cyan);
+    border-color: var(--students-cyan);
     transform: scale(1.1);
 }
 
@@ -245,7 +245,7 @@
 }
 
 .point-features h4 {
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
     font-size: 1.1rem;
     margin-bottom: 0.75rem;
 }
@@ -267,7 +267,7 @@
     content: "✓";
     position: absolute;
     left: 0;
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
     font-weight: bold;
 }
 
@@ -291,7 +291,7 @@
 }
 
 .meta-item strong {
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
     display: block;
     margin-bottom: 0.25rem;
 }
@@ -302,7 +302,7 @@
 
 /* Modal */
 .modal-content {
-    background: linear-gradient(135deg, var(--main-purple), var(--duoc-blue));
+    background: linear-gradient(135deg, var(--main-purple), var(--students-blue));
     border: 1px solid rgba(255, 215, 0, 0.2);
     border-radius: var(--border-radius);
 }
@@ -335,7 +335,7 @@
 }
 
 .modal-body strong {
-    color: var(--duoc-cyan);
+    color: var(--students-cyan);
 }
 
 /* Responsive */
@@ -402,7 +402,7 @@
         padding: 0.75rem;
     }
     
-    .navigation-panel .duoc-card {
+    .navigation-panel .students-card {
         padding: 1rem;
     }
 }
@@ -463,11 +463,11 @@
 
 /* Mejoras de accesibilidad */
 .btn-control:focus {
-    outline: 2px solid var(--duoc-cyan);
+    outline: 2px solid var(--students-cyan);
     outline-offset: 2px;
 }
 
 .list-group-item:focus {
-    outline: 2px solid var(--duoc-cyan);
+    outline: 2px solid var(--students-cyan);
     outline-offset: 2px;
 }
