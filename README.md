@@ -1,8 +1,8 @@
-# DuocPoint - Plataforma Integral Duoc UC
+# StudentsPoint - Plataforma Integral Estudiantil
 
 ## Aplicación Web Progresiva (PWA) Completa
 
-DuocPoint es una aplicación web progresiva desarrollada desde cero para la comunidad estudiantil de Duoc UC. La plataforma integra múltiples módulos funcionales con un diseño responsive y arquitectura moderna.
+StudentsPoint es una aplicación web progresiva desarrollada desde cero para la comunidad estudiantil global. La plataforma integra múltiples módulos funcionales con un diseño responsive y arquitectura moderna, inspirada en sistemas como Blackboard pero con un enfoque open-source.
 
 ## Características Principales
 
@@ -134,10 +134,10 @@ El sistema incluye detección automática de IP local:
 
 ## Credenciales de Prueba
 
-- **Administrador**: admin@duocuc.cl / admin123
+- **Administrador**: admin@studentspoint.app / admin123
 - **Estudiante**: estudiante@gmail.com / estudiante123
-- **Profesor**: profesor@duocuc.cl / profesor123
-- **Moderador**: moderador@duocuc.cl / moderador123
+- **Profesor**: profesor@studentspoint.app / profesor123
+- **Moderador**: moderador@studentspoint.app / moderador123
 
 ## Estructura del Proyecto
 
@@ -330,8 +330,8 @@ Este proyecto está desarrollado para Duoc UC y su uso está restringido a fines
 
 Para soporte técnico o consultas sobre el proyecto:
 
-- **Equipo de desarrollo**: DuocPoint Team
-- **Institución**: Duoc UC
+- **Equipo de desarrollo**: StudentsPoint Team
+- **Proyecto**: Open Source
 - **Versión actual**: 1.2.0
 - **Última actualización**: Enero 2025
 
@@ -349,6 +349,6 @@ Para soporte técnico o consultas sobre el proyecto:
 
 ---
 
-**Desarrollado por el equipo DuocPoint para la comunidad estudiantil de Duoc UC**
+**Desarrollado por el equipo StudentsPoint para la comunidad estudiantil global**
 
-**Desarrollo desde cero - Sin plantillas ni frameworks preconstruidos**
+**Desarrollo desde cero - Proyecto Open Source sin plantillas ni frameworks preconstruidos**

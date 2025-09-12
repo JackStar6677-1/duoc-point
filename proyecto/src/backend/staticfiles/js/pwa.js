@@ -42,7 +42,9 @@ class DuocPointPWA {
       console.log('PWA: Protocol:', window.location.protocol);
       
       try {
-        const registration = await navigator.serviceWorker.register('/static/js/sw.js');
+        const registration = await navigator.serviceWorker.register('/static/js/sw.js', {
+          scope: '/'
+        });
         console.log('PWA: Service Worker registrado exitosamente:', registration);
         
         // Verificar actualizaciones

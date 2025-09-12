@@ -1,6 +1,6 @@
 /**
  * Configuración PWA para desarrollo local
- * DuocPoint - Versión 1.2.0
+ * StudentsPoint - Versión 1.2.0
  */
 
 // Configuración para desarrollo local
@@ -39,7 +39,7 @@ const PWA_CONFIG = {
     installation: {
         promptAfterInstall: false,
         showInstallButton: true,
-        installButtonText: 'Instalar DuocPoint'
+        installButtonText: 'Instalar StudentsPoint'
     }
 };
 
