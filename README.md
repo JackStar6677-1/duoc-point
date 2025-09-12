@@ -69,8 +69,8 @@ git --version
 #### Paso 3: Clonar el Proyecto
 ```bash
 # Clonar repositorio
-git clone https://github.com/JackStar6677-1/duoc-point.git
-cd duoc-point
+git clone https://github.com/JackStar6677-1/students-point.git
+cd students-point
 
 # Cambiar a branch de desarrollo
 git checkout main
@@ -142,7 +142,7 @@ El sistema incluye detección automática de IP local:
 ## Estructura del Proyecto
 
 ```
-duoc-point/
+students-point/
 ├── iniciar_desarrollo.bat          # Script de inicio para desarrollo
 ├── iniciar_produccion.bat          # Script de inicio para producción
 ├── detect_ip.py                    # Detector automático de IP local

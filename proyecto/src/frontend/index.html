@@ -61,9 +61,15 @@ body {
   gap: 0.75rem;
 }
 
-.duoc-logo-img {
+.logo-placeholder {
   height: 45px;
-  width: auto;
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
   filter: brightness(1.1);
 }
 
@@ -477,7 +483,9 @@ body {
       <div class="row align-items-center">
         <div class="col-md-8">
           <div class="duoc-logo">
-            <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="StudentsPoint Logo" class="duoc-logo-img">
+            <div class="logo-placeholder">
+              <i class="fas fa-graduation-cap fa-2x"></i>
+            </div>
             <div>
               <h1>StudentsPoint</h1>
               <p>Plataforma Integral para la Comunidad Estudiantil Global</p>
