@@ -1,9 +1,9 @@
 @echo off
 chcp 65001 >nul
-title DuocPoint - Modo Producción
+title StudentsPoint - Modo Producción
 
 echo ============================================================
-echo    DuocPoint - Sistema de Gestión Estudiantil
+echo    StudentsPoint - Sistema de Gestión Estudiantil
 echo    Modo Producción con PostgreSQL
 echo    Versión 1.2.0
 echo ============================================================
@@ -54,7 +54,7 @@ python manage.py migrate --settings=duocpoint.settings.prod
 echo.
 echo [INFO] Creando superusuario...
 echo [INFO] Si ya existe, se omitirá la creación
-python manage.py createsuperuser --settings=duocpoint.settings.prod --noinput --email admin@duocuc.cl --username admin 2>nul || echo [INFO] Superusuario ya existe
+python manage.py createsuperuser --settings=duocpoint.settings.prod --noinput --email admin@studentspoint.app --username admin 2>nul || echo [INFO] Superusuario ya existe
 
 echo.
 echo [INFO] Cargando datos iniciales...
@@ -74,7 +74,7 @@ echo    - Admin: http://localhost:8000/admin/
 echo    - API: http://localhost:8000/api/
 echo.
 echo 👤 Credenciales por defecto:
-echo    - Email: admin@duocuc.cl
+echo    - Email: admin@studentspoint.app
 echo    - Contraseña: admin123
 echo.
 echo 🔧 Modo producción activado:

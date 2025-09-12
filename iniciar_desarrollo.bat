@@ -1,8 +1,8 @@
 @echo off
-title DuocPoint - Desarrollo
+title StudentsPoint - Desarrollo
 
 echo ============================================================
-echo    DuocPoint - Modo Desarrollo
+echo    StudentsPoint - Modo Desarrollo
 echo ============================================================
 echo.
 
@@ -40,7 +40,7 @@ echo Aplicacion: http://127.0.0.1:8000
 echo Admin: http://127.0.0.1:8000/admin/
 echo.
 echo Credenciales:
-echo Email: admin@duocuc.cl
+echo Email: admin@studentspoint.app
 echo Password: admin123
 echo.
 echo Presiona Ctrl+C para detener

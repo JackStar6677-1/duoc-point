@@ -1,14 +1,14 @@
 @echo off
 chcp 65001 >nul
-title DuocPoint - Instalador PostgreSQL
+title StudentsPoint - Instalador PostgreSQL
 
 echo ============================================================
-echo    DuocPoint - Instalador PostgreSQL
+echo    StudentsPoint - Instalador PostgreSQL
 echo    Versión 1.2.0
 echo ============================================================
 echo.
 
-echo [INFO] Este script te ayudará a instalar PostgreSQL para DuocPoint
+echo [INFO] Este script te ayudará a instalar PostgreSQL para StudentsPoint
 echo [INFO] Asegúrate de tener permisos de administrador
 echo.
 

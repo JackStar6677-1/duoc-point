@@ -1,7 +1,7 @@
 {
-  "name": "DuocPoint - Plataforma Integral Duoc UC",
-  "short_name": "DuocPoint",
-  "description": "Plataforma integral para la comunidad estudiantil de Duoc UC",
+  "name": "StudentsPoint - Plataforma Integral Estudiantil",
+  "short_name": "StudentsPoint",
+  "description": "Plataforma integral para la comunidad estudiantil global",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#4A148C",
