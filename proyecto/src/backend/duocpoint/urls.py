@@ -28,8 +28,25 @@ def spa_serve(request, path=""):
     # Servir desde staticfiles en lugar de frontend
     base = Path(settings.STATIC_ROOT)
     target = base / path
+    
+    # Si es un directorio, servir index.html
     if target.is_dir():
         path = f"{path.rstrip('/')}/index.html"
+        target = base / path
+    
+    # Si el archivo no existe, intentar servir index.html para rutas SPA
+    if not target.exists():
+        # Para rutas como /forum/, /market/, etc., servir su index.html
+        if path and not path.endswith('.html') and not path.endswith('.ico') and not path.endswith('.css') and not path.endswith('.js'):
+            spa_path = f"{path.rstrip('/')}/index.html"
+            spa_target = base / spa_path
+            if spa_target.exists():
+                return serve(request, spa_path, document_root=base)
+        
+        # Si no existe, servir index.html principal
+        if (base / "index.html").exists():
+            return serve(request, "index.html", document_root=base)
+    
     return serve(request, path, document_root=base)
 
 urlpatterns = [
@@ -50,6 +67,8 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
     path('', include('duocpoint.apps.health.urls')),
+    # Servir favicon específicamente
+    re_path(r'^favicon\.ico$', serve, {'document_root': Path(settings.STATIC_ROOT), 'path': 'images/icons/icon-192x192.png'}),
     # Servir imágenes antes del catch-all
     re_path(r'^imagenes/(?P<path>.*)$', serve, {'document_root': Path(settings.BASE_DIR).parent.parent / "imagenes"}),
     re_path(r'^(?P<path>.*)$', spa_serve),
