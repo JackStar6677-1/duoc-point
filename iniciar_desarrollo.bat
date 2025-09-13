@@ -5,6 +5,17 @@ echo ============================================================
 echo    StudentsPoint - Modo Desarrollo
 echo ============================================================
 echo.
+echo IMPORTANTE: Para Google OAuth, asegúrate de que estas URLs
+echo estén configuradas en Google Cloud Console:
+echo.
+echo URIs de redirección autorizadas:
+echo - http://localhost:8000/api/auth/google/callback/web/
+echo - http://127.0.0.1:8000/api/auth/google/callback/web/
+echo.
+echo Orígenes JavaScript autorizados:
+echo - http://localhost:8000
+echo - http://127.0.0.1:8000
+echo.
 
 echo Verificando Python...
 python --version
@@ -16,6 +27,14 @@ if errorlevel 1 (
 
 echo Navegando al directorio backend...
 cd proyecto\src\backend
+
+echo Limpiando sesiones anteriores...
+echo Para limpiar datos del navegador:
+echo 1. Presiona F12 para abrir DevTools
+echo 2. Ve a Application/Storage
+echo 3. Limpia Local Storage y Session Storage
+echo 4. O usa Ctrl+Shift+Delete para limpiar datos del sitio
+echo.
 
 echo Instalando dependencias...
 pip install -r requirements.txt

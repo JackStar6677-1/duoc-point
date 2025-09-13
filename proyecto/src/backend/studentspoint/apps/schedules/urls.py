@@ -8,8 +8,8 @@ from .views import (
 )
 
 urlpatterns = [
-    path("horarios/import/pdf", ScheduleImportCreateView.as_view()),
-    path("horarios/import/<uuid:id>", ScheduleImportDetailView.as_view()),
-    path("horarios", HorarioListCreateView.as_view()),
-    path("horarios/<uuid:id>", HorarioDetailView.as_view()),
+    path("schedules/import/pdf", ScheduleImportCreateView.as_view()),
+    path("schedules/import/<uuid:id>", ScheduleImportDetailView.as_view()),
+    path("schedules/", HorarioListCreateView.as_view()),
+    path("schedules/<uuid:id>", HorarioDetailView.as_view()),
 ]

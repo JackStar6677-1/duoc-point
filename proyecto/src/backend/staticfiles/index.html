@@ -118,6 +118,21 @@ body {
   color: var(--accent-primary);
 }
 
+.dropdown-header {
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1rem 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.dropdown-divider {
+  border-color: var(--border-color);
+  margin: 0.5rem 0;
+}
+
 /* Botones de autenticación */
 .auth-buttons {
   display: flex;
@@ -485,7 +500,8 @@ body {
           </div>
         </div>
         <div class="col-md-4 text-end">
-          <div class="auth-buttons">
+          <div class="auth-buttons" id="authButtons">
+            <!-- Contenido será cargado dinámicamente -->
             <a href="/login.html" class="btn btn-outline-primary btn-sm">
               <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
             </a>
@@ -511,20 +527,10 @@ body {
               <i class="fas fa-th-large"></i> Aplicaciones
             </a>
             <ul class="dropdown-menu">
+              <!-- Herramientas Académicas -->
+              <li><h6 class="dropdown-header"><i class="fas fa-graduation-cap me-2"></i>Herramientas Académicas</h6></li>
               <li><a class="dropdown-item" href="/forum/">
                 <i class="fas fa-comments"></i> Foros
-              </a></li>
-              <li><a class="dropdown-item" href="/market/">
-                <i class="fas fa-store"></i> Mercado
-              </a></li>
-              <li><a class="dropdown-item" href="/portfolio/">
-                <i class="fas fa-briefcase"></i> Portafolio
-              </a></li>
-              <li><a class="dropdown-item" href="/bienestar/">
-                <i class="fas fa-heart-pulse"></i> Bienestar
-              </a></li>
-              <li><a class="dropdown-item" href="/cursos/">
-                <i class="fas fa-graduation-cap"></i> Cursos
               </a></li>
               <li><a class="dropdown-item" href="/horarios/">
                 <i class="fas fa-calendar"></i> Horarios
@@ -532,18 +538,41 @@ body {
               <li><a class="dropdown-item" href="/encuestas/">
                 <i class="fas fa-poll"></i> Encuestas
               </a></li>
+              <li><a class="dropdown-item" href="/teachers.html">
+                <i class="fas fa-chalkboard-teacher"></i> Profesores
+              </a></li>
+              
+              <li><hr class="dropdown-divider"></li>
+              
+              <!-- Desarrollo Profesional -->
+              <li><h6 class="dropdown-header"><i class="fas fa-briefcase me-2"></i>Desarrollo Profesional</h6></li>
+              <li><a class="dropdown-item" href="/portfolio/">
+                <i class="fas fa-briefcase"></i> Portafolio
+              </a></li>
+              <li><a class="dropdown-item" href="/cursos/">
+                <i class="fas fa-graduation-cap"></i> Cursos
+              </a></li>
+              <li><a class="dropdown-item" href="/market/">
+                <i class="fas fa-store"></i> Mercado
+              </a></li>
+              
+              <li><hr class="dropdown-divider"></li>
+              
+              <!-- Servicios Estudiantiles -->
+              <li><h6 class="dropdown-header"><i class="fas fa-heart me-2"></i>Servicios Estudiantiles</h6></li>
+              <li><a class="dropdown-item" href="/bienestar/">
+                <i class="fas fa-heart-pulse"></i> Bienestar
+              </a></li>
               <li><a class="dropdown-item" href="/reportes/">
                 <i class="fas fa-chart-bar"></i> Reportes
               </a></li>
               <li><a class="dropdown-item" href="/streetview/">
                 <i class="fas fa-map"></i> Recorridos Virtuales
               </a></li>
-              <li><a class="dropdown-item" href="/campuses.html">
-                <i class="fas fa-building"></i> Sedes
-              </a></li>
-              <li><a class="dropdown-item" href="/teachers.html">
-                <i class="fas fa-chalkboard-teacher"></i> Profesores
-              </a></li>
+              
+              <li><hr class="dropdown-divider"></li>
+              
+              <!-- Cuenta -->
               <li><a class="dropdown-item" href="/account.html">
                 <i class="fas fa-user"></i> Mi Cuenta
               </a></li>
@@ -790,10 +819,57 @@ body {
         if (window.playSound) {
           window.playSound('logout');
         }
-        // Aquí iría la lógica de logout
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         window.location.href = '/login.html';
       }
     };
+
+    // Verificar autenticación al cargar la página
+    async function checkAuthentication() {
+      const token = localStorage.getItem('access_token');
+      const authButtons = document.getElementById('authButtons');
+      
+      if (token) {
+        try {
+          const response = await fetch('/api/auth/me/', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (response.ok) {
+            const user = await response.json();
+            authButtons.innerHTML = `
+              <div class="dropdown">
+                <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                  <i class="fas fa-user me-1"></i> ${user.name || 'Usuario'}
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/account.html"><i class="fas fa-user-cog me-2"></i>Mi Cuenta</a></li>
+                  <li><a class="dropdown-item" href="/portfolio/"><i class="fas fa-briefcase me-2"></i>Mi Portafolio</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                </ul>
+              </div>
+            `;
+          } else {
+            // Token inválido, limpiar
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+          }
+        } catch (error) {
+          console.error('Error verificando autenticación:', error);
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+        }
+      }
+    }
+
+    // Ejecutar verificación de autenticación al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      checkAuthentication();
+    });
   </script>
 </body>
 </html>

@@ -1,553 +1,421 @@
 /**
- * Encuestas Manager - DuocPoint
+ * Polls Manager - StudentsPoint
  * Sistema completo de encuestas y votaciones
  */
 
-class EncuestasManager {
+class PollsManager {
     constructor() {
+        this.polls = [];
+        this.currentFilter = 'all';
         this.currentUser = null;
-        this.encuestas = [];
-        this.respuestas = [];
-        this.filtros = {};
-        this.vistaActual = 'lista';
-        this.encuestaActual = null;
-        
         this.init();
     }
-    
+
     async init() {
         await this.loadUser();
+        await this.loadPolls();
         this.setupEventListeners();
-        await this.loadEncuestas();
-        this.updateStats();
-        this.renderEncuestas();
+        this.renderPolls();
     }
-    
-    // === AUTENTICACIÓN ===
+
     async loadUser() {
-        try {
-            const token = localStorage.getItem('access_token');
-            if (!token) {
-                window.location.href = '/login.html';
-                return;
-            }
-            
-            const response = await fetch('/api/auth/me/', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            
-            if (response.ok) {
-                this.currentUser = await response.json();
-            } else {
-                window.location.href = '/login.html';
-            }
-        } catch (error) {
-            console.error('Error loading user:', error);
-            window.location.href = '/login.html';
-        }
-    }
-    
-    // === EVENT LISTENERS ===
-    setupEventListeners() {
-        // Filters
-        document.getElementById('btnFiltrar')?.addEventListener('click', () => {
-            this.aplicarFiltros();
-        });
-        
-        document.getElementById('btnLimpiarFiltros')?.addEventListener('click', () => {
-            this.limpiarFiltros();
-        });
-        
-        // View toggle
-        document.getElementById('btnVistaLista')?.addEventListener('click', () => {
-            this.cambiarVista('lista');
-        });
-        
-        document.getElementById('btnVistaGrid')?.addEventListener('click', () => {
-            this.cambiarVista('grid');
-        });
-        
-        // Create poll
-        document.getElementById('btnCrearEncuesta')?.addEventListener('click', () => {
-            this.showModal('modalCrearEncuesta');
-        });
-        
-        // Modal events
-        this.setupModalEvents();
-    }
-    
-    setupModalEvents() {
-        // Close modals
-        document.querySelectorAll('.modal-close').forEach(btn => {
-            btn.addEventListener('click', () => this.closeModal());
-        });
-        
-        // Close on outside click
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    this.closeModal();
+        const token = localStorage.getItem('access_token');
+        if (token) {
+            try {
+                const response = await fetch('/api/auth/me/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    this.currentUser = await response.json();
                 }
-            });
-        });
-        
-        // Form submissions
-        document.getElementById('formCrearEncuesta')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.crearEncuesta();
-        });
-        
-        document.getElementById('formResponderEncuesta')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            this.enviarRespuestas();
-        });
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+        }
     }
-    
-    // === CARGA DE DATOS ===
-    async loadEncuestas() {
+
+    async loadPolls() {
         try {
-            this.showLoading(true);
-            
             const token = localStorage.getItem('access_token');
-            const params = new URLSearchParams(this.filtros);
-            
-            const response = await fetch(`/api/polls/encuestas/?${params}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch('/api/polls/', { headers });
             if (response.ok) {
-                this.encuestas = await response.json();
-                this.renderEncuestas();
+                const data = await response.json();
+                this.polls = data.results || data || [];
             } else {
-                this.showError('Error cargando encuestas');
+                throw new Error('Error cargando encuestas');
             }
         } catch (error) {
-            console.error('Error loading encuestas:', error);
-            this.showError('Error de conexión');
-        } finally {
-            this.showLoading(false);
+            console.error('Error:', error);
+            this.showError('Error cargando encuestas');
         }
     }
-    
-    async loadRespuestas(encuestaId) {
-        try {
-            const token = localStorage.getItem('access_token');
-            const response = await fetch(`/api/polls/encuestas/${encuestaId}/respuestas/`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            
-            if (response.ok) {
-                return await response.json();
-            }
-        } catch (error) {
-            console.error('Error loading respuestas:', error);
-        }
-        return [];
+
+    setupEventListeners() {
+        // Filtros
+        document.getElementById('filterAll')?.addEventListener('click', () => this.setFilter('all'));
+        document.getElementById('filterActive')?.addEventListener('click', () => this.setFilter('active'));
+        document.getElementById('filterClosed')?.addEventListener('click', () => this.setFilter('closed'));
+        document.getElementById('filterMyPolls')?.addEventListener('click', () => this.setFilter('my_polls'));
+
+        // Búsqueda
+        document.getElementById('searchInput')?.addEventListener('input', (e) => this.searchPolls(e.target.value));
     }
-    
-    // === RENDERIZADO ===
-    renderEncuestas() {
-        const container = document.getElementById('encuestasList');
-        const noResults = document.getElementById('noResults');
+
+    setFilter(filter) {
+        this.currentFilter = filter;
+        this.updateFilterButtons();
+        this.renderPolls();
+    }
+
+    updateFilterButtons() {
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.getElementById(`filter${this.currentFilter.charAt(0).toUpperCase() + this.currentFilter.slice(1)}`)?.classList.add('active');
+    }
+
+    searchPolls(query) {
+        const filteredPolls = this.polls.filter(poll => 
+            poll.titulo.toLowerCase().includes(query.toLowerCase()) ||
+            poll.descripcion.toLowerCase().includes(query.toLowerCase()) ||
+            poll.categoria.toLowerCase().includes(query.toLowerCase())
+        );
+        this.renderPolls(filteredPolls);
+    }
+
+    renderPolls(pollsToRender = null) {
+        const polls = pollsToRender || this.getFilteredPolls();
+        const container = document.getElementById('pollsContainer');
         
         if (!container) return;
-        
-        if (this.encuestas.length === 0) {
-            container.innerHTML = '';
-            noResults.style.display = 'block';
+
+        if (polls.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="fas fa-poll fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No se encontraron encuestas</h4>
+                    <p class="text-muted">Intenta con otros filtros o términos de búsqueda</p>
+                </div>
+            `;
             return;
         }
-        
-        noResults.style.display = 'none';
-        
-        const viewClass = this.vistaActual === 'grid' ? 'grid-view' : '';
-        container.className = `encuestas-list ${viewClass}`;
-        
-        container.innerHTML = this.encuestas.map(encuesta => this.renderEncuesta(encuesta)).join('');
-        
-        // Add event listeners
-        container.querySelectorAll('.btn-responder').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                this.responderEncuesta(id);
-            });
-        });
-        
-        container.querySelectorAll('.btn-resultados').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                this.verResultados(id);
-            });
-        });
-        
-        container.querySelectorAll('.btn-editar').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = parseInt(e.target.dataset.id);
-                this.editarEncuesta(id);
-            });
-        });
+
+        container.innerHTML = polls.map(poll => this.createPollCard(poll)).join('');
     }
-    
-    renderEncuesta(encuesta) {
-        const estado = this.getEstadoEncuesta(encuesta);
-        const porcentajeParticipacion = this.calcularPorcentajeParticipacion(encuesta);
-        const puedeResponder = this.puedeResponder(encuesta);
-        const yaRespondio = this.yaRespondio(encuesta);
+
+    getFilteredPolls() {
+        const now = new Date();
         
+        switch (this.currentFilter) {
+            case 'active':
+                return this.polls.filter(poll => 
+                    poll.estado === 'activa' || 
+                    (new Date(poll.fecha_fin) > now && new Date(poll.fecha_inicio) <= now)
+                );
+            case 'closed':
+                return this.polls.filter(poll => 
+                    poll.estado === 'cerrada' || 
+                    new Date(poll.fecha_fin) <= now
+                );
+            case 'my_polls':
+                return this.polls.filter(poll => 
+                    this.currentUser && poll.creador === this.currentUser.id
+                );
+            default:
+                return this.polls;
+        }
+    }
+
+    createPollCard(poll) {
+        const isActive = poll.estado === 'activa' || (new Date(poll.fecha_fin) > new Date());
+        const statusBadge = isActive ? 
+            '<span class="badge bg-success">Activa</span>' : 
+            '<span class="badge bg-secondary">Cerrada</span>';
+
+        const categoryIcons = {
+            'academica': 'fas fa-graduation-cap',
+            'servicios': 'fas fa-concierge-bell',
+            'infraestructura': 'fas fa-building',
+            'eventos': 'fas fa-calendar-alt',
+            'general': 'fas fa-comments'
+        };
+
+        const categoryColors = {
+            'academica': 'primary',
+            'servicios': 'info',
+            'infraestructura': 'warning',
+            'eventos': 'success',
+            'general': 'secondary'
+        };
+
         return `
-            <div class="encuesta-card">
-                <div class="encuesta-header">
-                    <h3 class="encuesta-titulo">${encuesta.titulo}</h3>
-                    <span class="encuesta-estado ${estado}">${estado}</span>
-                </div>
-                
-                <div class="encuesta-descripcion">
-                    ${encuesta.descripcion}
-                </div>
-                
-                <div class="encuesta-meta">
-                    <span><i class="fas fa-tag"></i> ${encuesta.categoria}</span>
-                    <span><i class="fas fa-calendar"></i> ${this.formatDate(encuesta.fecha_inicio)}</span>
-                    <span><i class="fas fa-clock"></i> ${this.formatDate(encuesta.fecha_fin)}</span>
-                    <span><i class="fas fa-users"></i> ${encuesta.total_respuestas || 0} respuestas</span>
-                </div>
-                
-                <div class="encuesta-progress">
-                    <div class="progress-label">
-                        <span>Participación</span>
-                        <span>${porcentajeParticipacion}%</span>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card poll-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="poll-category">
+                                <i class="${categoryIcons[poll.categoria] || 'fas fa-poll'} text-${categoryColors[poll.categoria] || 'primary'}"></i>
+                                <span class="badge bg-${categoryColors[poll.categoria] || 'primary'} ms-1">${poll.categoria}</span>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        
+                        <h5 class="card-title">${poll.titulo}</h5>
+                        <p class="card-text text-muted">${poll.descripcion || 'Sin descripción'}</p>
+                        
+                        <div class="poll-stats mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-users me-1"></i>
+                                ${poll.total_votos || 0} votos
+                            </small>
+                            <small class="text-muted ms-3">
+                                <i class="fas fa-clock me-1"></i>
+                                ${this.formatDate(poll.fecha_fin)}
+                            </small>
+                        </div>
+
+                        <div class="poll-actions">
+                            <button class="btn btn-outline-primary btn-sm me-2" onclick="pollsManager.viewPollDetail(${poll.id})">
+                                <i class="fas fa-eye me-1"></i> Ver
+                            </button>
+                            ${isActive ? `
+                                <button class="btn btn-primary btn-sm" onclick="pollsManager.votePoll(${poll.id})">
+                                    <i class="fas fa-vote-yea me-1"></i> Votar
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
-                    <div class="progress-bar-custom">
-                        <div class="progress-fill" style="width: ${porcentajeParticipacion}%"></div>
-                    </div>
-                </div>
-                
-                <div class="encuesta-actions">
-                    ${puedeResponder && !yaRespondio ? `
-                        <button class="duoc-btn duoc-btn-primary btn-responder" data-id="${encuesta.id}">
-                            <i class="fas fa-edit"></i> Responder
-                        </button>
-                    ` : ''}
-                    
-                    ${yaRespondio ? `
-                        <button class="duoc-btn duoc-btn-success" disabled>
-                            <i class="fas fa-check"></i> Ya Respondida
-                        </button>
-                    ` : ''}
-                    
-                    <button class="duoc-btn duoc-btn-outline btn-resultados" data-id="${encuesta.id}">
-                        <i class="fas fa-chart-bar"></i> Ver Resultados
-                    </button>
-                    
-                    ${this.puedeEditar(encuesta) ? `
-                        <button class="duoc-btn duoc-btn-outline btn-editar" data-id="${encuesta.id}">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
-                    ` : ''}
                 </div>
             </div>
         `;
     }
-    
-    // === FILTROS ===
-    aplicarFiltros() {
-        this.filtros = {};
-        
-        const estado = document.getElementById('filtroEstado')?.value;
-        const categoria = document.getElementById('filtroCategoria')?.value;
-        const busqueda = document.getElementById('busqueda')?.value;
-        
-        if (estado) this.filtros.estado = estado;
-        if (categoria) this.filtros.categoria = categoria;
-        if (busqueda) this.filtros.search = busqueda;
-        
-        this.loadEncuestas();
-        
-        if (window.playSound) {
-            window.playSound('click');
-        }
-    }
-    
-    limpiarFiltros() {
-        document.getElementById('filtroEstado').value = '';
-        document.getElementById('filtroCategoria').value = '';
-        document.getElementById('busqueda').value = '';
-        
-        this.filtros = {};
-        this.loadEncuestas();
-        
-        if (window.playSound) {
-            window.playSound('click');
-        }
-    }
-    
-    // === VISTAS ===
-    cambiarVista(vista) {
-        this.vistaActual = vista;
-        
-        document.getElementById('btnVistaLista').classList.toggle('active', vista === 'lista');
-        document.getElementById('btnVistaGrid').classList.toggle('active', vista === 'grid');
-        
-        this.renderEncuestas();
-        
-        if (window.playSound) {
-            window.playSound('click');
-        }
-    }
-    
-    // === ENCUESTAS ===
-    async crearEncuesta() {
+
+    async viewPollDetail(pollId) {
         try {
-            const formData = {
-                titulo: document.getElementById('inputTitulo').value,
-                descripcion: document.getElementById('inputDescripcion').value,
-                categoria: document.getElementById('inputCategoria').value,
-                tipo: document.getElementById('inputTipo').value,
-                fecha_inicio: document.getElementById('inputFechaInicio').value,
-                fecha_fin: document.getElementById('inputFechaFin').value,
-                preguntas: document.getElementById('inputPreguntas').value.split('\n').filter(p => p.trim()),
-                anonima: document.getElementById('inputAnonima').checked,
-                obligatoria: document.getElementById('inputObligatoria').checked
-            };
-            
             const token = localStorage.getItem('access_token');
-            const response = await fetch('/api/polls/encuestas/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(formData)
-            });
-            
+            const headers = {};
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const response = await fetch(`/api/polls/${pollId}/`, { headers });
             if (response.ok) {
-                this.showSuccess('Encuesta creada exitosamente');
-                this.closeModal();
-                document.getElementById('formCrearEncuesta').reset();
-                this.loadEncuestas();
+                const poll = await response.json();
+                this.showPollDetailModal(poll);
             } else {
-                const error = await response.json();
-                this.showError(error.detail || 'Error creando encuesta');
+                throw new Error('Error cargando encuesta');
             }
         } catch (error) {
-            console.error('Error creating encuesta:', error);
-            this.showError('Error de conexión');
+            console.error('Error:', error);
+            this.showError('Error cargando encuesta');
         }
     }
-    
-    async responderEncuesta(id) {
-        const encuesta = this.encuestas.find(e => e.id === id);
-        if (!encuesta) return;
+
+    showPollDetailModal(poll) {
+        const modal = new bootstrap.Modal(document.getElementById('pollDetailModal'));
+        const modalBody = document.getElementById('pollDetailBody');
         
-        this.encuestaActual = encuesta;
-        this.renderPreguntas(encuesta);
-        this.showModal('modalResponderEncuesta');
-        
-        if (window.playSound) {
-            window.playSound('click');
-        }
-    }
-    
-    renderPreguntas(encuesta) {
-        const container = document.getElementById('encuestaPreguntas');
-        document.getElementById('modalEncuestaTitulo').textContent = encuesta.titulo;
-        
-        container.innerHTML = encuesta.preguntas.map((pregunta, index) => `
-            <div class="question-item">
-                <div class="question-text">${index + 1}. ${pregunta}</div>
-                <div class="question-options">
-                    ${this.renderOpcionesPregunta(index)}
+        const isActive = poll.estado === 'activa' || (new Date(poll.fecha_fin) > new Date());
+        const totalVotes = poll.opciones?.reduce((sum, opcion) => sum + (opcion.votos || 0), 0) || 0;
+
+        modalBody.innerHTML = `
+            <div class="poll-detail">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h4>${poll.titulo}</h4>
+                    <span class="badge ${isActive ? 'bg-success' : 'bg-secondary'}">
+                        ${isActive ? 'Activa' : 'Cerrada'}
+                    </span>
                 </div>
-            </div>
-        `).join('');
-    }
-    
-    renderOpcionesPregunta(index) {
-        const opciones = [
-            'Muy de acuerdo',
-            'De acuerdo',
-            'Neutral',
-            'En desacuerdo',
-            'Muy en desacuerdo'
-        ];
-        
-        return opciones.map(opcion => `
-            <div class="option-item">
-                <input type="radio" name="pregunta_${index}" value="${opcion}" id="pregunta_${index}_${opcion}" required>
-                <label for="pregunta_${index}_${opcion}">${opcion}</label>
-            </div>
-        `).join('');
-    }
-    
-    async enviarRespuestas() {
-        try {
-            const formData = new FormData(document.getElementById('formResponderEncuesta'));
-            const respuestas = [];
-            
-            for (let i = 0; i < this.encuestaActual.preguntas.length; i++) {
-                const respuesta = formData.get(`pregunta_${i}`);
-                if (respuesta) {
-                    respuestas.push({
-                        pregunta: this.encuestaActual.preguntas[i],
-                        respuesta: respuesta
-                    });
-                }
-            }
-            
-            const token = localStorage.getItem('access_token');
-            const response = await fetch(`/api/polls/encuestas/${this.encuestaActual.id}/responder/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ respuestas })
-            });
-            
-            if (response.ok) {
-                this.showSuccess('Respuestas enviadas exitosamente');
-                this.closeModal();
-                this.loadEncuestas();
-            } else {
-                const error = await response.json();
-                this.showError(error.detail || 'Error enviando respuestas');
-            }
-        } catch (error) {
-            console.error('Error sending respuestas:', error);
-            this.showError('Error de conexión');
-        }
-    }
-    
-    async verResultados(id) {
-        const encuesta = this.encuestas.find(e => e.id === id);
-        if (!encuesta) return;
-        
-        try {
-            const respuestas = await this.loadRespuestas(id);
-            this.renderResultados(encuesta, respuestas);
-            this.showModal('modalVerResultados');
-        } catch (error) {
-            console.error('Error loading resultados:', error);
-            this.showError('Error cargando resultados');
-        }
-        
-        if (window.playSound) {
-            window.playSound('click');
-        }
-    }
-    
-    renderResultados(encuesta, respuestas) {
-        document.getElementById('modalResultadosTitulo').textContent = `Resultados: ${encuesta.titulo}`;
-        
-        const container = document.getElementById('encuestaResultados');
-        
-        if (respuestas.length === 0) {
-            container.innerHTML = `
-                <div class="text-center py-4">
-                    <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
-                    <h4 class="text-muted">No hay respuestas aún</h4>
-                    <p class="text-muted">Las respuestas aparecerán aquí cuando los usuarios participen</p>
-                </div>
-            `;
-            return;
-        }
-        
-        container.innerHTML = encuesta.preguntas.map((pregunta, index) => {
-            const respuestasPregunta = respuestas.map(r => r.respuestas[index]).filter(r => r);
-            const conteo = this.contarRespuestas(respuestasPregunta);
-            
-            return `
-                <div class="results-section">
-                    <h3>${index + 1}. ${pregunta}</h3>
-                    <div class="result-options">
-                        ${Object.entries(conteo).map(([opcion, count]) => {
-                            const porcentaje = ((count / respuestasPregunta.length) * 100).toFixed(1);
-                            return `
-                                <div class="result-option">
-                                    <span class="result-option-text">${opcion}</span>
-                                    <div>
-                                        <span class="result-option-count">${count}</span>
-                                        <span class="result-option-percentage">(${porcentaje}%)</span>
-                                    </div>
-                                </div>
-                            `;
-                        }).join('')}
+                
+                <p class="text-muted mb-4">${poll.descripcion || 'Sin descripción'}</p>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>Fecha de inicio:</strong><br>
+                        <small class="text-muted">${this.formatDate(poll.fecha_inicio)}</small>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Fecha de fin:</strong><br>
+                        <small class="text-muted">${this.formatDate(poll.fecha_fin)}</small>
                     </div>
                 </div>
-            `;
-        }).join('');
-    }
-    
-    contarRespuestas(respuestas) {
-        const conteo = {};
-        respuestas.forEach(respuesta => {
-            conteo[respuesta.respuesta] = (conteo[respuesta.respuesta] || 0) + 1;
-        });
-        return conteo;
-    }
-    
-    // === MODALES ===
-    showModal(modalId) {
-        document.getElementById(modalId).classList.add('show');
-    }
-    
-    closeModal() {
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.classList.remove('show');
-        });
-    }
-    
-    // === ESTADÍSTICAS ===
-    updateStats() {
-        const total = this.encuestas.length;
-        const completadas = this.encuestas.filter(e => this.yaRespondio(e)).length;
-        const pendientes = total - completadas;
-        const participacion = total > 0 ? Math.round((completadas / total) * 100) : 0;
+
+                <h5>Resultados (${totalVotes} votos totales)</h5>
+                <div class="poll-results">
+                    ${poll.opciones?.map(opcion => {
+                        const percentage = totalVotes > 0 ? ((opcion.votos || 0) / totalVotes * 100).toFixed(1) : 0;
+                        return `
+                            <div class="result-item mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>${opcion.texto}</span>
+                                    <span class="text-muted">${opcion.votos || 0} votos (${percentage}%)</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: ${percentage}%"></div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('') || '<p class="text-muted">No hay opciones disponibles</p>'}
+                </div>
+            </div>
+        `;
         
-        document.getElementById('totalEncuestas').textContent = total;
-        document.getElementById('encuestasCompletadas').textContent = completadas;
-        document.getElementById('encuestasPendientes').textContent = pendientes;
-        document.getElementById('porcentajeParticipacion').textContent = `${participacion}%`;
+        modal.show();
     }
-    
-    // === UTILIDADES ===
-    getEstadoEncuesta(encuesta) {
-        const ahora = new Date();
-        const inicio = new Date(encuesta.fecha_inicio);
-        const fin = new Date(encuesta.fecha_fin);
+
+    async votePoll(pollId) {
+        try {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                this.showError('Debes iniciar sesión para votar');
+                return;
+            }
+
+            // Obtener detalles de la encuesta para mostrar opciones
+            const response = await fetch(`/api/polls/${pollId}/`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const poll = await response.json();
+                this.showVoteModal(poll);
+            } else {
+                throw new Error('Error cargando encuesta');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            this.showError('Error cargando encuesta');
+        }
+    }
+
+    showVoteModal(poll) {
+        const modal = new bootstrap.Modal(document.getElementById('voteModal'));
+        const modalBody = document.getElementById('voteModalBody');
         
-        if (ahora < inicio) return 'programada';
-        if (ahora > fin) return 'cerrada';
-        return 'activa';
+        modalBody.innerHTML = `
+            <h5>${poll.titulo}</h5>
+            <p class="text-muted">${poll.descripcion || ''}</p>
+            
+            <form id="voteForm">
+                <div class="mb-3">
+                    <label class="form-label">Selecciona tu opción:</label>
+                    ${poll.opciones?.map((opcion, index) => `
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="opcion" value="${opcion.id}" id="opcion${index}">
+                            <label class="form-check-label" for="opcion${index}">
+                                ${opcion.texto}
+                            </label>
+                        </div>
+                    `).join('') || '<p class="text-muted">No hay opciones disponibles</p>'}
+                </div>
+            </form>
+        `;
+        
+        modal.show();
     }
-    
-    calcularPorcentajeParticipacion(encuesta) {
-        // Simular porcentaje basado en respuestas
-        const total = 100; // Total de usuarios
-        const respuestas = encuesta.total_respuestas || 0;
-        return Math.round((respuestas / total) * 100);
+
+    async submitVote(pollId) {
+        try {
+            const form = document.getElementById('voteForm');
+            const formData = new FormData(form);
+            const selectedOption = formData.get('opcion');
+
+            if (!selectedOption) {
+                this.showError('Por favor selecciona una opción');
+                return;
+            }
+
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`/api/polls/${pollId}/votar/`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    opcion_id: selectedOption
+                })
+            });
+
+            if (response.ok) {
+                this.showSuccess('Voto registrado exitosamente');
+                bootstrap.Modal.getInstance(document.getElementById('voteModal')).hide();
+                await this.loadPolls();
+                this.renderPolls();
+            } else {
+                const error = await response.json();
+                throw new Error(error.detail || 'Error al votar');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            this.showError('Error al registrar voto');
+        }
     }
-    
-    puedeResponder(encuesta) {
-        const estado = this.getEstadoEncuesta(encuesta);
-        return estado === 'activa';
+
+    async createPoll() {
+        try {
+            const form = document.getElementById('createPollForm');
+            const formData = new FormData(form);
+
+            const pollData = {
+                titulo: document.getElementById('pollTitle').value,
+                descripcion: document.getElementById('pollDescription').value,
+                categoria: document.getElementById('pollCategory').value,
+                opciones: document.getElementById('pollOptions').value.split('\n').filter(opt => opt.trim()),
+                fecha_inicio: document.getElementById('pollStartDate').value || new Date().toISOString(),
+                fecha_fin: document.getElementById('pollEndDate').value,
+                anonima: document.getElementById('pollAnonymous').checked
+            };
+
+            if (!pollData.titulo || !pollData.categoria || pollData.opciones.length < 2) {
+                this.showError('Por favor completa todos los campos requeridos');
+                return;
+            }
+
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                this.showError('Debes iniciar sesión para crear encuestas');
+                return;
+            }
+
+            const response = await fetch('/api/polls/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pollData)
+            });
+
+            if (response.ok) {
+                this.showSuccess('Encuesta creada exitosamente');
+                bootstrap.Modal.getInstance(document.getElementById('createPollModal')).hide();
+                form.reset();
+                await this.loadPolls();
+                this.renderPolls();
+            } else {
+                const error = await response.json();
+                throw new Error(error.detail || 'Error al crear encuesta');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            this.showError('Error al crear encuesta');
+        }
     }
-    
-    yaRespondio(encuesta) {
-        // Simular verificación de respuesta
-        return Math.random() > 0.7; // 30% de probabilidad de haber respondido
-    }
-    
-    puedeEditar(encuesta) {
-        return this.currentUser && 
-               (this.currentUser.role === 'admin' || 
-                this.currentUser.role === 'moderator' ||
-                encuesta.creador_id === this.currentUser.id);
-    }
-    
+
     formatDate(dateString) {
+        if (!dateString) return 'No especificada';
         const date = new Date(dateString);
-        return date.toLocaleDateString('es-ES', {
+        return date.toLocaleDateString('es-CL', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -555,53 +423,42 @@ class EncuestasManager {
             minute: '2-digit'
         });
     }
-    
-    showLoading(show) {
-        // Implementar loading spinner si es necesario
-    }
-    
+
     showSuccess(message) {
-        this.showToast(message, 'success');
-        
-        if (window.playSound) {
-            window.playSound('success');
-        }
-    }
-    
-    showError(message) {
-        this.showToast(message, 'error');
-        
-        if (window.playSound) {
-            window.playSound('error');
-        }
-    }
-    
-    showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `
-            <div class="toast-content">
-                <span>${message}</span>
-            </div>
-        `;
-        
-        document.body.appendChild(toast);
-        
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        const container = document.querySelector('.container');
+        container.insertBefore(alertDiv, container.firstChild);
         setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
             }
         }, 3000);
     }
+
+    showError(message) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+        alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+        const container = document.querySelector('.container');
+        container.insertBefore(alertDiv, container.firstChild);
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
 }
 
-// Initialize encuestas manager
-let encuestasManager;
-document.addEventListener('DOMContentLoaded', () => {
-    encuestasManager = new EncuestasManager();
-    
-    // Play page load sound
-    if (window.playSound) {
-        window.playSound('pageLoad');
-    }
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        if (window.playSound) {
+            window.playSound('pageLoad');
+        }
+    }, 500);
+
+    // Inicializar el gestor de encuestas
+    window.pollsManager = new PollsManager();
 });

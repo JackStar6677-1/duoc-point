@@ -1,89 +1,89 @@
 # StudentsPoint
 
-A comprehensive Progressive Web Application (PWA) designed for the global student community. StudentsPoint provides an integrated ecosystem of tools and services to enhance the academic and professional experience of students worldwide.
+Una aplicación web progresiva (PWA) integral diseñada para la comunidad estudiantil global. StudentsPoint proporciona un ecosistema integrado de herramientas y servicios para mejorar la experiencia académica y profesional de estudiantes en todo el mundo.
 
-## Overview
+## Descripción General
 
-StudentsPoint is an open-source platform that combines multiple student-focused applications into a single, cohesive experience. Built with Django and modern web technologies, it offers a range of features from academic tools to professional development resources.
+StudentsPoint es una plataforma de código abierto que combina múltiples aplicaciones enfocadas en estudiantes en una experiencia única y cohesiva. Construida con Django y tecnologías web modernas, ofrece una gama de características desde herramientas académicas hasta recursos de desarrollo profesional.
 
-## Target Audience
+## Público Objetivo
 
-- **Students**: Primary users seeking academic and professional development tools
-- **Educational Institutions**: Organizations looking to provide comprehensive student services
-- **Developers**: Contributors interested in educational technology and PWA development
-- **Educators**: Teachers and administrators who want to enhance student engagement
+- **Estudiantes**: Usuarios principales que buscan herramientas académicas y de desarrollo profesional
+- **Instituciones Educativas**: Organizaciones que buscan proporcionar servicios estudiantiles integrales
+- **Desarrolladores**: Contribuidores interesados en tecnología educativa y desarrollo PWA
+- **Educadores**: Profesores y administradores que desean mejorar el compromiso estudiantil
 
-## Key Features
+## Características Principales
 
-### Authentication System
-- Traditional email/password authentication
-- Google OAuth integration for seamless login
-- Flexible email validation supporting multiple domains
-- JWT-based secure token management
+### Sistema de Autenticación
+- Autenticación tradicional con email/contraseña
+- Integración con Google OAuth para inicio de sesión fluido
+- Validación de email flexible que soporta múltiples dominios
+- Gestión segura de tokens basada en JWT
 
-### Core Applications
+### Aplicaciones Principales
 
-#### Academic Tools
-- **Forums**: Discussion boards with automated moderation
-- **Schedules**: Class schedule management with PDF import capabilities
-- **Polls**: Voting and survey system for student feedback
-- **Teachers Directory**: Faculty information and contact details
+#### Herramientas Académicas
+- **Foros**: Tableros de discusión con moderación automatizada
+- **Horarios**: Gestión de horarios de clases con capacidades de importación PDF
+- **Encuestas**: Sistema de votación y encuestas para retroalimentación estudiantil
+- **Directorio de Profesores**: Información y detalles de contacto de la facultad
 
-#### Professional Development
-- **Portfolio**: Professional profile management with PDF generation
-- **Courses (OTEC)**: Open course sharing platform
-- **Marketplace**: Product sharing via external links (Facebook Marketplace, MercadoLibre)
+#### Desarrollo Profesional
+- **Portafolio**: Gestión de perfil profesional con generación de PDF
+- **Cursos (OTEC)**: Plataforma de intercambio de cursos abiertos
+- **Marketplace**: Intercambio de productos a través de enlaces externos (Facebook Marketplace, MercadoLibre)
 
-#### Student Services
-- **Wellbeing**: Health and wellness resources
-- **Reports**: Infrastructure and facility reporting system
-- **Notifications**: Push notification system for important updates
-- **Virtual Tours**: Custom street view implementation
+#### Servicios Estudiantiles
+- **Bienestar**: Recursos de salud y bienestar
+- **Reportes**: Sistema de reportes de infraestructura e instalaciones
+- **Notificaciones**: Sistema de notificaciones push para actualizaciones importantes
+- **Tours Virtuales**: Implementación personalizada de vista de calle
 
-### Technical Features
-- **Progressive Web App**: Offline functionality and app-like experience
-- **Responsive Design**: Mobile-first approach with Bootstrap 5
-- **RESTful API**: Comprehensive API with Swagger documentation
-- **Real-time Notifications**: Web push notification support
-- **PDF Generation**: Professional document creation using ReportLab
+### Características Técnicas
+- **Aplicación Web Progresiva**: Funcionalidad offline y experiencia similar a una app
+- **Diseño Responsivo**: Enfoque mobile-first con Bootstrap 5
+- **API RESTful**: API integral con documentación Swagger
+- **Notificaciones en Tiempo Real**: Soporte para notificaciones push web
+- **Generación de PDF**: Creación de documentos profesionales usando ReportLab
 
-## Technology Stack
+## Stack Tecnológico
 
 ### Backend
-- **Django 5.0+**: Web framework
-- **Django REST Framework**: API development
-- **PostgreSQL/SQLite**: Database management
-- **Celery + Redis**: Asynchronous task processing
-- **ReportLab**: PDF generation
-- **Google OAuth**: Authentication integration
+- **Django 5.0+**: Framework web
+- **Django REST Framework**: Desarrollo de API
+- **PostgreSQL/SQLite**: Gestión de base de datos
+- **Celery + Redis**: Procesamiento de tareas asíncronas
+- **ReportLab**: Generación de PDF
+- **Google OAuth**: Integración de autenticación
 
 ### Frontend
-- **HTML5/CSS3/JavaScript**: Core web technologies
-- **Bootstrap 5**: UI framework
-- **Font Awesome**: Icon library
-- **Service Workers**: PWA functionality
+- **HTML5/CSS3/JavaScript**: Tecnologías web principales
+- **Bootstrap 5**: Framework de UI
+- **Font Awesome**: Biblioteca de iconos
+- **Service Workers**: Funcionalidad PWA
 
-### Development Tools
-- **pytest**: Testing framework
-- **Docker**: Containerization support
-- **Git**: Version control
+### Herramientas de Desarrollo
+- **pytest**: Framework de testing
+- **Docker**: Soporte de contenedores
+- **Git**: Control de versiones
 
-## Installation
+## Instalación
 
-### Prerequisites
-- Python 3.11 or higher
-- PostgreSQL (optional, SQLite used by default)
+### Prerrequisitos
+- Python 3.11 o superior
+- PostgreSQL (opcional, SQLite usado por defecto)
 - Git
 
-### Quick Start
+### Inicio Rápido
 
-1. **Clone the repository**
+1. **Clonar el repositorio**
 ```bash
 git clone <repository-url>
 cd students-point
 ```
 
-2. **Run the development script**
+2. **Ejecutar el script de desarrollo**
 ```bash
 # Windows
 iniciar_desarrollo.bat
@@ -93,151 +93,170 @@ chmod +x iniciar_desarrollo.sh
 ./iniciar_desarrollo.sh
 ```
 
-3. **Access the application**
-- Application: http://127.0.0.1:8000
-- Admin Panel: http://127.0.0.1:8000/admin/
-- API Documentation: http://127.0.0.1:8000/api/docs/
+3. **Acceder a la aplicación**
+- Aplicación: http://127.0.0.1:8000
+- Panel de Administración: http://127.0.0.1:8000/admin/
+- Documentación de API: http://127.0.0.1:8000/api/docs/
 
-### Manual Installation
+### Instalación Manual
 
-1. **Install dependencies**
+1. **Instalar dependencias**
 ```bash
 cd proyecto/src/backend
 pip install -r requirements.txt
 ```
 
-2. **Configure database**
+2. **Configurar base de datos**
 ```bash
 python manage.py migrate
 python manage.py collectstatic --noinput
 ```
 
-3. **Create superuser**
+3. **Crear superusuario**
 ```bash
 python ensure_superuser.py
 ```
 
-4. **Start development server**
+4. **Iniciar servidor de desarrollo**
 ```bash
 python manage.py runserver
 ```
 
-## Default Credentials
+## Configuración de Base de Datos
+
+### Desarrollo (SQLite)
+- **Ubicación**: `proyecto/src/backend/db.sqlite3`
+- **Tamaño actual**: ~608 KB
+- **Uso**: Desarrollo local y pruebas
+- **Configuración**: Automática, no requiere configuración adicional
+
+### Producción (PostgreSQL)
+- **Host**: localhost
+- **Puerto**: 5432
+- **Usuario**: postgres
+- **Contraseña**: 214526867
+- **Base de datos**: studentspoint_prod
+- **Configuración**: Usar archivo `.env` con variables de entorno
+
+## Credenciales por Defecto
 
 - **Email**: admin@studentspoint.app
-- **Password**: admin123
+- **Contraseña**: admin123
 
-## Google OAuth Configuration
+## Configuración de Google OAuth
 
-### Required Setup
-To enable Google OAuth functionality, configure the following in Google Cloud Console:
+### Configuración Requerida
+Para habilitar la funcionalidad de Google OAuth, configure lo siguiente en Google Cloud Console:
 
 **Client ID**: `307562557576-0fd8ta7i09i1e6it5hstla13jsomeq2s.apps.googleusercontent.com`
 
-### Authorized Redirect URIs
-Add these URLs to your Google Cloud Console OAuth configuration:
+### URIs de Redirección Autorizadas
+Agregue estas URLs a su configuración OAuth de Google Cloud Console:
 
 ```
 http://localhost:8000/api/auth/google/callback/web/
 http://127.0.0.1:8000/api/auth/google/callback/web/
+https://studentspoint.app/api/auth/google/callback/web/
 https://yourdomain.com/api/auth/google/callback/web/
 ```
 
-## API Documentation
+## Documentación de API
 
-The application provides a comprehensive REST API with the following main endpoints:
+La aplicación proporciona una API REST integral con los siguientes endpoints principales:
 
-### Authentication
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/register/` - User registration
-- `GET /api/auth/google/login/` - Google OAuth initiation
-- `POST /api/auth/google/callback/` - Google OAuth callback
+### Autenticación
+- `POST /api/auth/login/` - Inicio de sesión de usuario
+- `POST /api/auth/register/` - Registro de usuario
+- `GET /api/auth/google/login/` - Iniciación de Google OAuth
+- `POST /api/auth/google/callback/` - Callback de Google OAuth
 
-### Applications
-- `GET /api/forum/` - Forum management
-- `GET /api/market/` - Marketplace operations
-- `GET /api/portfolio/` - Portfolio management
-- `GET /api/portfolio/generate_pdf/` - PDF generation
-- `GET /api/polls/` - Poll and survey management
-- `GET /api/schedules/` - Schedule management
-- `GET /api/notifications/` - Notification system
-- `GET /api/reports/` - Reporting system
-- `GET /api/otec/` - Course management
+### Aplicaciones
+- `GET /api/forum/` - Gestión de foros
+- `GET /api/market/` - Operaciones de marketplace
+- `GET /api/portfolio/` - Gestión de portafolio
+- `GET /api/portfolio/generate_pdf/` - Generación de PDF
+- `GET /api/polls/` - Gestión de encuestas y votaciones
+- `GET /api/schedules/` - Gestión de horarios
+- `GET /api/notifications/` - Sistema de notificaciones
+- `GET /api/reports/` - Sistema de reportes
+- `GET /api/otec/` - Gestión de cursos
 
-## Project Structure
+## Estructura del Proyecto
 
 ```
 students-point/
-├── Documentacion/           # Project documentation
-├── FASE 1/                 # Development evidence
+├── Documentacion/           # Documentación del proyecto
+├── FASE 1/                 # Evidencias de desarrollo
 ├── proyecto/
-│   ├── src/backend/        # Django backend
-│   │   ├── studentspoint/  # Main configuration
-│   │   ├── staticfiles/    # Served static files
-│   │   └── manage.py       # Django management script
-│   └── imagenes/           # Images and logos
-├── iniciar_desarrollo.bat  # Development startup script
-└── README.md              # This file
+│   ├── src/backend/        # Backend Django
+│   │   ├── studentspoint/  # Configuración principal
+│   │   ├── staticfiles/    # Archivos estáticos servidos
+│   │   ├── db.sqlite3      # Base de datos SQLite (desarrollo)
+│   │   └── manage.py       # Script de gestión Django
+│   └── imagenes/           # Imágenes y logos
+├── iniciar_desarrollo.bat  # Script de inicio de desarrollo
+├── iniciar_produccion.bat  # Script de inicio de producción
+└── README.md              # Este archivo
 ```
 
-## Development
+## Desarrollo
 
-### Running Tests
+### Ejecutar Pruebas
 ```bash
 cd proyecto/src/backend
 python manage.py test
 ```
 
-### Code Style
-The project follows Django best practices and PEP 8 guidelines.
+### Estilo de Código
+El proyecto sigue las mejores prácticas de Django y las pautas PEP 8.
 
-### Contributing
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Contribuir
+1. Fork del repositorio
+2. Crear una rama de característica (`git checkout -b feature/AmazingFeature`)
+3. Commit de los cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abrir un Pull Request
 
-## Security Considerations
+## Consideraciones de Seguridad
 
-- JWT tokens for secure authentication
-- CORS configuration for development
-- CSRF protection for web forms
-- Email validation for user registration
-- OAuth 2.0 integration for third-party authentication
+- Tokens JWT para autenticación segura
+- Configuración CORS para desarrollo
+- Protección CSRF para formularios web
+- Validación de email para registro de usuarios
+- Integración OAuth 2.0 para autenticación de terceros
 
-## Browser Support
+## Soporte de Navegadores
 
 - Chrome 80+
 - Firefox 75+
 - Safari 13+
 - Edge 80+
 
-## License
+## Licencia
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Este proyecto está licenciado bajo la Licencia MIT - ver el archivo LICENSE para detalles.
 
-## Support
+## Soporte
 
-For support and questions:
-- Create an issue in the GitHub repository
-- Contact: admin@studentspoint.app
+Para soporte y preguntas:
+- Crear un issue en el repositorio de GitHub
+- Contacto: admin@studentspoint.app
 
 ## Roadmap
 
-- Enhanced mobile experience
-- Additional OAuth providers
-- Advanced analytics dashboard
-- Integration with learning management systems
-- Multi-language support
+- Experiencia móvil mejorada
+- Proveedores OAuth adicionales
+- Panel de análisis avanzado
+- Integración con sistemas de gestión de aprendizaje
+- Soporte multi-idioma
 
-## Acknowledgments
+## Agradecimientos
 
-- Django community for the excellent framework
-- Bootstrap team for the UI components
-- Google for OAuth integration
-- All contributors and testers
+- Comunidad Django por el excelente framework
+- Equipo Bootstrap por los componentes de UI
+- Google por la integración OAuth
+- Todos los contribuidores y testers
 
 ---
 
-**StudentsPoint** - Empowering students through technology
+**StudentsPoint** - Empoderando estudiantes a través de la tecnología

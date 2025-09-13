@@ -15,13 +15,13 @@ from .views import (
 )
 
 urlpatterns = [
-    path("foros", ForoListView.as_view(), name="foro-list"),
-    path("posts", PostListCreateView.as_view(), name="post-list"),
-    path("posts/<int:pk>/comentarios", CommentCreateView.as_view(), name="post-comments"),
-    path("posts/<int:pk>/votar", PostVoteView.as_view(), name="post-vote"),
-    path("posts/<int:pk>/reportar", PostReporteView.as_view(), name="post-report"),
-    path("posts/<int:pk>/moderar", PostModeracionView.as_view(), name="post-moderate"),
-    path("posts/<int:pk>/ocultar", PostHideView.as_view(), name="post-hide"),
-    path("posts/<int:pk>/reportes", PostReportesListView.as_view(), name="post-reports"),
-    path("moderacion", ModeracionListView.as_view(), name="moderation-list"),
+    path("foros/", ForoListView.as_view(), name="foro-list"),
+    path("forum/posts/", PostListCreateView.as_view(), name="post-list"),
+    path("forum/posts/<int:pk>/comentarios", CommentCreateView.as_view(), name="post-comments"),
+    path("forum/posts/<int:pk>/votar", PostVoteView.as_view(), name="post-vote"),
+    path("forum/posts/<int:pk>/reportar", PostReporteView.as_view(), name="post-report"),
+    path("forum/posts/<int:pk>/moderar", PostModeracionView.as_view(), name="post-moderate"),
+    path("forum/posts/<int:pk>/ocultar", PostHideView.as_view(), name="post-hide"),
+    path("forum/posts/<int:pk>/reportes", PostReportesListView.as_view(), name="post-reports"),
+    path("forum/moderacion", ModeracionListView.as_view(), name="moderation-list"),
 ]

@@ -7,6 +7,7 @@ from .oauth_views import (
     google_login, google_callback, google_login_redirect, 
     google_callback_web, google_user_info, disconnect_google
 )
+from .teachers_views import TeachersListView, TeacherDetailView
 
 
 urlpatterns = [
@@ -24,5 +25,9 @@ urlpatterns = [
     path("auth/google/callback/web/", google_callback_web, name="google_callback_web"),
     path("auth/google/user-info/", google_user_info, name="google_user_info"),
     path("auth/google/disconnect/", disconnect_google, name="disconnect_google"),
+    
+    # Directorio de profesores
+    path("teachers/", TeachersListView.as_view(), name="teachers-list"),
+    path("teachers/<int:pk>/", TeacherDetailView.as_view(), name="teacher-detail"),
 ]
 

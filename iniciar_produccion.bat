@@ -1,99 +1,72 @@
 @echo off
-chcp 65001 >nul
-title StudentsPoint - Modo Producción
-
-echo ============================================================
-echo    StudentsPoint - Sistema de Gestión Estudiantil
-echo    Modo Producción con PostgreSQL
-echo    Versión 1.2.0
-echo ============================================================
+echo ========================================
+echo    StudentsPoint - Modo Produccion
+echo ========================================
 echo.
 
-echo [INFO] Configurando entorno de producción...
-echo [INFO] Verificando dependencias...
+echo Configurando entorno de produccion...
+echo.
 
-REM Verificar si Python está instalado
-python --version >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] Python no está instalado o no está en el PATH
-    echo [INFO] Por favor instala Python 3.8+ desde https://python.org
+echo [1/6] Verificando Python...
+python --version
+if %errorlevel% neq 0 (
+    echo ERROR: Python no encontrado. Instala Python 3.11+
     pause
     exit /b 1
 )
 
-REM Verificar si PostgreSQL está instalado
-psql --version >nul 2>&1
-if errorlevel 1 (
-    echo [ERROR] PostgreSQL no está instalado o no está en el PATH
-    echo [INFO] Por favor instala PostgreSQL desde https://postgresql.org
+echo [2/6] Instalando dependencias...
+pip install -r proyecto/src/backend/requirements.txt
+
+echo [3/6] Configurando variables de entorno...
+if not exist "proyecto/src/backend/.env" (
+    echo Copiando configuracion de produccion...
+    copy "proyecto/src/backend/env.production.example" "proyecto/src/backend/.env"
+    echo.
+    echo IMPORTANTE: Edita el archivo .env con tus configuraciones reales
+    echo - Cambia SECRET_KEY por una clave segura
+    echo - Configura tu dominio en ALLOWED_HOSTS
+    echo - Verifica la configuracion de PostgreSQL
+    echo.
+    pause
+)
+
+echo [4/6] Verificando conexion a PostgreSQL...
+echo Intentando conectar a PostgreSQL...
+python -c "import psycopg2; conn = psycopg2.connect(host='localhost', port=5432, user='postgres', password='214526867', database='postgres'); print('Conexion exitosa a PostgreSQL'); conn.close()"
+if %errorlevel% neq 0 (
+    echo ERROR: No se puede conectar a PostgreSQL
+    echo Verifica que PostgreSQL este ejecutandose en puerto 5432
+    echo Usuario: postgres, Password: 214526867
     pause
     exit /b 1
 )
 
-echo [INFO] Python detectado
-echo [INFO] PostgreSQL detectado
+echo [5/6] Aplicando migraciones...
+cd proyecto/src/backend
+python manage.py migrate --settings=studentspoint.settings.prod
 
-REM Cambiar al directorio del backend
-cd /d "%~dp0src\backend"
-
-echo.
-echo [INFO] Instalando dependencias de producción...
-pip install -r requirements.txt
+echo [6/6] Recolectando archivos estaticos...
+python manage.py collectstatic --noinput --settings=studentspoint.settings.prod
 
 echo.
-echo [INFO] Configurando base de datos PostgreSQL...
-
-REM Crear base de datos si no existe
-echo [INFO] Creando base de datos 'duocpoint_prod'...
-psql -U postgres -c "CREATE DATABASE duocpoint_prod;" 2>nul || echo [INFO] Base de datos ya existe o error de conexión
-
+echo ========================================
+echo    StudentsPoint - Produccion Lista
+echo ========================================
 echo.
-echo [INFO] Ejecutando migraciones...
-python manage.py migrate --settings=duocpoint.settings.prod
-
+echo URLs de acceso:
+echo - Aplicacion: https://studentspoint.app
+echo - Admin: https://studentspoint.app/admin/
+echo - API Docs: https://studentspoint.app/api/docs/
 echo.
-echo [INFO] Creando superusuario...
-echo [INFO] Si ya existe, se omitirá la creación
-python manage.py createsuperuser --settings=duocpoint.settings.prod --noinput --email admin@studentspoint.app --username admin 2>nul || echo [INFO] Superusuario ya existe
-
+echo Credenciales por defecto:
+echo - Email: admin@studentspoint.app
+echo - Password: admin123
 echo.
-echo [INFO] Cargando datos iniciales...
-python manage.py loaddata initial_data --settings=duocpoint.settings.prod 2>nul || echo [INFO] No hay datos iniciales para cargar
-
+echo Base de datos: PostgreSQL (puerto 5432)
+echo Archivos estaticos: /var/www/studentspoint/staticfiles/
 echo.
-echo [INFO] Recopilando archivos estáticos...
-python manage.py collectstatic --settings=duocpoint.settings.prod --noinput
-
+echo Para iniciar el servidor:
+echo python manage.py runserver 0.0.0.0:8000 --settings=studentspoint.settings.prod
 echo.
-echo ============================================================
-echo [INFO] Sistema listo para producción
-echo.
-echo 🌐 La aplicación estará disponible en:
-echo    - Aplicación: http://localhost:8000
-echo    - Admin: http://localhost:8000/admin/
-echo    - API: http://localhost:8000/api/
-echo.
-echo 👤 Credenciales por defecto:
-echo    - Email: admin@studentspoint.app
-echo    - Contraseña: admin123
-echo.
-echo 🔧 Modo producción activado:
-echo    - DEBUG=False
-echo    - Base de datos: PostgreSQL
-echo    - Archivos estáticos servidos por Django
-echo.
-echo ⚠️  IMPORTANTE:
-echo    - Configura las variables de entorno en .env
-echo    - Asegúrate de que PostgreSQL esté ejecutándose
-echo    - Para producción real, usa un servidor WSGI como Gunicorn
-echo.
-echo Presiona Ctrl+C para detener el servidor
-echo ============================================================
-
-echo.
-echo [INFO] Iniciando servidor de producción...
-python manage.py runserver 0.0.0.0:8000 --settings=duocpoint.settings.prod
-
-echo.
-echo [INFO] Servidor detenido
 pause
