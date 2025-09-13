@@ -74,7 +74,7 @@ WSGI_APPLICATION = "studentspoint.wsgi.application"
 ASGI_APPLICATION = "studentspoint.asgi.application"  # por si luego usas Channels/WebSockets
 
 # ---- Base de datos ----
-# En dev parte con SQLite. Para Postgres, cambia variables por ENV.
+# SQLite para desarrollo, PostgreSQL para producción
 DATABASES = {
     "default": {
         "ENGINE": os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
@@ -85,6 +85,15 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT", ""),
     }
 }
+
+# Configuración específica para PostgreSQL en producción
+if os.getenv("DB_ENGINE") == "django.db.backends.postgresql":
+    DATABASES["default"].update({
+        "OPTIONS": {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+        "CONN_MAX_AGE": 600,  # Conexiones persistentes
+    })
 
 # ---- Idioma / zona horaria ----
 LANGUAGE_CODE = "es-cl"
@@ -129,8 +138,8 @@ if os.getenv("DEMO_MODE") == "1":
     ]
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Duoc-Point API",
-    "DESCRIPTION": "Esquema de la API",
+    "TITLE": "StudentsPoint API",
+    "DESCRIPTION": "API para la plataforma StudentsPoint - PWA estudiantil",
     "VERSION": "1.0.0",
 }
 
