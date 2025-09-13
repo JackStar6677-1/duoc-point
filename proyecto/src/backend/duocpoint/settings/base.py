@@ -27,18 +27,18 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
 
     # Local apps (ajusta nombres si cambiaste rutas)
-    "duocpoint.apps.accounts",
-    "duocpoint.apps.campuses",
-    "duocpoint.apps.forum",
-    "duocpoint.apps.health",
-    "duocpoint.apps.market",
-    "duocpoint.apps.notifications",
-    "duocpoint.apps.otec",
-    "duocpoint.apps.polls",
-    "duocpoint.apps.portfolio",
-    "duocpoint.apps.reports",
-    "duocpoint.apps.schedules",
-    "duocpoint.apps.wellbeing",
+    "studentspoint.apps.accounts",
+    "studentspoint.apps.campuses",
+    "studentspoint.apps.forum",
+    "studentspoint.apps.health",
+    "studentspoint.apps.market",
+    "studentspoint.apps.notifications",
+    "studentspoint.apps.otec",
+    "studentspoint.apps.polls",
+    "studentspoint.apps.portfolio",
+    "studentspoint.apps.reports",
+    "studentspoint.apps.schedules",
+    "studentspoint.apps.wellbeing",
 ]
 
 MIDDLEWARE = [
@@ -46,7 +46,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "duocpoint.middleware.DisableCSRFMiddleware",  # Deshabilitar CSRF para APIs
+    "studentspoint.middleware.DisableCSRFMiddleware",  # Deshabilitar CSRF para APIs
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

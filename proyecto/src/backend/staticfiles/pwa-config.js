@@ -8,7 +8,7 @@ const PWA_CONFIG = {
     // URLs base para diferentes entornos
     baseUrls: {
         development: 'http://localhost:8000',
-        production: 'https://StudentsPoint.duocuc.cl'
+        production: 'https://studentspoint.app'
     },
     
     // Configuración de cache
@@ -25,7 +25,7 @@ const PWA_CONFIG = {
         enabled: true,
         vapidPublicKey: 'BEl62iUYgUivxIkv69yViEuiBIa40HI8l8V6V1V8H3BZ7pRJvnSW4UPHW3v3T1td1K3_fSqiNI2j_lLQ6Ypy1XM',
         vapidPrivateKey: '3K1XdXz0L8Fz0aJSOdwuSeiJfZ5JWY7BdI3R2kS2aJ8',
-        subject: 'mailto:admin@duocuc.cl'
+        subject: 'mailto:admin@studentspoint.app'
     },
     
     // Configuración de sincronización

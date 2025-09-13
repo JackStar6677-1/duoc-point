@@ -1,354 +1,243 @@
-# StudentsPoint - Plataforma Integral Estudiantil
+# StudentsPoint
 
-## Aplicación Web Progresiva (PWA) Completa
+A comprehensive Progressive Web Application (PWA) designed for the global student community. StudentsPoint provides an integrated ecosystem of tools and services to enhance the academic and professional experience of students worldwide.
 
-StudentsPoint es una aplicación web progresiva desarrollada desde cero para la comunidad estudiantil global. La plataforma integra múltiples módulos funcionales con un diseño responsive y arquitectura moderna, inspirada en sistemas como Blackboard pero con un enfoque open-source.
+## Overview
 
-## Características Principales
+StudentsPoint is an open-source platform that combines multiple student-focused applications into a single, cohesive experience. Built with Django and modern web technologies, it offers a range of features from academic tools to professional development resources.
 
-- **Aplicación Web Progresiva (PWA)**: Instalable como aplicación nativa
-- **Arquitectura Full-Stack**: Backend Django con API REST y Frontend vanilla
-- **Funcionamiento Offline**: Cache inteligente con Service Worker
-- **Sistema de Audio**: Música de fondo y efectos de sonido interactivos
-- **Notificaciones Push**: Sistema de alertas en tiempo real
-- **Diseño Responsive**: Optimizado para todos los dispositivos
+## Target Audience
 
-## Módulos Implementados
+- **Students**: Primary users seeking academic and professional development tools
+- **Educational Institutions**: Organizations looking to provide comprehensive student services
+- **Developers**: Contributors interested in educational technology and PWA development
+- **Educators**: Teachers and administrators who want to enhance student engagement
 
-1. **Sistema de Foros**: Comunicación por carrera y sede
-2. **Mercado Estudiantil**: Plataforma de compra/venta de productos
-3. **Portafolio Profesional**: Gestión de perfil académico y profesional
-4. **Navegación Virtual**: Recorrido interactivo por el campus
-5. **Bienestar Estudiantil**: Rutinas de salud y bienestar
-6. **Sistema de Reportes**: Gestión de tickets y reportes
-7. **Cursos OTEC**: Cursos abiertos y capacitaciones
-8. **Sistema de Encuestas**: Votación y encuestas interactivas
-9. **Gestión de Horarios**: Horarios académicos
-10. **Sistema de Notificaciones**: Alertas y comunicaciones
+## Key Features
 
-## Requisitos del Sistema
+### Authentication System
+- Traditional email/password authentication
+- Google OAuth integration for seamless login
+- Flexible email validation supporting multiple domains
+- JWT-based secure token management
 
-- Python 3.8 o superior
-- Navegador web moderno (Chrome, Firefox, Safari, Edge)
-- Conexión a internet (para dependencias iniciales)
-- Windows 10/11 (para scripts de automatización)
+### Core Applications
 
-## Instalación y Configuración
+#### Academic Tools
+- **Forums**: Discussion boards with automated moderation
+- **Schedules**: Class schedule management with PDF import capabilities
+- **Polls**: Voting and survey system for student feedback
+- **Teachers Directory**: Faculty information and contact details
 
-### Opción 1: Instalación Automática (Recomendado)
+#### Professional Development
+- **Portfolio**: Professional profile management with PDF generation
+- **Courses (OTEC)**: Open course sharing platform
+- **Marketplace**: Product sharing via external links (Facebook Marketplace, MercadoLibre)
 
-Para usuarios sin experiencia técnica:
+#### Student Services
+- **Wellbeing**: Health and wellness resources
+- **Reports**: Infrastructure and facility reporting system
+- **Notifications**: Push notification system for important updates
+- **Virtual Tours**: Custom street view implementation
 
-1. Descargar el proyecto desde el repositorio
-2. Extraer la carpeta en el escritorio
-3. Ejecutar `iniciar_desarrollo.bat` con doble clic
-4. Esperar la instalación automática
-5. La aplicación se abrirá automáticamente en el navegador
+### Technical Features
+- **Progressive Web App**: Offline functionality and app-like experience
+- **Responsive Design**: Mobile-first approach with Bootstrap 5
+- **RESTful API**: Comprehensive API with Swagger documentation
+- **Real-time Notifications**: Web push notification support
+- **PDF Generation**: Professional document creation using ReportLab
 
-### Opción 2: Instalación Manual
+## Technology Stack
 
-#### Paso 1: Instalar Python
+### Backend
+- **Django 5.0+**: Web framework
+- **Django REST Framework**: API development
+- **PostgreSQL/SQLite**: Database management
+- **Celery + Redis**: Asynchronous task processing
+- **ReportLab**: PDF generation
+- **Google OAuth**: Authentication integration
+
+### Frontend
+- **HTML5/CSS3/JavaScript**: Core web technologies
+- **Bootstrap 5**: UI framework
+- **Font Awesome**: Icon library
+- **Service Workers**: PWA functionality
+
+### Development Tools
+- **pytest**: Testing framework
+- **Docker**: Containerization support
+- **Git**: Version control
+
+## Installation
+
+### Prerequisites
+- Python 3.11 or higher
+- PostgreSQL (optional, SQLite used by default)
+- Git
+
+### Quick Start
+
+1. **Clone the repository**
 ```bash
-# Windows (PowerShell como Administrador)
-winget install Python.Python.3.11
-
-# Verificar instalación
-python --version
-pip --version
-```
-
-#### Paso 2: Instalar Git
-```bash
-# Windows (PowerShell como Administrador)
-winget install Git.Git
-
-# Verificar instalación
-git --version
-```
-
-#### Paso 3: Clonar el Proyecto
-```bash
-# Clonar repositorio
-git clone https://github.com/JackStar6677-1/students-point.git
+git clone <repository-url>
 cd students-point
-
-# Cambiar a branch de desarrollo
-git checkout main
 ```
 
-#### Paso 4: Instalar Dependencias
+2. **Run the development script**
 ```bash
-# Actualizar pip
-python -m pip install --upgrade pip
+# Windows
+iniciar_desarrollo.bat
 
-# Instalar dependencias
-pip install -r src/backend/requirements.txt
+# Linux/Mac
+chmod +x iniciar_desarrollo.sh
+./iniciar_desarrollo.sh
 ```
 
-#### Paso 5: Configurar Base de Datos
-```bash
-# Ir al directorio del backend
-cd src/backend
+3. **Access the application**
+- Application: http://127.0.0.1:8000
+- Admin Panel: http://127.0.0.1:8000/admin/
+- API Documentation: http://127.0.0.1:8000/api/docs/
 
-# Aplicar migraciones
+### Manual Installation
+
+1. **Install dependencies**
+```bash
+cd proyecto/src/backend
+pip install -r requirements.txt
+```
+
+2. **Configure database**
+```bash
 python manage.py migrate
-
-# Crear superusuario
-python manage.py createsuperuser
-
-# Crear usuarios de prueba
-python create_test_users.py
+python manage.py collectstatic --noinput
 ```
 
-#### Paso 6: Iniciar Servidor
+3. **Create superuser**
 ```bash
-# Iniciar servidor de desarrollo
-python manage.py runserver 0.0.0.0:8000
-
-# O usar el script de inicio
-cd ../..
-python start.py
+python ensure_superuser.py
 ```
 
-## Configuración de Red
+4. **Start development server**
+```bash
+python manage.py runserver
+```
 
-### Detección Automática de IP
+## Default Credentials
 
-El sistema incluye detección automática de IP local:
+- **Email**: admin@studentspoint.app
+- **Password**: admin123
 
-- **Detección automática**: El sistema detecta la IP local del PC
-- **Configuración independiente**: Cada PC tiene su propia configuración
-- **Acceso desde otros dispositivos**: Disponible desde otros dispositivos en la red local
-- **Sin configuración manual**: Todo es automático
+## Google OAuth Configuration
 
-### URLs de Acceso
+### Required Setup
+To enable Google OAuth functionality, configure the following in Google Cloud Console:
 
-#### Acceso Local
-- **Aplicación Principal**: http://localhost:8000
-- **Panel de Administración**: http://localhost:8000/admin/
-- **API REST**: http://localhost:8000/api/
+**Client ID**: `307562557576-0fd8ta7i09i1e6it5hstla13jsomeq2s.apps.googleusercontent.com`
 
-#### Acceso desde Red Local
-- **IP detectada automáticamente**: http://[IP-LOCAL]:8000
-- **Acceso desde otros dispositivos**: Móviles, tablets, otras PCs en la misma red
+### Authorized Redirect URIs
+Add these URLs to your Google Cloud Console OAuth configuration:
 
-## Credenciales de Prueba
+```
+http://localhost:8000/api/auth/google/callback/web/
+http://127.0.0.1:8000/api/auth/google/callback/web/
+https://yourdomain.com/api/auth/google/callback/web/
+```
 
-- **Administrador**: admin@studentspoint.app / admin123
-- **Estudiante**: estudiante@gmail.com / estudiante123
-- **Profesor**: profesor@studentspoint.app / profesor123
-- **Moderador**: moderador@studentspoint.app / moderador123
+## API Documentation
 
-## Estructura del Proyecto
+The application provides a comprehensive REST API with the following main endpoints:
+
+### Authentication
+- `POST /api/auth/login/` - User login
+- `POST /api/auth/register/` - User registration
+- `GET /api/auth/google/login/` - Google OAuth initiation
+- `POST /api/auth/google/callback/` - Google OAuth callback
+
+### Applications
+- `GET /api/forum/` - Forum management
+- `GET /api/market/` - Marketplace operations
+- `GET /api/portfolio/` - Portfolio management
+- `GET /api/portfolio/generate_pdf/` - PDF generation
+- `GET /api/polls/` - Poll and survey management
+- `GET /api/schedules/` - Schedule management
+- `GET /api/notifications/` - Notification system
+- `GET /api/reports/` - Reporting system
+- `GET /api/otec/` - Course management
+
+## Project Structure
 
 ```
 students-point/
-├── iniciar_desarrollo.bat          # Script de inicio para desarrollo
-├── iniciar_produccion.bat          # Script de inicio para producción
-├── detect_ip.py                    # Detector automático de IP local
-├── update_django_config.py         # Actualizador de configuración Django
-├── test_config.py                  # Script de prueba de configuración
-├── start.py                        # Iniciador del servidor
-├── config/                         # Configuración del sistema
-│   ├── push.yaml                   # Configuración de notificaciones push
-│   └── security.yaml               # Configuración de seguridad
-├── src/
-│   ├── backend/                    # Backend Django
-│   │   ├── duocpoint/             # Configuración principal de Django
-│   │   ├── apps/                  # Aplicaciones del sistema
-│   │   │   ├── accounts/          # Gestión de usuarios
-│   │   │   ├── forum/             # Sistema de foros
-│   │   │   ├── market/            # Mercado estudiantil
-│   │   │   ├── portfolio/         # Portafolio profesional
-│   │   │   ├── polls/             # Sistema de encuestas
-│   │   │   ├── reports/           # Sistema de reportes
-│   │   │   ├── schedules/         # Gestión de horarios
-│   │   │   ├── otec/              # Cursos OTEC
-│   │   │   ├── wellbeing/         # Bienestar estudiantil
-│   │   │   ├── campuses/          # Gestión de sedes
-│   │   │   └── notifications/     # Sistema de notificaciones
-│   │   ├── create_test_users.py   # Script para crear usuarios de prueba
-│   │   └── requirements.txt       # Dependencias de Python
-│   └── frontend/                  # Frontend PWA
-│       ├── index.html             # Página principal
-│       ├── login.html             # Página de inicio de sesión
-│       ├── register.html          # Página de registro
-│       ├── static/                # Archivos estáticos organizados
-│       │   ├── css/               # Hojas de estilo
-│       │   ├── js/                # Scripts JavaScript
-│       │   ├── audio/             # Archivos de audio
-│       │   ├── images/            # Imágenes e iconos
-│       │   ├── manifest.json      # Manifest de la PWA
-│       │   └── pwa-config.js      # Configuración PWA
-│       ├── forum/                 # Módulo de foros
-│       ├── market/                # Módulo de mercado
-│       ├── portfolio/             # Módulo de portafolio
-│       ├── streetview/            # Navegación virtual
-│       ├── bienestar/             # Bienestar estudiantil
-│       ├── encuestas/             # Sistema de encuestas
-│       ├── reportes/              # Sistema de reportes
-│       ├── cursos/                # Cursos OTEC
-│       └── horarios/              # Gestión de horarios
-├── imagenes/                      # Imágenes del proyecto
-├── Documentacion/                 # Documentación académica
-└── README.md                      # Este archivo
+├── Documentacion/           # Project documentation
+├── FASE 1/                 # Development evidence
+├── proyecto/
+│   ├── src/backend/        # Django backend
+│   │   ├── studentspoint/  # Main configuration
+│   │   ├── staticfiles/    # Served static files
+│   │   └── manage.py       # Django management script
+│   └── imagenes/           # Images and logos
+├── iniciar_desarrollo.bat  # Development startup script
+└── README.md              # This file
 ```
 
-## Tecnologías Utilizadas
+## Development
 
-### Backend
-- **Python 3.8+**: Lenguaje principal
-- **Django 5.2.6**: Framework web
-- **Django REST Framework**: API REST
-- **JWT**: Autenticación con tokens
-- **SQLite**: Base de datos para desarrollo
-- **PostgreSQL**: Base de datos para producción
-
-### Frontend
-- **HTML5**: Estructura semántica
-- **CSS3**: Estilos avanzados con variables CSS
-- **JavaScript ES6+**: Funcionalidad interactiva vanilla
-- **Bootstrap 5**: Framework CSS
-- **Font Awesome 6**: Iconografía
-- **Web Audio API**: Sistema de sonidos
-- **Service Worker API**: PWA con cache inteligente
-
-### PWA
-- **Manifest.json**: Configuración de PWA
-- **Service Worker**: Cache y funcionamiento offline
-- **Cache API**: Almacenamiento offline inteligente
-- **Push API**: Notificaciones push
-
-## Configuración PWA
-
-### Instalación como Aplicación Nativa
-
-1. **Desde el navegador**:
-   - Abrir http://localhost:8000 en Chrome, Edge o Safari
-   - Buscar el ícono de instalación en la barra de direcciones
-   - Hacer clic en "Instalar" o "Agregar a pantalla de inicio"
-
-2. **Desde la aplicación**:
-   - Buscar el botón "Instalar App" en la interfaz
-   - Seguir las instrucciones del navegador
-
-### Funcionamiento Offline
-
-La PWA está configurada para funcionar offline:
-
-- **Cache estático**: Páginas principales y recursos
-- **Cache dinámico**: Datos de API y contenido dinámico
-- **Sincronización**: Actualización automática cuando se restaura la conexión
-
-## Despliegue en Producción
-
-### Configuración para AMP (CubeCoders)
-
-#### Variables de Entorno
-```env
-DEBUG=False
-SECRET_KEY=tu_secret_key_muy_segura
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=duocpoint_prod
-DB_USER=postgres
-DB_PASSWORD=tu_password
-DB_HOST=localhost
-DB_PORT=5432
-ALLOWED_HOSTS=tu-dominio.com,localhost
-```
-
-#### Script de Inicio
+### Running Tests
 ```bash
-#!/bin/bash
-pip install -r src/backend/requirements.txt
-python src/backend/manage.py migrate --settings=duocpoint.settings.production
-python src/backend/manage.py collectstatic --settings=duocpoint.settings.production --noinput
-cd src/backend
-gunicorn --bind 0.0.0.0:8000 --workers 4 duocpoint.wsgi:application
+cd proyecto/src/backend
+python manage.py test
 ```
 
-## Solución de Problemas
+### Code Style
+The project follows Django best practices and PEP 8 guidelines.
 
-### Problemas Comunes
+### Contributing
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-#### Error: "Python no está instalado"
-```bash
-# Solución:
-1. Descargar Python desde: https://python.org
-2. Durante la instalación, marcar "Add Python to PATH"
-3. Reiniciar la terminal
-4. Ejecutar el script .bat nuevamente
-```
+## Security Considerations
 
-#### Error: "Puerto 8000 en uso"
-```bash
-# Solución:
-1. Cerrar otras aplicaciones que usen el puerto 8000
-2. O modificar el puerto en start.py
-3. Reiniciar el script .bat
-```
+- JWT tokens for secure authentication
+- CORS configuration for development
+- CSRF protection for web forms
+- Email validation for user registration
+- OAuth 2.0 integration for third-party authentication
 
-#### PWA no se instala
-```bash
-# Solución:
-1. Usar localhost en lugar de IP local
-2. Verificar que el navegador soporte PWA
-3. Revisar la consola del navegador para errores
-4. Verificar que el manifest.json sea válido
-```
+## Browser Support
 
-#### Notificaciones no funcionan
-```bash
-# Solución:
-1. Verificar permisos de notificación en el navegador
-2. Revisar configuración en config/push.yaml
-3. Verificar claves VAPID válidas
-4. Comprobar conexión a internet
-```
+- Chrome 80+
+- Firefox 75+
+- Safari 13+
+- Edge 80+
 
-## Contribución
+## License
 
-### Cómo Contribuir
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-1. Fork del repositorio
-2. Crear rama para nueva funcionalidad
-3. Realizar cambios y pruebas
-4. Crear pull request con descripción detallada
+## Support
 
-### Estándares de Código
+For support and questions:
+- Create an issue in the GitHub repository
+- Contact: admin@studentspoint.app
 
-- **Python**: PEP 8
-- **JavaScript**: ESLint con configuración estándar
-- **CSS**: BEM methodology
-- **HTML**: Estructura semántica
+## Roadmap
 
-## Licencia
+- Enhanced mobile experience
+- Additional OAuth providers
+- Advanced analytics dashboard
+- Integration with learning management systems
+- Multi-language support
 
-Este proyecto está desarrollado para Duoc UC y su uso está restringido a fines académicos y educativos.
+## Acknowledgments
 
-## Contacto y Soporte
-
-Para soporte técnico o consultas sobre el proyecto:
-
-- **Equipo de desarrollo**: StudentsPoint Team
-- **Proyecto**: Open Source
-- **Versión actual**: 1.2.0
-- **Última actualización**: Enero 2025
-
-## Estado del Proyecto
-
-**Completamente funcional y probado**
-
-- Todos los módulos implementados y funcionando
-- PWA optimizada para instalación nativa
-- Sistema de autenticación robusto
-- Interfaz responsive y accesible
-- Sistema de audio completo implementado
-- Documentación completa y actualizada
-- Desarrollo desde cero documentado
+- Django community for the excellent framework
+- Bootstrap team for the UI components
+- Google for OAuth integration
+- All contributors and testers
 
 ---
 
-**Desarrollado por el equipo StudentsPoint para la comunidad estudiantil global**
-
-**Desarrollo desde cero - Proyecto Open Source sin plantillas ni frameworks preconstruidos**
+**StudentsPoint** - Empowering students through technology

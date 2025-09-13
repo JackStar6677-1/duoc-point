@@ -6,22 +6,22 @@
   <link rel="manifest" href="/static/manifest.json" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link rel="stylesheet" href="/static/css/duoc-theme.css" />
+  <link rel="stylesheet" href="/static/css/students-theme.css" />
   <link rel="stylesheet" href="/static/css/styles.css" />
   <meta name="theme-color" content="#1a1a1a">
-  <title>Cursos - DuocPoint</title>
+  <title>Cursos - StudentsPoint</title>
 </head>
 <body>
   <div class="particles-bg"></div>
   
-  <header class="duoc-header text-white">
+  <header class="students-header text-white">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-8">
-          <div class="duoc-logo">
-            <img src="/imagenes/logos-iconos/Logo_DuocUC.svg.png" alt="DuocUC Logo" class="duoc-logo-img">
+          <div class="students-logo">
+            <img src="/imagenes/logos-iconos/Logo_StudentsPoint.svg.png" alt="StudentsPoint Logo" class="students-logo-img">
             <div>
-              <h1>Cursos DuocPoint</h1>
+              <h1>Cursos StudentsPoint</h1>
               <p>Amplía tus conocimientos y habilidades</p>
             </div>
           </div>
@@ -40,7 +40,7 @@
     </div>
   </header>
 
-  <nav class="navbar navbar-expand-lg duoc-nav">
+  <nav class="navbar navbar-expand-lg students-nav">
     <div class="container">
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
@@ -58,7 +58,6 @@
               <li><a class="dropdown-item" href="/encuestas/"><i class="fas fa-poll"></i> Encuestas</a></li>
               <li><a class="dropdown-item" href="/reportes/"><i class="fas fa-chart-bar"></i> Reportes</a></li>
               <li><a class="dropdown-item" href="/streetview/"><i class="fas fa-map"></i> Recorridos Virtuales</a></li>
-              <li><a class="dropdown-item" href="/campuses.html"><i class="fas fa-building"></i> Sedes</a></li>
               <li><a class="dropdown-item" href="/teachers.html"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
               <li><a class="dropdown-item" href="/account.html"><i class="fas fa-user"></i> Mi Cuenta</a></li>
             </ul>
@@ -70,110 +69,130 @@
 
   <main class="main-content" style="position: relative; z-index: 2;">
     <div class="container mt-3">
-      <!-- Filtros y búsqueda -->
-      <div class="row mb-3">
-        <div class="col-md-6">
-          <div class="input-group">
-            <input type="text" class="form-control" id="searchInput" placeholder="Buscar cursos...">
-            <button class="btn btn-primary" type="button" onclick="searchCourses()">
-              <i class="fas fa-search"></i>
-            </button>
+      <!-- Hero Section -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card bg-gradient-primary text-white">
+            <div class="card-body text-center py-5">
+              <i class="fas fa-graduation-cap fa-3x mb-3"></i>
+              <h2>Centro de Cursos Abiertos</h2>
+              <p class="lead">Descubre cursos gratuitos y de calidad para expandir tus conocimientos y habilidades profesionales.</p>
+            </div>
           </div>
         </div>
-        <div class="col-md-6 text-end">
-          <button class="btn btn-primary" onclick="showMyCourses()">
-            <i class="fas fa-user-graduate"></i> Mis Cursos
+      </div>
+
+      <!-- Filtros y búsqueda -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <input type="text" class="form-control" id="searchInput" placeholder="Buscar cursos...">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" id="categoryFilter">
+            <option value="">Todas las categorías</option>
+            <option value="tecnologia">Tecnología</option>
+            <option value="negocios">Negocios</option>
+            <option value="diseño">Diseño</option>
+            <option value="marketing">Marketing</option>
+            <option value="idiomas">Idiomas</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-outline-primary w-100" onclick="loadCourses()">
+            <i class="fas fa-sync-alt"></i> Actualizar
           </button>
         </div>
       </div>
 
-      <!-- Categorías -->
-      <div class="row mb-3">
+      <!-- Lista de cursos -->
+      <div class="row" id="coursesContainer">
         <div class="col-12">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary active" onclick="filterByType('all')">
-              Todos
-            </button>
-            <button type="button" class="btn btn-outline-primary" onclick="filterByType('otec')">
-              OTEC
-            </button>
-            <button type="button" class="btn btn-outline-primary" onclick="filterByType('externos')">
-              Externos
-            </button>
-            <button type="button" class="btn btn-outline-primary" onclick="filterByType('gratuitos')">
-              Gratuitos
+          <div class="text-center py-5">
+            <i class="fas fa-graduation-cap fa-3x gradient-text mb-3"></i>
+            <h2>Cursos Disponibles</h2>
+            <p class="text-muted">Explora nuestra amplia gama de cursos gratuitos</p>
+            <button class="btn btn-primary btn-lg" onclick="loadCourses()">
+              <i class="fas fa-list"></i> Cargar Cursos
             </button>
           </div>
         </div>
       </div>
 
-      <!-- Lista de cursos -->
-      <div class="row">
-        <div class="col-12">
-          <div id="coursesContainer">
-            <!-- Los cursos se cargarán aquí dinámicamente -->
+      <!-- Modal para crear curso -->
+      <div class="modal fade" id="createCourseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Compartir Nuevo Curso</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form id="createCourseForm">
+                <div class="mb-3">
+                  <label class="form-label">Título del Curso</label>
+                  <input type="text" class="form-control" id="courseTitle" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Descripción</label>
+                  <textarea class="form-control" id="courseDescription" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Etiquetas (separadas por comas)</label>
+                  <input type="text" class="form-control" id="courseTags" placeholder="programación, web, gratis">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">URL del Curso</label>
+                  <input type="url" class="form-control" id="courseUrl" required placeholder="https://...">
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Fecha de Inicio</label>
+                      <input type="date" class="form-control" id="courseStartDate" required>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Fecha de Fin</label>
+                      <input type="date" class="form-control" id="courseEndDate" required>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="createCourse()">Compartir Curso</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <footer class="duoc-footer">
+  <footer class="students-footer">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-6">
-          <h5 class="gradient-text">Cursos DuocPoint</h5>
-          <p>Amplía tus conocimientos y habilidades.</p>
+          <h5 class="gradient-text">Cursos StudentsPoint</h5>
+          <p>Amplía tus conocimientos y habilidades con cursos gratuitos de calidad.</p>
         </div>
         <div class="col-md-6 text-end">
-          <p class="mb-0"><i class="fas fa-graduation-cap"></i> Aprende y crece profesionalmente</p>
+          <p class="mb-0"><i class="fas fa-graduation-cap"></i> Aprende sin límites</p>
         </div>
       </div>
     </div>
   </footer>
 
   <div class="dev-tools" style="display: none;">
-    <button onclick="window.duocPointPWA?.clearCache()" title="Limpiar Cache"><i class="fas fa-sync-alt"></i></button>
-    <button onclick="window.duocPointPWA?.getVersion()" title="Versión"><i class="fas fa-info-circle"></i></button>
+    <button onclick="window.StudentsPointPWA?.clearCache()" title="Limpiar Cache"><i class="fas fa-sync-alt"></i></button>
+    <button onclick="window.StudentsPointPWA?.getVersion()" title="Versión"><i class="fas fa-info-circle"></i></button>
     <button onclick="window.open('/admin/', '_blank')" title="Administración"><i class="fas fa-cog"></i></button>
     <button onclick="window.open('/api/', '_blank')" title="API"><i class="fas fa-code"></i></button>
-  </div>
-
-  <!-- Modal para detalles del curso -->
-  <div class="modal fade" id="courseModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="courseModalTitle">Curso</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="courseModalBody">
-          <!-- Contenido del curso se cargará aquí -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="enrollBtn">Inscribirse</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para mis cursos -->
-  <div class="modal fade" id="myCoursesModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Mis Cursos Inscritos</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="myCoursesBody">
-          <!-- Mis cursos se cargarán aquí -->
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -183,125 +202,95 @@
   <script src="/static/js/main.js"></script>
 
   <script>
+    let currentUser = null;
+    let courses = [];
+
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       document.querySelector('.dev-tools').style.display = 'flex';
     }
 
-    let currentType = 'all';
-    let courses = [];
-    let myCourses = [];
-
     document.addEventListener('DOMContentLoaded', function() {
-      loadCourses();
-      
       setTimeout(() => {
         if (window.playSound) {
           window.playSound('pageLoad');
         }
       }, 500);
+      
+      // Verificar autenticación
+      checkAuth();
+      
+      // Event listeners
+      document.getElementById('searchInput').addEventListener('input', filterCourses);
+      document.getElementById('categoryFilter').addEventListener('change', filterCourses);
     });
 
-    function loadCourses() {
-      courses = [
-        {
-          id: 1,
-          nombre: 'Desarrollo Web con React',
-          descripcion: 'Aprende a crear aplicaciones web modernas con React y JavaScript.',
-          tipo: 'otec',
-          duracion: '40 horas',
-          precio: '$150.000',
-          instructor: 'Juan Pérez',
-          fecha_inicio: '2024-02-15',
-          cupos: 25,
-          inscritos: 18,
-          nivel: 'Intermedio',
-          categoria: 'Programación',
-          modalidad: 'Presencial',
-          sede: 'Sede San Carlos'
-        },
-        {
-          id: 2,
-          nombre: 'Python para Data Science',
-          descripcion: 'Introducción al análisis de datos con Python y pandas.',
-          tipo: 'externos',
-          duracion: '60 horas',
-          precio: '$200.000',
-          instructor: 'María González',
-          fecha_inicio: '2024-03-01',
-          cupos: 20,
-          inscritos: 15,
-          nivel: 'Principiante',
-          categoria: 'Data Science',
-          modalidad: 'Online',
-          sede: 'Virtual'
-        },
-        {
-          id: 3,
-          nombre: 'Marketing Digital',
-          descripcion: 'Estrategias de marketing digital y redes sociales.',
-          tipo: 'gratuitos',
-          duracion: '30 horas',
-          precio: 'Gratuito',
-          instructor: 'Carlos López',
-          fecha_inicio: '2024-02-20',
-          cupos: 50,
-          inscritos: 35,
-          nivel: 'Principiante',
-          categoria: 'Marketing',
-          modalidad: 'Híbrido',
-          sede: 'Sede Maipú'
-        },
-        {
-          id: 4,
-          nombre: 'Diseño UX/UI',
-          descripcion: 'Principios de diseño de experiencia de usuario.',
-          tipo: 'otec',
-          duracion: '45 horas',
-          precio: '$180.000',
-          instructor: 'Ana Rodríguez',
-          fecha_inicio: '2024-03-10',
-          cupos: 15,
-          inscritos: 12,
-          nivel: 'Intermedio',
-          categoria: 'Diseño',
-          modalidad: 'Presencial',
-          sede: 'Sede San Carlos'
-        },
-        {
-          id: 5,
-          nombre: 'Excel Avanzado',
-          descripcion: 'Funciones avanzadas y análisis de datos en Excel.',
-          tipo: 'gratuitos',
-          duracion: '20 horas',
-          precio: 'Gratuito',
-          instructor: 'Luis Martínez',
-          fecha_inicio: '2024-02-25',
-          cupos: 30,
-          inscritos: 22,
-          nivel: 'Intermedio',
-          categoria: 'Ofimática',
-          modalidad: 'Online',
-          sede: 'Virtual'
-        },
-        {
-          id: 6,
-          nombre: 'Inteligencia Artificial',
-          descripcion: 'Fundamentos de IA y machine learning.',
-          tipo: 'externos',
-          duracion: '80 horas',
-          precio: '$300.000',
-          instructor: 'Dr. Roberto Silva',
-          fecha_inicio: '2024-03-15',
-          cupos: 12,
-          inscritos: 8,
-          nivel: 'Avanzado',
-          categoria: 'IA/ML',
-          modalidad: 'Presencial',
-          sede: 'Sede San Carlos'
+    async function checkAuth() {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        try {
+          const response = await fetch('/api/auth/me/', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          if (response.ok) {
+            currentUser = await response.json();
+            updateUI();
+          }
+        } catch (error) {
+          console.error('Error verificando autenticación:', error);
         }
-      ];
-      
-      displayCourses(courses);
+      }
+    }
+
+    function updateUI() {
+      if (currentUser) {
+        // Actualizar botones de autenticación
+        const authButtons = document.querySelector('.auth-buttons');
+        authButtons.innerHTML = `
+          <span class="text-white me-2">Hola, ${currentUser.name}</span>
+          <a href="/account.html" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-user"></i> Mi Cuenta
+          </a>
+          <button class="btn btn-danger btn-sm ms-2" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Salir
+          </button>
+        `;
+
+        // Mostrar botón de crear curso
+        const createButton = document.createElement('button');
+        createButton.className = 'btn btn-success btn-lg me-2';
+        createButton.innerHTML = '<i class="fas fa-plus"></i> Compartir Curso';
+        createButton.onclick = () => {
+          const modal = new bootstrap.Modal(document.getElementById('createCourseModal'));
+          modal.show();
+        };
+        
+        const container = document.querySelector('.text-center');
+        const existingButton = container.querySelector('button');
+        container.insertBefore(createButton, existingButton);
+      }
+    }
+
+    async function loadCourses() {
+      try {
+        const token = localStorage.getItem('access_token');
+        const headers = {};
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        const response = await fetch('/api/otec/', { headers });
+        if (response.ok) {
+          courses = await response.json();
+          displayCourses(courses);
+        } else {
+          showError('Error cargando cursos');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showError('Error de conexión');
+      }
     }
 
     function displayCourses(coursesToShow) {
@@ -309,251 +298,135 @@
       
       if (coursesToShow.length === 0) {
         container.innerHTML = `
-          <div class="text-center py-4">
-            <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
-            <h5 class="text-muted">No hay cursos disponibles</h5>
-            <p class="text-muted">Pronto tendremos más cursos para ti</p>
+          <div class="col-12">
+            <div class="text-center py-5">
+              <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+              <h3>No hay cursos disponibles</h3>
+              <p class="text-muted">Los cursos aparecerán aquí cuando se compartan</p>
+            </div>
           </div>
         `;
         return;
       }
 
-      const coursesHTML = coursesToShow.map(course => `
-        <div class="card mb-3 course-card" onclick="openCourse(${course.id})">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-8">
-                <h5 class="card-title">${course.nombre}</h5>
-                <p class="card-text text-muted">${course.descripcion}</p>
-                <div class="d-flex gap-3 flex-wrap">
-                  <span class="badge bg-primary">${course.tipo.toUpperCase()}</span>
-                  <span class="badge bg-secondary">${course.nivel}</span>
-                  <span class="badge bg-info">${course.categoria}</span>
-                  <small class="text-muted">
-                    <i class="fas fa-clock"></i> ${course.duracion}
-                  </small>
-                  <small class="text-muted">
-                    <i class="fas fa-user"></i> ${course.instructor}
-                  </small>
-                  <small class="text-muted">
-                    <i class="fas fa-calendar"></i> ${new Date(course.fecha_inicio).toLocaleDateString()}
-                  </small>
-                  <small class="text-muted">
-                    <i class="fas fa-map-marker-alt"></i> ${course.sede}
-                  </small>
+      container.innerHTML = coursesToShow.map(course => `
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">${course.titulo}</h5>
+              <p class="card-text">${course.descripcion}</p>
+              
+              <div class="mb-3">
+                <div class="d-flex flex-wrap gap-1">
+                  ${course.etiquetas.split(',').map(tag => 
+                    `<span class="badge bg-secondary">${tag.trim()}</span>`
+                  ).join('')}
                 </div>
               </div>
-              <div class="col-md-4 text-end">
-                <div class="d-flex flex-column gap-2">
-                  <h4 class="text-success mb-0">${course.precio}</h4>
-                  <div class="progress mb-2" style="height: 8px;">
-                    <div class="progress-bar" style="width: ${(course.inscritos / course.cupos) * 100}%"></div>
+
+              <div class="mb-3">
+                <div class="row text-center">
+                  <div class="col-6">
+                    <small class="text-muted">Inicio</small><br>
+                    <strong>${new Date(course.fecha_inicio).toLocaleDateString()}</strong>
                   </div>
-                  <small class="text-muted">${course.inscritos}/${course.cupos} cupos</small>
-                  <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); enrollCourse(${course.id})">
-                    <i class="fas fa-user-plus"></i> Inscribirse
-                  </button>
+                  <div class="col-6">
+                    <small class="text-muted">Fin</small><br>
+                    <strong>${new Date(course.fecha_fin).toLocaleDateString()}</strong>
+                  </div>
                 </div>
+              </div>
+
+              <div class="mb-3">
+                <small class="text-muted">
+                  <i class="fas fa-user"></i> Compartido por ${course.autor_name || 'Usuario'}
+                </small>
+              </div>
+
+              <div class="d-grid">
+                <a href="${course.url}" target="_blank" class="btn btn-primary">
+                  <i class="fas fa-external-link-alt"></i> Acceder al Curso
+                </a>
               </div>
             </div>
           </div>
         </div>
       `).join('');
-
-      container.innerHTML = coursesHTML;
-
-      const courseCards = document.querySelectorAll('.course-card');
-      courseCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          if (window.playSound) {
-            window.playSound('hover');
-          }
-        });
-      });
     }
 
-    function filterByType(type) {
-      currentType = type;
-      
-      document.querySelectorAll('.btn-group .btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-      
-      let filteredCourses = courses;
-      if (type !== 'all') {
-        filteredCourses = courses.filter(course => course.tipo === type);
-      }
-      
-      displayCourses(filteredCourses);
-      
-      if (window.playSound) {
-        window.playSound('click');
-      }
-    }
+    async function createCourse() {
+      const title = document.getElementById('courseTitle').value;
+      const description = document.getElementById('courseDescription').value;
+      const tags = document.getElementById('courseTags').value;
+      const url = document.getElementById('courseUrl').value;
+      const startDate = document.getElementById('courseStartDate').value;
+      const endDate = document.getElementById('courseEndDate').value;
 
-    function searchCourses() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      
-      if (searchTerm === '') {
-        displayCourses(courses);
+      if (!title || !description || !url || !startDate || !endDate) {
+        showError('Por favor completa todos los campos requeridos');
         return;
       }
-      
-      const filteredCourses = courses.filter(course => 
-        course.nombre.toLowerCase().includes(searchTerm) ||
-        course.descripcion.toLowerCase().includes(searchTerm) ||
-        course.instructor.toLowerCase().includes(searchTerm) ||
-        course.categoria.toLowerCase().includes(searchTerm)
-      );
-      
-      displayCourses(filteredCourses);
-      
-      if (window.playSound) {
-        window.playSound('search');
-      }
-    }
 
-    function openCourse(courseId) {
-      const course = courses.find(c => c.id === courseId);
-      if (course) {
-        document.getElementById('courseModalTitle').textContent = course.nombre;
-        document.getElementById('courseModalBody').innerHTML = `
-          <div class="row">
-            <div class="col-md-6">
-              <h6>Descripción</h6>
-              <p>${course.descripcion}</p>
-              
-              <h6>Detalles del Curso</h6>
-              <ul class="list-unstyled">
-                <li><strong>Duración:</strong> ${course.duracion}</li>
-                <li><strong>Nivel:</strong> ${course.nivel}</li>
-                <li><strong>Instructor:</strong> ${course.instructor}</li>
-                <li><strong>Fecha de inicio:</strong> ${new Date(course.fecha_inicio).toLocaleDateString()}</li>
-                <li><strong>Modalidad:</strong> ${course.modalidad}</li>
-                <li><strong>Sede:</strong> ${course.sede}</li>
-                <li><strong>Categoría:</strong> ${course.categoria}</li>
-                <li><strong>Cupos disponibles:</strong> ${course.cupos - course.inscritos}</li>
-              </ul>
-            </div>
-            <div class="col-md-6">
-              <h6>Precio</h6>
-              <h3 class="text-success">${course.precio}</h3>
-              
-              <h6>Progreso de inscripciones</h6>
-              <div class="progress mb-3">
-                <div class="progress-bar" style="width: ${(course.inscritos / course.cupos) * 100}%"></div>
-              </div>
-              <p class="text-muted">${course.inscritos} de ${course.cupos} cupos ocupados</p>
-              
-              <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i> 
-                ${course.tipo === 'gratuitos' ? 'Este curso es completamente gratuito.' : 'Pago disponible en cuotas.'}
-              </div>
-            </div>
-          </div>
-        `;
-        
-        const modal = new bootstrap.Modal(document.getElementById('courseModal'));
-        modal.show();
-        
-        if (window.playSound) {
-          window.playSound('click');
-        }
-      }
-    }
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await fetch('/api/otec/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            titulo: title,
+            descripcion: description,
+            etiquetas: tags,
+            url: url,
+            fecha_inicio: startDate,
+            fecha_fin: endDate,
+            visible: true
+          })
+        });
 
-    function enrollCourse(courseId) {
-      const course = courses.find(c => c.id === courseId);
-      if (course) {
-        if (course.inscritos >= course.cupos) {
-          showError('No hay cupos disponibles para este curso');
-          return;
-        }
-        
-        // Agregar a mis cursos
-        if (!myCourses.find(c => c.id === courseId)) {
-          myCourses.push(course);
-          course.inscritos++;
-          showSuccess(`Te has inscrito exitosamente en "${course.nombre}"`);
-          
-          if (window.playSound) {
-            window.playSound('success');
-          }
+        if (response.ok) {
+          showSuccess('Curso compartido exitosamente');
+          bootstrap.Modal.getInstance(document.getElementById('createCourseModal')).hide();
+          document.getElementById('createCourseForm').reset();
+          loadCourses();
         } else {
-          showError('Ya estás inscrito en este curso');
+          showError('Error al compartir curso');
         }
+      } catch (error) {
+        console.error('Error:', error);
+        showError('Error de conexión');
       }
     }
 
-    function showMyCourses() {
-      const modal = new bootstrap.Modal(document.getElementById('myCoursesModal'));
-      
-      if (myCourses.length === 0) {
-        document.getElementById('myCoursesBody').innerHTML = `
-          <div class="text-center py-4">
-            <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
-            <h5 class="text-muted">No tienes cursos inscritos</h5>
-            <p class="text-muted">Explora nuestros cursos y comienza tu aprendizaje</p>
-          </div>
-        `;
-      } else {
-        const coursesHTML = myCourses.map(course => `
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-8">
-                  <h6 class="card-title">${course.nombre}</h6>
-                  <p class="card-text text-muted small">${course.descripcion}</p>
-                  <div class="d-flex gap-2 flex-wrap">
-                    <span class="badge bg-primary">${course.tipo.toUpperCase()}</span>
-                    <span class="badge bg-secondary">${course.nivel}</span>
-                    <small class="text-muted">
-                      <i class="fas fa-calendar"></i> Inicia: ${new Date(course.fecha_inicio).toLocaleDateString()}
-                    </small>
-                  </div>
-                </div>
-                <div class="col-md-4 text-end">
-                  <div class="d-flex flex-column gap-2">
-                    <span class="badge bg-success">Inscrito</span>
-                    <button class="btn btn-outline-primary btn-sm" onclick="viewCourseProgress(${course.id})">
-                      <i class="fas fa-chart-line"></i> Progreso
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `).join('');
-        
-        document.getElementById('myCoursesBody').innerHTML = coursesHTML;
+    function filterCourses() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const categoryFilter = document.getElementById('categoryFilter').value;
+
+      let filteredCourses = courses;
+
+      if (searchTerm) {
+        filteredCourses = filteredCourses.filter(course => 
+          course.titulo.toLowerCase().includes(searchTerm) ||
+          course.descripcion.toLowerCase().includes(searchTerm) ||
+          course.etiquetas.toLowerCase().includes(searchTerm)
+        );
       }
-      
-      modal.show();
-      
-      if (window.playSound) {
-        window.playSound('click');
+
+      if (categoryFilter) {
+        filteredCourses = filteredCourses.filter(course => 
+          course.etiquetas.toLowerCase().includes(categoryFilter)
+        );
       }
+
+      displayCourses(filteredCourses);
     }
 
-    function viewCourseProgress(courseId) {
-      const course = myCourses.find(c => c.id === courseId);
-      if (course) {
-        showSuccess(`Progreso de "${course.nombre}": 0% completado`);
-      }
-    }
-
-    function showError(message) {
-      const alertDiv = document.createElement('div');
-      alertDiv.className = 'alert alert-danger alert-dismissible fade show';
-      alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-      const container = document.querySelector('.container');
-      container.insertBefore(alertDiv, container.firstChild);
-      setTimeout(() => {
-        if (alertDiv.parentNode) {
-          alertDiv.remove();
-        }
-      }, 5000);
+    function logout() {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      window.location.href = '/login.html';
     }
 
     function showSuccess(message) {
@@ -569,12 +442,33 @@
       }, 3000);
     }
 
-    // Búsqueda con Enter
-    document.getElementById('searchInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        searchCourses();
-      }
-    });
+    function showError(message) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+      alertDiv.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+      const container = document.querySelector('.container');
+      container.insertBefore(alertDiv, container.firstChild);
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
   </script>
+
+  <style>
+    .bg-gradient-primary {
+      background: linear-gradient(135deg, #0066CC, #00CC66);
+    }
+    
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+  </style>
 </body>
 </html>
