@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema
 from .models import User
+from studentspoint.apps.campuses.models import Sede
 
 User = get_user_model()
 
@@ -173,13 +174,40 @@ def login(request):
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def register(request):
-    """Registra un nuevo usuario."""
-    email = request.data.get('email', '').lower()
+    """Registra un nuevo usuario.
+
+    Acepta tanto el payload usado por el frontend (first_name, last_name, carrera, sede)
+    como el payload directo del backend (name, career, campus).
+    """
+    email = (request.data.get('email') or '').lower()
     password = request.data.get('password', '')
-    name = request.data.get('name', '')
+
+    # Mapear nombre completo
+    provided_name = request.data.get('name')
+    if provided_name:
+        name = provided_name
+    else:
+        first_name = request.data.get('first_name', '').strip()
+        last_name = request.data.get('last_name', '').strip()
+        name = (first_name + ' ' + last_name).strip()
+
     role = request.data.get('role', 'student')
-    career = request.data.get('career', '')
-    campus_id = request.data.get('campus', 1)
+
+    # Mapear carrera
+    career = request.data.get('career') or request.data.get('carrera', '')
+
+    # Resolver campus: aceptar id en "campus" o nombre en "sede"
+    campus = None
+    campus_id = request.data.get('campus')
+    sede_name = request.data.get('sede')
+    if campus_id:
+        try:
+            campus_id = int(campus_id)
+            campus = Sede.objects.filter(id=campus_id).first()
+        except (TypeError, ValueError):
+            campus = None
+    elif sede_name:
+        campus = Sede.objects.filter(nombre__iexact=sede_name.strip()).first()
     
     # Validaciones
     if not all([email, password, name, career]):
@@ -202,15 +230,18 @@ def register(request):
         )
     
     try:
-        # Crear usuario
-        user = User.objects.create_user(
-            email=email,
-            password=password,
-            name=name,
-            role=role,
-            career=career,
-            campus_id=campus_id
-        )
+        # Crear usuario (campus es opcional)
+        user_kwargs = {
+            'email': email,
+            'password': password,
+            'name': name,
+            'role': role,
+            'career': career,
+        }
+        if campus is not None:
+            user_kwargs['campus'] = campus
+
+        user = User.objects.create_user(**user_kwargs)
         
         # Generar tokens JWT
         refresh = RefreshToken.for_user(user)

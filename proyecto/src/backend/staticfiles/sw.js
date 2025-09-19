@@ -3,9 +3,9 @@
  * Versión: 1.0.0
  */
 
-const CACHE_NAME = 'StudentsPoint-v1.2.0';
-const STATIC_CACHE = 'StudentsPoint-static-v1.2.0';
-const DYNAMIC_CACHE = 'StudentsPoint-dynamic-v1.2.0';
+const CACHE_NAME = 'StudentsPoint-v1.2.1';
+const STATIC_CACHE = 'StudentsPoint-static-v1.2.1';
+const DYNAMIC_CACHE = 'StudentsPoint-dynamic-v1.2.1';
 
 // Archivos estáticos para cache
 const STATIC_FILES = [

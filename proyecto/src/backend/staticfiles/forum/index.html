@@ -140,19 +140,28 @@
       <!-- Categorías -->
       <div class="row mb-3">
         <div class="col-12">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary active" onclick="filterByCategory('all')">
-              Todos
-            </button>
-            <button type="button" class="btn btn-outline-primary" onclick="filterByCategory('general')">
-              General
-            </button>
-            <button type="button" class="btn btn-outline-primary" onclick="filterByCategory('academico')">
-              Académico
-            </button>
-            <button type="button" class="btn btn-outline-primary" onclick="filterByCategory('social')">
-              Social
-            </button>
+          <div class="row g-2 align-items-center">
+            <div class="col-md-4">
+              <label class="form-label mb-0">Foro por carrera/sede</label>
+              <select id="forumFilter" class="form-select"></select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label mb-0">Orden</label>
+              <select id="sortFilter" class="form-select">
+                <option value="nuevo">Más nuevos</option>
+                <option value="top">Top</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label mb-0">Estado</label>
+              <select id="statusFilter" class="form-select">
+                <option value="">Todos</option>
+                <option value="publicado">Publicado</option>
+                <option value="revision">En revisión</option>
+                <option value="oculto">Oculto</option>
+                <option value="rechazado">Rechazado</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -222,13 +231,8 @@
               <input type="text" class="form-control" id="postTitle" required>
             </div>
             <div class="mb-3">
-              <label for="postCategory" class="form-label">Categoría</label>
-              <select class="form-control" id="postCategory" required>
-                <option value="">Selecciona una categoría</option>
-                <option value="general">General</option>
-                <option value="academico">Académico</option>
-                <option value="social">Social</option>
-              </select>
+              <label for="postForum" class="form-label">Foro (por carrera/sede)</label>
+              <select class="form-control" id="postForum" required></select>
             </div>
             <div class="mb-3">
               <label for="postContent" class="form-label">Contenido</label>

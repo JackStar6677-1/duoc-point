@@ -3,6 +3,7 @@
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema
@@ -32,6 +33,8 @@ class ForoListView(generics.ListAPIView):
     serializer_class = ForoSerializer
 
     def get_queryset(self):
+        # Asegurar foros por defecto si no existen
+        self._ensure_default_foros()
         queryset = Foro.objects.all()
         sede = self.request.query_params.get("sede")
         carrera = self.request.query_params.get("carrera")
@@ -41,11 +44,41 @@ class ForoListView(generics.ListAPIView):
             queryset = queryset.filter(carrera=carrera)
         return queryset
 
+    def _ensure_default_foros(self):
+        if Foro.objects.exists():
+            return
+        from studentspoint.apps.campuses.models import Sede
+        from django.utils.text import slugify
+        carreras = [
+            "Ingeniería en Informática",
+            "Ingeniería en Construcción",
+            "Ingeniería en Electricidad",
+            "Administración",
+            "Contabilidad",
+            "Técnico en Informática",
+        ]
+        sedes = list(Sede.objects.all())
+        if not sedes:
+            # Crear sede base si no hay
+            sedes = [Sede.objects.create(nombre="Sede Central", slug="sede-central")]
+        for sede in sedes:
+            for carrera in carreras:
+                slug = f"{sede.slug}-{slugify(carrera)}"
+                Foro.objects.get_or_create(
+                    sede=sede,
+                    carrera=carrera,
+                    defaults={
+                        "titulo": f"{carrera} - {sede.nombre}",
+                        "slug": slug,
+                    },
+                )
+
 
 class PostListCreateView(generics.ListCreateAPIView):
     """Lista posts de un foro y permite crear nuevas publicaciones."""
 
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         queryset = Post.objects.all()
@@ -57,6 +90,9 @@ class PostListCreateView(generics.ListCreateAPIView):
             queryset = queryset.order_by("-score")
         else:
             queryset = queryset.order_by("-created_at")
+        estado = self.request.query_params.get("estado")
+        if estado:
+            queryset = queryset.filter(estado=estado)
         return queryset
 
     def perform_create(self, serializer):
@@ -67,10 +103,15 @@ class PostListCreateView(generics.ListCreateAPIView):
         post.save(update_fields=["estado"])
 
 
-class CommentCreateView(generics.CreateAPIView):
-    """Crea un comentario dentro de un post."""
+class CommentCreateView(generics.ListCreateAPIView):
+    """Lista y crea comentarios dentro de un post."""
 
     serializer_class = ComentarioSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        post = get_object_or_404(Post, pk=self.kwargs["pk"])
+        return Comentario.objects.filter(post=post).order_by("created_at")
 
     def perform_create(self, serializer):
         post = get_object_or_404(Post, pk=self.kwargs["pk"])

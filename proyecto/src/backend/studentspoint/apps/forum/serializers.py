@@ -17,6 +17,8 @@ class PostSerializer(serializers.ModelSerializer):
     """Serializa posts para listado y creación."""
     
     usuario_name = serializers.CharField(source="usuario.name", read_only=True)
+    usuario_career = serializers.CharField(source="usuario.career", read_only=True)
+    usuario_campus = serializers.CharField(source="usuario.campus.nombre", read_only=True)
     total_comentarios = serializers.SerializerMethodField()
     total_reportes = serializers.IntegerField(read_only=True)
 
@@ -27,6 +29,8 @@ class PostSerializer(serializers.ModelSerializer):
             "foro",
             "usuario",
             "usuario_name",
+            "usuario_career",
+            "usuario_campus",
             "anonimo",
             "titulo",
             "cuerpo",
@@ -41,7 +45,8 @@ class PostSerializer(serializers.ModelSerializer):
             "moderado_at",
         ]
         read_only_fields = [
-            "usuario", "score", "estado", "created_at", "updated_at",
+            "usuario", "usuario_name", "usuario_career", "usuario_campus",
+            "score", "estado", "created_at", "updated_at",
             "total_comentarios", "total_reportes", "moderado_por", 
             "razon_moderacion", "moderado_at"
         ]
@@ -53,10 +58,21 @@ class PostSerializer(serializers.ModelSerializer):
 class ComentarioSerializer(serializers.ModelSerializer):
     """Serializador de comentarios."""
 
+    usuario_name = serializers.CharField(source="usuario.name", read_only=True)
+
     class Meta:
         model = Comentario
-        fields = ["id", "post", "usuario", "anonimo", "cuerpo", "score", "created_at"]
-        read_only_fields = ["post", "usuario", "score", "created_at"]
+        fields = [
+            "id",
+            "post",
+            "usuario",
+            "usuario_name",
+            "anonimo",
+            "cuerpo",
+            "score",
+            "created_at",
+        ]
+        read_only_fields = ["post", "usuario", "score", "created_at", "usuario_name"]
 
 
 class VoteSerializer(serializers.Serializer):

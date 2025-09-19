@@ -76,7 +76,7 @@ class ForumManager {
             if (sortFilter) params.append('orden', sortFilter);
             if (statusFilter) params.append('estado', statusFilter);
 
-            const response = await fetch(`/api/posts/?${params}`);
+            const response = await fetch(`/api/forum/posts/?${params}`);
             if (response.ok) {
                 this.posts = await response.json();
                 this.renderPosts();
@@ -94,14 +94,13 @@ class ForumManager {
         const postForum = document.getElementById('postForum');
         
         // Clear existing options
-        forumFilter.innerHTML = '<option value="">Todos los foros</option>';
-        postForum.innerHTML = '<option value="">Selecciona un foro</option>';
+        if (forumFilter) forumFilter.innerHTML = '<option value="">Todos los foros</option>';
+        if (postForum) postForum.innerHTML = '<option value="">Selecciona un foro</option>';
 
         this.forums.forEach(forum => {
-            const option1 = new Option(forum.titulo, forum.id);
-            const option2 = new Option(forum.titulo, forum.id);
-            forumFilter.add(option1);
-            postForum.add(option2);
+            const text = `${forum.titulo}`;
+            if (forumFilter) forumFilter.add(new Option(text, forum.id));
+            if (postForum) postForum.add(new Option(text, forum.id));
         });
     }
 
@@ -135,7 +134,10 @@ class ForumManager {
                         <div>
                             <h5 class="card-title mb-1">${this.escapeHtml(post.titulo)}</h5>
                             <div class="post-meta">
-                                <span class="anonymous-user">${userName}</span> • 
+                                <span class="anonymous-user">${userName}</span>
+                                ${post.usuario_career ? ` • <span>${this.escapeHtml(post.usuario_career)}</span>` : ''}
+                                ${post.usuario_campus ? ` • <span>${this.escapeHtml(post.usuario_campus)}</span>` : ''}
+                                 • 
                                 <span>${this.formatDate(post.created_at)}</span>
                                 ${post.updated_at !== post.created_at ? `• <span class="text-muted">Editado</span>` : ''}
                             </div>
@@ -210,7 +212,7 @@ class ForumManager {
     async votePost(postId, value) {
         try {
             const token = localStorage.getItem('access_token');
-            const response = await fetch(`/api/posts/${postId}/votar/`, {
+            const response = await fetch(`/api/forum/posts/${postId}/votar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -248,7 +250,7 @@ class ForumManager {
         
         if (commentsContainer.style.display === 'none') {
             try {
-                const response = await fetch(`/api/posts/${postId}/comentarios/`);
+                const response = await fetch(`/api/forum/posts/${postId}/comentarios`);
                 if (response.ok) {
                     const comments = await response.json();
                     commentsContainer.innerHTML = this.renderComments(comments);
@@ -295,7 +297,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch(`/api/posts/${this.currentPostId}/reportar/`, {
+            const response = await fetch(`/api/forum/posts/${this.currentPostId}/reportar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -337,7 +339,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch(`/api/posts/${this.currentPostId}/moderar/`, {
+            const response = await fetch(`/api/forum/posts/${this.currentPostId}/moderar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -375,7 +377,7 @@ class ForumManager {
                 return;
             }
 
-            const response = await fetch('/api/posts/', {
+            const response = await fetch('/api/forum/posts/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
